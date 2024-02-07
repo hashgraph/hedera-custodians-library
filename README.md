@@ -1,8 +1,9 @@
-# Custodial Wallets Library
+# Hedera Custodians Library
 
 [![License](https://img.shields.io/badge/license-apache2-blue.svg)](LICENSE)
 
 - [1. Overview](#1-overview)
+    - [Current services supported](#current-services-supported)
 - [2. Architecture](#2-architecture)
 - [3. Technologies](#3-technologies)
 - [4. How to use it](#4-how-to-use-it)
@@ -15,7 +16,7 @@
 - [5. Build](#5-build)
 - [6. Test](#6-test)
   - [6.1. Files](#61-files)
-  - [6.2. Configuration](#62-configuration)
+  - [6.2 Configuration](#62-configuration)
   - [6.3. Run](#63-run)
 - [7. Contributing](#7-contributing)
 - [8. Code of Conduct](#8-code-of-conduct)
@@ -23,7 +24,7 @@
 
 ## 1. Overview
 
-The _custodialwalletutils_ library is a Typescript utility designed to simplify custodial wallet management. It provides developers with tools to abstract complex aspects of custodial wallets, allowing them to focus on their application's core logic.
+The hedera-custodians-library library is a Typescript utility designed to simplify custodial wallet management. It provides developers with tools to abstract complex aspects of custodial wallets, allowing them to focus on their application's core logic.
 Optimized for integration with the Hedera network, it supports services like Fireblocks and Dfns and is scalable for various wallet services. The library's code is organized in a clear directory structure, with source code and unit and integration tests in separate folders. It's developed in Typescript, optimized for Node.js, and managed through npm for easy dependency handling and testing. The library is user-friendly, emphasizing developer experience and code readability. It includes extensive unit tests, ensuring its reliability and stability for managing custodial wallets in Typescript applications.
 
 #### Current services supported
@@ -33,7 +34,7 @@ Optimized for integration with the Hedera network, it supports services like Fir
 
 ## 2. Architecture
 
-The `custodialwalletutils` library implements a factory-strategy pattern, enabling object creation without specifying their exact class. The library's structure is divided into two primary directories:
+The `hedera-custodians-library` library implements a factory-strategy pattern, enabling object creation without specifying their exact class. The library's structure is divided into two primary directories:
 
 1. **src/**: This directory houses the core source code and is organized into subdirectories:
 
@@ -60,7 +61,7 @@ The strategy classes in the src/ directory, following a factory-strategy pattern
 
 ### 4.1. Install
 
-To install the custodialwalletutils library, navigate to the root directory of the library and run the following command:
+To install the hedera-custodians-library library, navigate to the root directory of the library and run the following command:
 
 ```sh
 npm install
@@ -70,10 +71,10 @@ This command installs all the dependencies listed in the [`package.json`](packag
 
 ### 4.2. Import
 
-To use a function or class from the custodialwalletutils library in your code, you first need to import it. Here's an example of how to import a function:
+To use a function or class from the hedera-custodians-library library in your code, you first need to import it. Here's an example of how to import a function:
 
 ```typescript
-const { functionName } = require('custodialwalletutils');
+const { functionName } = require('hedera-custodians-library');
 ```
 
 Replace `functionName` with the actual name of the function you want to use.
@@ -89,7 +90,7 @@ To create a service, you need to instantiate the `CustodialWalletService` class 
 Here's an example of how to create a service:
 
 ```javascript
-import { CustodialWalletService, FireblocksConfig } from 'custodialwalletutils';
+import { CustodialWalletService, FireblocksConfig } from 'hedera-custodians-library';
 
 const config = new FireblocksConfig(
   FIREBLOCKS_API_KEY,
@@ -109,7 +110,7 @@ To create a signature request, you need to instantiate the `SignatureRequest` cl
 Here's an example of how to create a signature request:
 
 ```javascript
-import { SignatureRequest } from 'custodialwalletutils';
+import { SignatureRequest } from 'hedera-custodians-library';
 
 const transactionBytes = new Uint8Array([1, 2, 3]); // replace with your transaction bytes
 const request = new SignatureRequest(transactionBytes);
@@ -143,7 +144,7 @@ When you run `npm run build` in your terminal, npm will execute this script comm
 
 ### 6.1. Files
 
-Test files for the `custodialwalletutils` library are in the `__tests__/` directory, corresponding to the source files in the `src/` directory. Key test files include:
+Test files for the `hedera-custodians-library` library are in the `__tests__/` directory, corresponding to the source files in the `src/` directory. Key test files include:
 
 - **StrategyFactory.test.ts**: Tests the `StrategyFactory` for both Fireblocks and DFNS configurations. Verifies if the factory correctly instantiates `FireblocksStrategy` with Fireblocks config, and `DFNSStrategy` with DFNS config, ensuring each strategy is appropriately created.
 
@@ -160,7 +161,7 @@ The tests, written using Jest in a Node.js environment, comprehensively cover si
 ### 6.2 Configuration
 
 The configuration for the tests is defined in the `jest.config.js` file located in the root directory of the library.
-`config.ts`: configuration file for the `custodialwalletutils` tests. This file is responsible for setting up the configurations for the `FireblocksConfig` and `DFNSStrategy` classes, which are used to manage the interactions with the Fireblocks and DFNS APIs, respectively.
+`config.ts`: configuration file for the `hedera-custodians-library` tests. This file is responsible for setting up the configurations for the `FireblocksConfig` and `DFNSStrategy` classes, which are used to manage the interactions with the Fireblocks and DFNS APIs, respectively.
 
 The `dotenv` package is used to load environment variables from a `.env` file. These environment variables are necessary for the tests to run.
 
@@ -182,7 +183,7 @@ DFNS_WALLET_ID=Wallet ID for DFNS
 
 ### 6.3. Run
 
-To run the tests, navigate to the root directory of the custodialwalletutils library and run the following command:
+To run the tests, navigate to the root directory of the hedera-custodians-library library and run the following command:
 
 ```sh
 npm run test
