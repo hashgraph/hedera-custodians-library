@@ -18,6 +18,7 @@
  *
  */
 
+import { describe, expect, test } from '@jest/globals';
 import { TransactionStatus } from 'fireblocks-sdk';
 import {
   FireblocksConfig,
@@ -53,7 +54,7 @@ describe('🧪 FireblocksStrategy TESTS', () => {
     jest.spyOn(fireblocksStrategy['fireblocks'], 'getTransactionById');
   });
 
-  it('should correctly sign a signature request', async () => {
+  test('should correctly sign a signature request', async () => {
     const mockSignatureRequest = new SignatureRequest(
       new Uint8Array([1, 2, 3]),
     );

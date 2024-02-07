@@ -7,10 +7,10 @@ jobs:
     name: test
     runs-on: ubuntu-latest
     env:
-      NODE_OPTIONS: "--max-old-space-size=32768"
+      NODE_OPTIONS: '--max-old-space-size=32768'
     permissions:
       contents: read
-    
+
     steps:
       - name: Install dependencies Custodial Library
         run: |

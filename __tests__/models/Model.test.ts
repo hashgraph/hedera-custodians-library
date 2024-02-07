@@ -18,12 +18,13 @@
  *
  */
 
-import { TEST_TIMEOUT } from '../utils/config';
+import { describe, expect, test } from '@jest/globals';
+import { TEST_TIMEOUT } from '../../config';
 import { SignatureRequest } from '../../src';
 
 describe('🧪 Models TESTS', () => {
   describe('Signatures Request', () => {
-    it(
+    test(
       'Get Transaction',
       () => {
         const message = new Uint8Array([1, 2, 3]);
@@ -37,7 +38,7 @@ describe('🧪 Models TESTS', () => {
       TEST_TIMEOUT,
     );
 
-    it(
+    test(
       'Set Transaction',
       () => {
         const message = new Uint8Array([1, 2, 3]);

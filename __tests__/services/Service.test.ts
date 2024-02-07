@@ -19,15 +19,20 @@
  */
 
 /* eslint-disable jest/no-conditional-expect */
-
-import {CustodialWalletService, DFNSConfig, FireblocksConfig, SignatureRequest,} from '../../src'; // Replace '@src' with the actual file path of the module being imported
-import {dfnsConfig, fireblocksConfig, TEST_TIMEOUT} from '../utils/config';
+import { describe, expect, test } from '@jest/globals';
+import {
+  CustodialWalletService,
+  DFNSConfig,
+  FireblocksConfig,
+  SignatureRequest,
+} from '../../src'; // Replace '@src' with the actual file path of the module being imported
+import { dfnsConfig, fireblocksConfig, TEST_TIMEOUT } from '../../config';
 
 const signatureRequest = new SignatureRequest(new Uint8Array([1, 2, 3]));
 
 describe('🧪 Service TESTS', () => {
   describe('Configuration', () => {
-    it(
+    test(
       '[Fireblocks] Get configuration from service instance',
       async () => {
         const signatureService = new CustodialWalletService(fireblocksConfig);
@@ -44,7 +49,7 @@ describe('🧪 Service TESTS', () => {
       TEST_TIMEOUT,
     );
 
-    it(
+    test(
       '[DFNS] Get configuration from service instance',
       async () => {
         const signatureService = new CustodialWalletService(dfnsConfig);
@@ -69,7 +74,7 @@ describe('🧪 Service TESTS', () => {
       TEST_TIMEOUT,
     );
 
-    it(
+    test(
       'Set configuration to service instance Fireblocks -> DFNS',
       async () => {
         const signatureService = new CustodialWalletService(fireblocksConfig);
@@ -95,7 +100,7 @@ describe('🧪 Service TESTS', () => {
       TEST_TIMEOUT,
     );
 
-    it(
+    test(
       'Set configuration to service instance DFNS -> Fireblocks',
       async () => {
         const signatureService = new CustodialWalletService(dfnsConfig);
@@ -114,7 +119,7 @@ describe('🧪 Service TESTS', () => {
     );
   });
   describe('[Fireblocks] Signatures', () => {
-    it(
+    test(
       'Sign bunch of bytes',
       async () => {
         const signatureService = new CustodialWalletService(fireblocksConfig);
@@ -128,7 +133,7 @@ describe('🧪 Service TESTS', () => {
   });
 
   describe('[DFNS] Signatures', () => {
-    it(
+    test(
       'Sign bunch of bytes',
       async () => {
         const signatureService = new CustodialWalletService(dfnsConfig);

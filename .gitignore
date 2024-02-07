@@ -11,7 +11,7 @@ node_modules/
 coverage
 
 # Transpiled files
-build
+lib
 
 # VS Code
 .vscode

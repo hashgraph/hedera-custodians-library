@@ -95,7 +95,8 @@ export class FireblocksStrategy implements ISignatureStrategy {
   ): Promise<TransactionResponse> {
     for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
       try {
-        const txInfo:TransactionResponse = await this.fireblocks.getTransactionById(transactionId);
+        const txInfo: TransactionResponse =
+          await this.fireblocks.getTransactionById(transactionId);
         if (
           [TransactionStatus.COMPLETED, TransactionStatus.FAILED].includes(
             txInfo.status,
