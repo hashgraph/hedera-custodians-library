@@ -24,6 +24,7 @@ import {
   DFNSStrategy,
   hexStringToUint8Array,
 } from '../../src';
+import { describe, expect, test, jest } from '@jest/globals';
 import { SignatureStatus } from '@dfns/sdk/codegen/datamodel/Wallets';
 
 const signatureResponse = {
@@ -33,12 +34,16 @@ const signatureResponse = {
 };
 
 jest.mock('@dfns/sdk', () => ({
-  DfnsApiClient: jest.fn().mockImplementation(() => ({
+  DfnsApiClient: {
     wallets: {
-      generateSignature: jest.fn().mockResolvedValue(signatureResponse),
-      getSignature: jest.fn().mockResolvedValue(signatureResponse),
+      generateSignature: jest
+        .fn()
+        .mockImplementation(() => Promise.resolve(signatureResponse)),
+      getSignature: jest
+        .fn()
+        .mockImplementation(() => Promise.resolve(signatureResponse)),
     },
-  })),
+  },
 }));
 
 describe('🧪 DFNSStrategy TESTS', () => {
@@ -51,15 +56,16 @@ describe('🧪 DFNSStrategy TESTS', () => {
     jest.spyOn(dfnsStrategy['dfnsApiClient']['wallets'], 'getSignature');
   });
 
-  it('should correctly sign a signature request', async () => {
+  test('should correctly sign a signature request', async () => {
     const mockSignatureRequest = new SignatureRequest(
       new Uint8Array([1, 2, 3]),
     );
     const result = await dfnsStrategy.sign(mockSignatureRequest);
+    expect(signatureResponse.signature).not.toBeNull();
     const expectedSignatureResponse = hexStringToUint8Array(
       Buffer.from(
-        signatureResponse.signature.r.substring(2) +
-          signatureResponse.signature.s.substring(2),
+        signatureResponse.signature!.r.substring(2) +
+          signatureResponse.signature!.s.substring(2),
         'hex',
       ).toString('hex'),
     );

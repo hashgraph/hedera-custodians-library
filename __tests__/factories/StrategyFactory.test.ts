@@ -18,12 +18,13 @@
  *
  */
 
+import { describe, expect, test } from '@jest/globals';
 import { DFNSStrategy, FireblocksStrategy, StrategyFactory } from '../../src';
-import { TEST_TIMEOUT, dfnsConfig, fireblocksConfig } from '../utils/config';
+import { TEST_TIMEOUT, dfnsConfig, fireblocksConfig } from '../../config';
 
 describe('🧪 Factory TESTS', () => {
   describe('[Fireblocks]', () => {
-    it(
+    test(
       'Factory should correctly instantiate a FireblocksStrategy when given Fireblocks configuration',
       () => {
         const strategy =
@@ -36,7 +37,7 @@ describe('🧪 Factory TESTS', () => {
   });
 
   describe('[DFNS]', () => {
-    it(
+    test(
       'Factory should correctly instantiate a DFNSStrategy when given DFNS configuration',
       () => {
         const strategy = StrategyFactory.createSignatureStrategy(dfnsConfig);

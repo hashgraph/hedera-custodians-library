@@ -3,7 +3,7 @@
 [![License](https://img.shields.io/badge/license-apache2-blue.svg)](LICENSE)
 
 - [1. Overview](#1-overview)
-    - [Current services supported](#current-services-supported)
+  - [Current services supported](#current-services-supported)
 - [2. Architecture](#2-architecture)
 - [3. Technologies](#3-technologies)
 - [4. How to use it](#4-how-to-use-it)
@@ -90,7 +90,10 @@ To create a service, you need to instantiate the `CustodialWalletService` class 
 Here's an example of how to create a service:
 
 ```javascript
-import { CustodialWalletService, FireblocksConfig } from 'hedera-custodians-library';
+import {
+  CustodialWalletService,
+  FireblocksConfig,
+} from 'hedera-custodians-library';
 
 const config = new FireblocksConfig(
   FIREBLOCKS_API_KEY,

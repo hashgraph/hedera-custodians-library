@@ -29,7 +29,7 @@ import { DFNSConfig } from '../config/DFNSConfig.js';
 import { SignatureRequest } from '../../models/signature/SignatureRequest.js';
 import { hexStringToUint8Array } from '../../utils/utilities.js';
 
-const sleep = (interval = 0) =>
+const sleep = (interval = 0): Promise<void> =>
   new Promise((resolve) => setTimeout(resolve, interval));
 const DEFAULT_MAX_RETRIES = 3;
 const DEFAULT_RETRY_INTERVAL = 1000;
