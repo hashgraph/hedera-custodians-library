@@ -14,13 +14,13 @@
   "files": [
     "./build"
   ],
-  "homepage": "https://github.com/hashgraph/stablecoin-studio",
+  "homepage": "https://github.com/hashgraph/hedera-custodians-library",
   "repository": {
     "type": "git",
-    "url": "https://github.com/hashgraph/stablecoin-studio"
+    "url": "https://github.com/hashgraph/hedera-custodians-library"
   },
   "bugs": {
-    "url": "https://github.com/hashgraph/stablecoin-studio/issues"
+    "url": "https://github.com/hashgraph/hedera-custodians-library/issues"
   },
   "license": "ISC",
   "engines": {

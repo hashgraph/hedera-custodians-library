@@ -1,0 +1,42 @@
+name: Test
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+jobs:
+  test:
+    name: test
+    runs-on: ubuntu-latest
+    env:
+      NODE_OPTIONS: "--max-old-space-size=32768"
+    permissions:
+      contents: read
+    
+    steps:
+      - name: Install dependencies Custodial Library
+        run: |
+          npm ci
+          npm run build
+
+      - name: Create file
+        run: |
+          touch .env
+          echo "CLIENT_PRIVATE_KEY_ECDSA=${{ secrets.PRIVATE_KEY_ECDSA }}" >> .env
+          echo "CLIENT_PUBLIC_KEY_ECDSA=${{ secrets.PUBLIC_KEY_ECDSA }}"  >> .env
+          echo "CLIENT_EVM_ADDRESS_ECDSA=${{ secrets.EVM_ADDRESS_ECDSA }}" >> .env
+          echo "CLIENT_ACCOUNT_ID_ECDSA=${{ secrets.ACCOUNT_ID_ECDSA }}" >> .env
+          echo "CLIENT_PRIVATE_KEY_ED25519=${{ secrets.PRIVATE_KEY_ED25519 }}"  >> .env
+          echo "CLIENT_PUBLIC_KEY_ED25519=${{ secrets.PUBLIC_KEY_ED25519 }}"  >> .env
+          echo "CLIENT_EVM_ADDRESS_ED25519=${{ secrets.EVM_ADDRESS_ED25519 }}"  >> .env
+          echo "CLIENT_ACCOUNT_ID_ED25519=${{ secrets.ACCOUNT_ID_ED25519 }}"  >> .env
+          echo "CLIENT_PRIVATE_KEY_ED25519_2=${{ secrets.PRIVATE_KEY_ED25519_2 }}"  >> .env          
+          echo "CLIENT_PUBLIC_KEY_ED25519_2=${{ secrets.PUBLIC_KEY_ED25519_2 }}"  >> .env
+          echo "CLIENT_EVM_ADDRESS_ED25519_2=${{ secrets.EVM_ADDRESS_ED25519_2 }}"  >> .env
+          echo "CLIENT_ACCOUNT_ID_ED25519_2=${{ secrets.ACCOUNT_ID_ED25519_2 }}"  >> .env
+          echo "HEDERA_TOKEN_MANAGER_ADDRESS=0.0.2167020"  >> .env
+          echo "FACTORY_ADDRESS=0.0.2167166"  >> .env
+        working-directory: sdk
+
+      - name: Test custodialwalletutils
+        run: |
+          npm run test
+          npm run cleanCache
