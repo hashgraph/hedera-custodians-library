@@ -12,10 +12,11 @@ jobs:
       contents: read
 
     steps:
-      - name: Install dependencies Custodial Library
-        run: |
-          npm ci
-          npm run build
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: npm ci
 
       - name: Create file
         run: |
@@ -34,7 +35,6 @@ jobs:
           echo "CLIENT_ACCOUNT_ID_ED25519_2=${{ secrets.ACCOUNT_ID_ED25519_2 }}"  >> .env
           echo "HEDERA_TOKEN_MANAGER_ADDRESS=0.0.2167020"  >> .env
           echo "FACTORY_ADDRESS=0.0.2167166"  >> .env
-        working-directory: sdk
 
       - name: Test custodialwalletutils
         run: |

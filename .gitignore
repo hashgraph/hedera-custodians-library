@@ -27,6 +27,7 @@ lib
 .eslintcache
 
 # Security | Keys
+.env
 .env.test
 resources/keys/*
 resources/keystore/*
