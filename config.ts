@@ -102,4 +102,4 @@ function checkEnvVariables(): void {
   }
 }
 
-checkEnvVariables();
+checkEnvVariables(); //! Beta
