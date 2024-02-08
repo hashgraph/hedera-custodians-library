@@ -24,7 +24,7 @@ import { SignatureRequest } from '../../src';
 
 describe('🧪 Models TESTS', () => {
   describe('Signatures Request', () => {
-    test(
+    it(
       'Get Transaction',
       () => {
         const message = new Uint8Array([1, 2, 3]);
@@ -38,7 +38,7 @@ describe('🧪 Models TESTS', () => {
       TEST_TIMEOUT,
     );
 
-    test(
+    it(
       'Set Transaction',
       () => {
         const message = new Uint8Array([1, 2, 3]);

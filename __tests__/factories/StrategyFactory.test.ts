@@ -24,7 +24,7 @@ import { TEST_TIMEOUT, dfnsConfig, fireblocksConfig } from '../../config';
 
 describe('🧪 Factory TESTS', () => {
   describe('[Fireblocks]', () => {
-    test(
+    it(
       'Factory should correctly instantiate a FireblocksStrategy when given Fireblocks configuration',
       () => {
         const strategy =
@@ -37,7 +37,7 @@ describe('🧪 Factory TESTS', () => {
   });
 
   describe('[DFNS]', () => {
-    test(
+    it(
       'Factory should correctly instantiate a DFNSStrategy when given DFNS configuration',
       () => {
         const strategy = StrategyFactory.createSignatureStrategy(dfnsConfig);
