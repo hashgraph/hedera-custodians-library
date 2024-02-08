@@ -19,7 +19,14 @@
  */
 
 import { CustodialWalletService, SignatureRequest } from 'index';
-import { Client, AccountCreateTransaction, Hbar } from '@hashgraph/sdk';
+import {
+  Client,
+  AccountCreateTransaction,
+  TokenCreateTransaction,
+  Hbar,
+  AccountId,
+  TransactionReceipt,
+} from '@hashgraph/sdk';
 import DfnsExampleConfig from './DfnsExampleConfig';
 
 export default class DfnsExample {
@@ -39,7 +46,10 @@ export default class DfnsExample {
     );
   }
 
-  public async createAccount(): Promise<boolean> {
+  public async createAccount(): Promise<{
+    newAccountId: AccountId;
+    receipt: TransactionReceipt;
+  }> {
     // Submit a transaction to your local node
     const newAccount = await new AccountCreateTransaction()
       .setKey(this.config.walletPublicKey)
@@ -56,6 +66,32 @@ export default class DfnsExample {
       throw new Error('❌ Error creating new Hedera Account');
     }
     console.log('✅ New account ID Created: ', newAccountId.toString());
-    return true;
+    return { newAccountId: newAccountId, receipt: receipt };
+  }
+
+  public async createNewHederaToken(tokenInfo: {
+    name: string;
+    symbol: string;
+    decimals: number;
+  }) {
+    // Create a new token
+    const createTokenTx = new TokenCreateTransaction()
+      .setTokenName(tokenInfo.name)
+      .setTokenSymbol(tokenInfo.symbol)
+      .setDecimals(tokenInfo.decimals)
+      .setTreasuryAccountId(this.config.walletHederaAccountId)
+      .setInitialSupply(50000)
+      .setAdminKey(this.config.walletPublicKey)
+      .setMaxTransactionFee(new Hbar(30)); // Change the default max transaction fee
+    // Execute the transaction
+    const createTokenReceipt = await (
+      await createTokenTx.execute(this.client)
+    ).getReceipt(this.client);
+    // Get the token ID
+    const tokenId = createTokenReceipt.tokenId;
+    if (!tokenId) {
+      throw new Error('❌ Error creating new Hedera Token');
+    }
+    console.log('✅ New Token Created with ID: ', tokenId.toString());
   }
 }

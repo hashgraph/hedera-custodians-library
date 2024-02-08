@@ -55,9 +55,12 @@
   "devDependencies": {
     "@hashgraph/sdk": "^2.41.0",
     "@jest/globals": "^29.7.0",
+    "@types/eslint": "^8.56.2",
     "@types/inquirer": "^9.0.7",
     "@types/jest": "^29.5.12",
     "@types/node": "^18.11.18",
+    "@types/prettier": "^3.0.0",
+    "@types/rimraf": "^4.0.5",
     "@typescript-eslint/eslint-plugin": "^5.48.2",
     "@typescript-eslint/parser": "^5.48.2",
     "eslint": "^8.32.0",

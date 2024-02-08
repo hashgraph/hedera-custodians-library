@@ -72,7 +72,31 @@ async function main(): Promise<void> {
         '❌ 🐛 Invalid custodial service. You should not be able to get here 🧐.',
       );
   }
-  await example.createAccount();
+
+  //* Ask for the action to perform
+  const actionAnwsers: Answers = await inquirer.prompt([
+    {
+      type: 'list',
+      name: 'action',
+      message: 'What action do you want to perform?',
+      choices: ['Create new Hedera Account', 'Create new Hedera Token'],
+      default: 'Create new Hedera Token',
+    },
+  ]);
+  switch (actionAnwsers.action) {
+    case 'Create new Hedera Account':
+      await example.createAccount();
+      break;
+    case 'Create new Hedera Token':
+      await example.createNewHederaToken(await askTokenInfo());
+      break;
+    default:
+      throw new Error(
+        '❌ 🐛 Invalid action. You should not be able to get here 🧐.',
+      );
+  }
+
+  //* END
   process.exit(0);
 }
 
@@ -190,7 +214,45 @@ async function askFireblocksParams(): Promise<FireblocksConfig> {
   );
 }
 
+async function askTokenInfo(): Promise<{
+  name: string;
+  symbol: string;
+  decimals: number;
+}> {
+  const tokenInfo: Answers = await inquirer.prompt([
+    {
+      type: 'input',
+      name: 'name',
+      message: 'Enter the token name',
+      default: 'Hedera Stablecoin',
+    },
+    {
+      type: 'input',
+      name: 'symbol',
+      message: 'Enter the token symbol',
+      default: 'HSC',
+    },
+    {
+      type: 'input',
+      name: 'decimals',
+      message: 'Enter the token decimals',
+      default: 8,
+    },
+    {
+      type: 'input',
+      name: 'initialSupply',
+      message: 'Enter the token initial supply',
+      default: 100000000,
+    },
+  ]);
+  return {
+    name: tokenInfo.name,
+    symbol: tokenInfo.symbol,
+    decimals: tokenInfo.decimals,
+  };
+}
+
 main().catch((error) => {
   console.error(error);
-  process.exitCode = 1;
+  process.exit(1);
 });
