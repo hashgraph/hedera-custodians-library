@@ -19,9 +19,20 @@
  */
 
 import inquirer, { Answers } from 'inquirer';
+import {
+  DEFAULT_DFNS_SERVICE_ACCOUNT_PRIVATE_KEY_PATH,
+  DEFAULT_FIREBLOCKS_API_SECRET_KEY_PATH,
+  dfnsConfig,
+  fireblocksConfig,
+} from '../config';
+import { DFNSConfig, FireblocksConfig } from 'index';
+import { readFileSync } from 'fs';
+import DfnsExample from './DfnsExample';
+import DfnsExampleConfig from './DfnsExampleConfig';
+import { AccountId, PublicKey } from '@hashgraph/sdk';
 
 async function main(): Promise<void> {
-  const custodialService: Answers = await inquirer.prompt([
+  const custodialAnwsers: Answers = await inquirer.prompt([
     {
       type: 'list',
       name: 'custodialService',
@@ -29,11 +40,157 @@ async function main(): Promise<void> {
       choices: ['Dfns', 'Fireblocks'],
       default: 'Dfns',
     },
+    {
+      type: 'confirm',
+      name: 'useEnvVars',
+      message: 'Use environment variables?',
+      default: true,
+    },
   ]);
-  console.log(custodialService);
+  let example: DfnsExample; // TODO: | FireblocksExample
+  switch (custodialAnwsers.custodialService) {
+    case 'Dfns':
+      example = new DfnsExample(
+        custodialAnwsers.useEnvVars
+          ? new DfnsExampleConfig(
+              dfnsConfig,
+              AccountId.fromString(
+                process.env.DFNS_WALLET_HEDERA_ACCOUNT_ID ?? '',
+              ),
+              PublicKey.fromString(process.env.DFNS_WALLET_PUBLIC_KEY ?? ''),
+            )
+          : await askDfnsParams(),
+      );
+      break;
+    case 'Fireblocks':
+      throw new Error('❌ 🥵 Fireblocks is not implemented yet'); // TODO
+      // example = new FireblocksExample(custodialAnwsers.useEnvVars ? fireblocksConfig : await askFireblocksParams();
+      break;
+
+    default:
+      throw new Error(
+        '❌ 🐛 Invalid custodial service. You should not be able to get here 🧐.',
+      );
+  }
+  await example.createAccount();
+  process.exit(0);
+}
+
+async function askDfnsParams(): Promise<DfnsExampleConfig> {
+  const dfnsParams: Answers = await inquirer.prompt([
+    {
+      type: 'input',
+      name: 'dfnsServiceAccountPrivateKeyPath',
+      message: 'Enter the path to the service account private key',
+      default: DEFAULT_DFNS_SERVICE_ACCOUNT_PRIVATE_KEY_PATH,
+    },
+    {
+      type: 'input',
+      name: 'serviceAccountCredentialId',
+      message: 'Enter the service account credential ID',
+      default: dfnsConfig.serviceAccountCredentialId,
+    },
+    {
+      type: 'input',
+      name: 'serviceAccountAuthToken',
+      message: 'Enter the service account authorization token',
+      default: dfnsConfig.serviceAccountAuthToken,
+    },
+    {
+      type: 'input',
+      name: 'appOrigin',
+      message: 'Enter the app origin',
+      default: dfnsConfig.appOrigin,
+    },
+    {
+      type: 'input',
+      name: 'appId',
+      message: 'Enter the app ID',
+      default: dfnsConfig.appId,
+    },
+    {
+      type: 'input',
+      name: 'baseUrl',
+      message: 'Enter the base URL',
+      default: dfnsConfig.baseUrl,
+    },
+    {
+      type: 'input',
+      name: 'walletId',
+      message: 'Enter the wallet ID',
+      default: dfnsConfig.walletId,
+    },
+    {
+      type: 'input',
+      name: 'walletPublicKey',
+      message: 'Enter the wallet public key',
+      default: process.env.WALLET_PUBLIC_KEY ?? '',
+    },
+    {
+      type: 'input',
+      name: 'walletHederaAccountId',
+      message: 'Enter the wallet Hedera account ID',
+      default: process.env.WALLET_HEDERA_ACCOUNT_ID ?? '',
+    },
+  ]);
+  return new DfnsExampleConfig(
+    new DFNSConfig(
+      readFileSync(dfnsParams.dfnsServiceAccountPrivateKeyPath, 'utf8'),
+      dfnsParams.serviceAccountCredentialId,
+      dfnsParams.serviceAccountAuthToken,
+      dfnsParams.appOrigin,
+      dfnsParams.appId,
+      dfnsParams.baseUrl,
+      dfnsParams.walletId,
+    ),
+    dfnsParams.walletHederaAccountId,
+    dfnsParams.walletPublicKey,
+  );
+}
+
+async function askFireblocksParams(): Promise<FireblocksConfig> {
+  const fireblocksParams: Answers = await inquirer.prompt([
+    {
+      type: 'input',
+      name: 'apiKey',
+      message: 'Enter the Fireblocks API key',
+      default: fireblocksConfig.apiKey,
+    },
+    {
+      type: 'input',
+      name: 'apiSecretKeyPath',
+      message: 'Enter the path to the Fireblocks API secret key',
+      default: DEFAULT_FIREBLOCKS_API_SECRET_KEY_PATH,
+    },
+    {
+      type: 'input',
+      name: 'baseUrl',
+      message: 'Enter the Fireblocks base URL',
+      default: fireblocksConfig.baseUrl,
+    },
+    {
+      type: 'input',
+      name: 'vaultAccountId',
+      message: 'Enter the Fireblocks vault account ID',
+      default: fireblocksConfig.vaultAccountId,
+    },
+    {
+      type: 'input',
+      name: 'assetId',
+      message: 'Enter the Fireblocks asset ID',
+      default: fireblocksConfig.assetId,
+    },
+  ]);
+  return new FireblocksConfig(
+    fireblocksParams.apiKey,
+    readFileSync(fireblocksParams.apiSecretKeyPath, 'utf8'),
+    fireblocksParams.baseUrl,
+    fireblocksParams.vaultAccountId,
+    fireblocksParams.assetId,
+  );
 }
 
 main().catch((error) => {
   console.error(error);
-  process.exit(1);
+  process.exitCode = 1;
 });

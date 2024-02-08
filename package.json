@@ -53,6 +53,7 @@
     "prepare": "husky"
   },
   "devDependencies": {
+    "@hashgraph/sdk": "^2.41.0",
     "@jest/globals": "^29.7.0",
     "@types/inquirer": "^9.0.7",
     "@types/jest": "^29.5.12",
