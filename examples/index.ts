@@ -18,7 +18,7 @@
  *
  */
 
-import inquirer, {Answers} from "inquirer";
+import inquirer, { Answers } from 'inquirer';
 
 async function main(): Promise<void> {
   const custodialService: Answers = await inquirer.prompt([
