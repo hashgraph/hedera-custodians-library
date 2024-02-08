@@ -56,7 +56,7 @@ describe('🧪 DFNSStrategy TESTS', () => {
     jest.spyOn(dfnsStrategy['dfnsApiClient']['wallets'], 'getSignature');
   });
 
-  test('should correctly sign a signature request', async () => {
+  it('should correctly sign a signature request', async () => {
     const mockSignatureRequest = new SignatureRequest(
       new Uint8Array([1, 2, 3]),
     );

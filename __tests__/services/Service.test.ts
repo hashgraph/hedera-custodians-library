@@ -32,7 +32,7 @@ const signatureRequest = new SignatureRequest(new Uint8Array([1, 2, 3]));
 
 describe('🧪 Service TESTS', () => {
   describe('Configuration', () => {
-    test(
+    it(
       '[Fireblocks] Get configuration from service instance',
       async () => {
         const signatureService = new CustodialWalletService(fireblocksConfig);
@@ -49,7 +49,7 @@ describe('🧪 Service TESTS', () => {
       TEST_TIMEOUT,
     );
 
-    test(
+    it(
       '[DFNS] Get configuration from service instance',
       async () => {
         const signatureService = new CustodialWalletService(dfnsConfig);
@@ -74,7 +74,7 @@ describe('🧪 Service TESTS', () => {
       TEST_TIMEOUT,
     );
 
-    test(
+    it(
       'Set configuration to service instance Fireblocks -> DFNS',
       async () => {
         const signatureService = new CustodialWalletService(fireblocksConfig);
@@ -100,7 +100,7 @@ describe('🧪 Service TESTS', () => {
       TEST_TIMEOUT,
     );
 
-    test(
+    it(
       'Set configuration to service instance DFNS -> Fireblocks',
       async () => {
         const signatureService = new CustodialWalletService(dfnsConfig);
@@ -119,7 +119,7 @@ describe('🧪 Service TESTS', () => {
     );
   });
   describe('[Fireblocks] Signatures', () => {
-    test(
+    it(
       'Sign bunch of bytes',
       async () => {
         const signatureService = new CustodialWalletService(fireblocksConfig);
@@ -133,7 +133,7 @@ describe('🧪 Service TESTS', () => {
   });
 
   describe('[DFNS] Signatures', () => {
-    test(
+    it(
       'Sign bunch of bytes',
       async () => {
         const signatureService = new CustodialWalletService(dfnsConfig);
