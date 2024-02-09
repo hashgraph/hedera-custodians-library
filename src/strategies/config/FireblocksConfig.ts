@@ -1,6 +1,6 @@
 /*
  *
- * Hedera Stablecoin SDK
+ * Hedera Custodians Integration
  *
  * Copyright (C) 2023 Hedera Hashgraph, LLC
  *
