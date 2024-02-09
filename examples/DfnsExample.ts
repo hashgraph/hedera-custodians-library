@@ -27,7 +27,6 @@ import {
   AccountId,
   TransactionReceipt,
   TransactionResponse,
-  AccountBalanceQuery,
   TransferTransaction,
 } from '@hashgraph/sdk';
 import DfnsExampleConfig from './DfnsExampleConfig';
@@ -55,7 +54,7 @@ export default class DfnsExample {
     receipt: TransactionReceipt;
   }> {
     // Submit a transaction to your local node
-    const newAccountTx = await new AccountCreateTransaction()
+    const newAccountTx = new AccountCreateTransaction()
       .setKey(this.config.walletPublicKey)
       .setInitialBalance(new Hbar(1));
     // Execute the transaction
@@ -126,36 +125,39 @@ export default class DfnsExample {
     };
   }
 
-  // public async interactWithErc20(tokenInfo: {
-  //   name: string;
-  //   symbol: string;
-  //   decimals: number;
-  // }) {
-  //   const { newAccountId } =
-  //     await this.createAccount();
-  //   const { tokenId } =
-  //     await this.createNewHederaToken(tokenInfo);
+  public async interactWithErc20(tokenInfo: {
+    name: string;
+    symbol: string;
+    decimals: number;
+  }) {
+    const { newAccountId } = await this.createAccount();
+    const { tokenId } = await this.createNewHederaToken(tokenInfo);
 
-  //   //Create the transfer transaction
-  //   const transaction = new TransferTransaction()
-  //     .addTokenTransfer(tokenId, accountId1, -12.45)
-  //     .addTokenTransfer(tokenId, accountId2, 12.45)
-  //     .freezeWith(this.client);
+    //Create the transfer transaction
+    const transferTx = new TransferTransaction()
+      .addTokenTransfer(tokenId, this.config.walletHederaAccountId, -12.45)
+      .addTokenTransfer(tokenId, newAccountId, 12.45)
+      .freezeWith(this.client);
 
-  //   //Sign with the sender account private key
-  //   const signTx = await transaction.sign(accountKey1);
+    // Sign with the sender account private key
+    // const signTx = await transferTx.sign(this.client);
+    const transferSigned = TransferTransaction.fromBytes(
+      await this.service.signTransaction(
+        new SignatureRequest(transferTx.toBytes()),
+      ),
+    );
 
-  //   //Sign with the client operator private key and submit to a Hedera network
-  //   const txResponse = await signTx.execute(client);
+    //Sign with the client operator private key and submit to a Hedera network
+    const transferResponse = await transferSigned.execute(this.client);
 
-  //   //Request the receipt of the transaction
-  //   const receipt = await txResponse.getReceipt(client);
+    //Request the receipt of the transaction
+    const transferReceipt = await transferResponse.getReceipt(this.client);
 
-  //   //Obtain the transaction consensus status
-  //   const transactionStatus = receipt.status;
+    //Obtain the transaction consensus status
+    const transactionStatus = transferReceipt.status;
 
-  //   console.log(
-  //     'The transaction consensus status ' + transactionStatus.toString(),
-  //   );
-  // }
+    console.log(
+      'The transaction consensus status ' + transactionStatus.toString(),
+    );
+  }
 }
