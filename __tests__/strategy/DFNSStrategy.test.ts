@@ -34,16 +34,12 @@ const signatureResponse = {
 };
 
 jest.mock('@dfns/sdk', () => ({
-  DfnsApiClient: {
+  DfnsApiClient: jest.fn().mockImplementation(() => ({
     wallets: {
-      generateSignature: jest
-        .fn()
-        .mockImplementation(() => Promise.resolve(signatureResponse)),
-      getSignature: jest
-        .fn()
-        .mockImplementation(() => Promise.resolve(signatureResponse)),
+      generateSignature: jest.fn().mockImplementation(() => Promise.resolve(signatureResponse)),
+      getSignature: jest.fn().mockImplementation(() => Promise.resolve(signatureResponse)),
     },
-  },
+  })),
 }));
 
 describe('🧪 DFNSStrategy TESTS', () => {
