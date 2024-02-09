@@ -26,6 +26,9 @@ import {
   Hbar,
   AccountId,
   TransactionReceipt,
+  TransactionResponse,
+  AccountBalanceQuery,
+  TransferTransaction,
 } from '@hashgraph/sdk';
 import DfnsExampleConfig from './DfnsExampleConfig';
 
@@ -48,6 +51,7 @@ export default class DfnsExample {
 
   public async createAccount(): Promise<{
     newAccountId: AccountId;
+    response: TransactionResponse;
     receipt: TransactionReceipt;
   }> {
     // Submit a transaction to your local node
@@ -63,14 +67,28 @@ export default class DfnsExample {
     if (!newAccountId) {
       throw new Error('❌ Error creating new Hedera Account');
     }
-    console.log('✅ New account ID Created: ', newAccountId.toString());
+    console.log(
+      '✅ New account ID Created: ',
+      newAccountId.toString(),
+      `(https://hashscan.io/testnet/account/${newAccountId.toString()})`,
+    );
     console.log(
       '⛓️ Transaction Hash: ',
-      newAccountResponse.transactionHash.toString(),
+      Buffer.from(newAccountResponse.transactionHash).toString('hex'),
     );
-    return { newAccountId: newAccountId, receipt: newAccountReceipt };
+    return {
+      newAccountId: newAccountId,
+      response: newAccountResponse,
+      receipt: newAccountReceipt,
+    };
   }
 
+  /**
+   * Creates a new Hedera token.
+   * @param tokenInfo - The information of the token to be created.
+   * @returns An object containing the token ID, response, and receipt.
+   * @throws An error if there is an issue creating the token.
+   */
   public async createNewHederaToken(tokenInfo: {
     name: string;
     symbol: string;
@@ -99,7 +117,45 @@ export default class DfnsExample {
     console.log('✅ New Token Created with ID: ', tokenId.toString());
     console.log(
       '⛓️ Transaction Hash: ',
-      createTokenResponse.transactionHash.toString(),
+      Buffer.from(createTokenResponse.transactionHash).toString('hex'),
     );
+    return {
+      tokenId: tokenId,
+      response: createTokenResponse,
+      receipt: createTokenReceipt,
+    };
   }
+
+  // public async interactWithErc20(tokenInfo: {
+  //   name: string;
+  //   symbol: string;
+  //   decimals: number;
+  // }) {
+  //   const { newAccountId } =
+  //     await this.createAccount();
+  //   const { tokenId } =
+  //     await this.createNewHederaToken(tokenInfo);
+
+  //   //Create the transfer transaction
+  //   const transaction = new TransferTransaction()
+  //     .addTokenTransfer(tokenId, accountId1, -12.45)
+  //     .addTokenTransfer(tokenId, accountId2, 12.45)
+  //     .freezeWith(this.client);
+
+  //   //Sign with the sender account private key
+  //   const signTx = await transaction.sign(accountKey1);
+
+  //   //Sign with the client operator private key and submit to a Hedera network
+  //   const txResponse = await signTx.execute(client);
+
+  //   //Request the receipt of the transaction
+  //   const receipt = await txResponse.getReceipt(client);
+
+  //   //Obtain the transaction consensus status
+  //   const transactionStatus = receipt.status;
+
+  //   console.log(
+  //     'The transaction consensus status ' + transactionStatus.toString(),
+  //   );
+  // }
 }

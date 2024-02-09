@@ -74,27 +74,42 @@ async function main(): Promise<void> {
   }
 
   //* Ask for the action to perform
-  const actionAnwsers: Answers = await inquirer.prompt([
-    {
-      type: 'list',
-      name: 'action',
-      message: 'What action do you want to perform?',
-      choices: ['Create new Hedera Account', 'Create new Hedera Token'],
-      default: 'Create new Hedera Token',
-    },
-  ]);
-  switch (actionAnwsers.action) {
-    case 'Create new Hedera Account':
-      await example.createAccount();
-      break;
-    case 'Create new Hedera Token':
-      await example.createNewHederaToken(await askTokenInfo());
-      break;
-    default:
-      throw new Error(
-        '❌ 🐛 Invalid action. You should not be able to get here 🧐.',
-      );
-  }
+  let exit = false;
+  do {
+    const actionAnwsers: Answers = await inquirer.prompt([
+      {
+        type: 'list',
+        name: 'action',
+        message: 'What action do you want to perform?',
+        choices: [
+          '🔷 Create new Hedera Token',
+          '🔑 Create new Hedera Account',
+          '🚀 Interact with ERC20 (New Account, New Token, Transfer)',
+          '🔴 Exit',
+        ],
+        default: '🔷 Create new Hedera Token',
+      },
+    ]);
+    switch (actionAnwsers.action) {
+      case '🔑 Create new Hedera Account':
+        await example.createAccount();
+        break;
+      case '🔷 Create new Hedera Token':
+        await example.createNewHederaToken(await askTokenInfo());
+        break;
+      case '🚀 Interact with ERC20 (New Account, New Token, Transfer)':
+        await example.interactWithErc20(await askTokenInfo());
+        break;
+      case '🔴 Exit':
+        console.log('👋 Goodbye');
+        exit = true;
+        break;
+      default:
+        throw new Error(
+          '❌ 🐛 Invalid action. You should not be able to get here 🧐.',
+        );
+    }
+  } while (!exit);
 
   //* END
   process.exit(0);
