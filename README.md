@@ -3,7 +3,7 @@
 [![License](https://img.shields.io/badge/license-apache2-blue.svg)](LICENSE)
 
 - [1. Overview](#1-overview)
-  - [Current services supported](#current-services-supported)
+    - [Current services supported](#current-services-supported)
 - [2. Architecture](#2-architecture)
 - [3. Technologies](#3-technologies)
 - [4. How to use it](#4-how-to-use-it)
@@ -25,6 +25,7 @@
 ## 1. Overview
 
 The hedera-custodians-library library is a Typescript utility designed to simplify custodial wallet management. It provides developers with tools to abstract complex aspects of custodial wallets, allowing them to focus on their application's core logic.
+
 Optimized for integration with the Hedera network, it supports services like Fireblocks and Dfns and is scalable for various wallet services. The library's code is organized in a clear directory structure, with source code and unit and integration tests in separate folders. It's developed in Typescript, optimized for Node.js, and managed through npm for easy dependency handling and testing. The library is user-friendly, emphasizing developer experience and code readability. It includes extensive unit tests, ensuring its reliability and stability for managing custodial wallets in Typescript applications.
 
 #### Current services supported
