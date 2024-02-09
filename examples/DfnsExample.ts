@@ -51,22 +51,24 @@ export default class DfnsExample {
     receipt: TransactionReceipt;
   }> {
     // Submit a transaction to your local node
-    const newAccount = await new AccountCreateTransaction()
+    const newAccountTx = await new AccountCreateTransaction()
       .setKey(this.config.walletPublicKey)
-      .setInitialBalance(new Hbar(1))
-      .execute(this.client);
-
+      .setInitialBalance(new Hbar(1));
+    // Execute the transaction
+    const newAccountResponse = await newAccountTx.execute(this.client);
     // Get receipt
-    const receipt = await newAccount.getReceipt(this.client);
-    // console.log(receipt);
-
+    const newAccountReceipt = await newAccountResponse.getReceipt(this.client);
     // Get the account ID
-    const newAccountId = receipt.accountId;
+    const newAccountId = newAccountReceipt.accountId;
     if (!newAccountId) {
       throw new Error('❌ Error creating new Hedera Account');
     }
     console.log('✅ New account ID Created: ', newAccountId.toString());
-    return { newAccountId: newAccountId, receipt: receipt };
+    console.log(
+      '⛓️ Transaction Hash: ',
+      newAccountResponse.transactionHash.toString(),
+    );
+    return { newAccountId: newAccountId, receipt: newAccountReceipt };
   }
 
   public async createNewHederaToken(tokenInfo: {
@@ -84,14 +86,20 @@ export default class DfnsExample {
       .setAdminKey(this.config.walletPublicKey)
       .setMaxTransactionFee(new Hbar(30)); // Change the default max transaction fee
     // Execute the transaction
-    const createTokenReceipt = await (
-      await createTokenTx.execute(this.client)
-    ).getReceipt(this.client);
+    const createTokenResponse = await createTokenTx.execute(this.client);
+    // Get receipt
+    const createTokenReceipt = await createTokenResponse.getReceipt(
+      this.client,
+    );
     // Get the token ID
     const tokenId = createTokenReceipt.tokenId;
     if (!tokenId) {
       throw new Error('❌ Error creating new Hedera Token');
     }
     console.log('✅ New Token Created with ID: ', tokenId.toString());
+    console.log(
+      '⛓️ Transaction Hash: ',
+      createTokenResponse.transactionHash.toString(),
+    );
   }
 }
