@@ -3,7 +3,7 @@
 [![License](https://img.shields.io/badge/license-apache2-blue.svg)](LICENSE)
 
 - [1. Overview](#1-overview)
-    - [Current services supported](#current-services-supported)
+  - [Current services supported](#current-services-supported)
 - [2. Architecture](#2-architecture)
 - [3. Technologies](#3-technologies)
 - [4. How to use it](#4-how-to-use-it)
