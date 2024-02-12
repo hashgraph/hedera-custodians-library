@@ -84,21 +84,22 @@ async function main(): Promise<void> {
         choices: [
           '🔷 Create new Hedera Token',
           '🔑 Create new Hedera Account',
-          '🚀 Interact with ERC20 (New Account, New Token, Transfer)',
+          '🚀 Interact with Hedera Token (New account, new hedera token, associate account and transfer token amount)',
           '🔴 Exit',
         ],
-        default: '🔷 Create new Hedera Token',
+        default:
+          '🚀 Interact with Hedera Token (New account, new hedera token, associate account and transfer token amount)',
       },
     ]);
     switch (actionAnwsers.action) {
       case '🔑 Create new Hedera Account':
-        await example.createAccount();
+        await example._createAccount();
         break;
       case '🔷 Create new Hedera Token':
         await example.createNewHederaToken(await askTokenInfo());
         break;
-      case '🚀 Interact with ERC20 (New Account, New Token, Transfer)':
-        await example.interactWithErc20(await askTokenInfo());
+      case '🚀 Interact with Hedera Token (New account, new hedera token, associate account and transfer token amount)':
+        await example.interactWithHederaToken(await askTokenInfo());
         break;
       case '🔴 Exit':
         console.log('👋 Goodbye');
@@ -233,6 +234,7 @@ async function askTokenInfo(): Promise<{
   name: string;
   symbol: string;
   decimals: number;
+  initSupply: number;
 }> {
   const tokenInfo: Answers = await inquirer.prompt([
     {
@@ -259,11 +261,37 @@ async function askTokenInfo(): Promise<{
       message: 'Enter the token initial supply',
       default: 100000000,
     },
+    {
+      type: 'input',
+      name: 'transferAmount',
+      message: 'Enter the transfer amount',
+      default: 120,
+    },
   ]);
+  // * Confirmation loop
+  const conf: Answers = await inquirer.prompt([
+    {
+      type: 'confirm',
+      name: 'confirm',
+      message: `🟠 Are this values correct?
+          Name: ${tokenInfo.name}
+          Symbol: ${tokenInfo.symbol}
+          Decimals: ${tokenInfo.decimals}
+          Initial Supply: ${tokenInfo.initialSupply}
+          Transfer Amount: ${tokenInfo.transferAmount}
+      `,
+      default: true,
+    },
+  ]);
+  if (!conf.confirm) {
+    return await askTokenInfo();
+  }
+
   return {
     name: tokenInfo.name,
     symbol: tokenInfo.symbol,
     decimals: tokenInfo.decimals,
+    initSupply: tokenInfo.initialSupply,
   };
 }
 
