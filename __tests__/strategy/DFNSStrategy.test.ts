@@ -1,6 +1,6 @@
 /*
  *
- * Hedera Stablecoin SDK
+ * Hedera Custodians Integration
  *
  * Copyright (C) 2023 Hedera Hashgraph, LLC
  *
@@ -36,8 +36,12 @@ const signatureResponse = {
 jest.mock('@dfns/sdk', () => ({
   DfnsApiClient: jest.fn().mockImplementation(() => ({
     wallets: {
-      generateSignature: jest.fn().mockImplementation(() => Promise.resolve(signatureResponse)),
-      getSignature: jest.fn().mockImplementation(() => Promise.resolve(signatureResponse)),
+      generateSignature: jest
+        .fn()
+        .mockImplementation(() => Promise.resolve(signatureResponse)),
+      getSignature: jest
+        .fn()
+        .mockImplementation(() => Promise.resolve(signatureResponse)),
     },
   })),
 }));
