@@ -74,4 +74,3 @@ jobs:
       - name: Test custodialwalletutils
         run: |
           npm run test
-          npm run cleanCache
