@@ -123,9 +123,8 @@ describe('🧪 Service TESTS', () => {
       'Sign bunch of bytes',
       async () => {
         const signatureService = new CustodialWalletService(fireblocksConfig);
-        const signature = await signatureService.signTransaction(
-          signatureRequest,
-        );
+        const signature =
+          await signatureService.signTransaction(signatureRequest);
         expect(signature.length).toBeGreaterThan(0);
       },
       TEST_TIMEOUT,
@@ -137,9 +136,8 @@ describe('🧪 Service TESTS', () => {
       'Sign bunch of bytes',
       async () => {
         const signatureService = new CustodialWalletService(dfnsConfig);
-        const signature = await signatureService.signTransaction(
-          signatureRequest,
-        );
+        const signature =
+          await signatureService.signTransaction(signatureRequest);
         expect(signature.length).toBeGreaterThan(0);
       },
       TEST_TIMEOUT,
