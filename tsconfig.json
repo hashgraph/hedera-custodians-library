@@ -16,5 +16,6 @@
     "baseUrl": "src",
     "outDir": "./lib/esm"
   },
+  // jest configuration is included just for linter an ts checks
   "include": ["src/**/*", "config.ts", "jest.config.ts", "examples/**/*"]
 }
