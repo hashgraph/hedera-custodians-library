@@ -18,8 +18,7 @@
  *
  */
 
-/* eslint-disable jest/no-conditional-expect */
-import { describe, expect, test } from '@jest/globals';
+import { describe, expect, it } from '@jest/globals';
 import {
   CustodialWalletService,
   DFNSConfig,

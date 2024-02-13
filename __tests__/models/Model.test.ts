@@ -18,7 +18,7 @@
  *
  */
 
-import { describe, expect, test } from '@jest/globals';
+import { describe, expect, it } from '@jest/globals';
 import { TEST_TIMEOUT } from '../../config';
 import { SignatureRequest } from '../../src';
 
