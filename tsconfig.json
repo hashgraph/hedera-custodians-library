@@ -17,5 +17,5 @@
     "outDir": "./lib/esm"
   },
   "exclude": ["build/**/*", "node_modules", "example/**/*"],
-  "include": ["src/**/*", "config.ts", "jest.config.ts"]
+  "include": ["src/**/*", "examples/**/*", "config.ts", "jest.config.ts"]
 }

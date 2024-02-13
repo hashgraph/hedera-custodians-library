@@ -1,6 +1,6 @@
 /*
  *
- * Hedera Stablecoin SDK
+ * Hedera Custodians Integration
  *
  * Copyright (C) 2023 Hedera Hashgraph, LLC
  *
@@ -25,9 +25,9 @@ import { DFNSConfig, FireblocksConfig } from './src';
 config();
 
 // Set default values for environment variables
-const DEFAULT_FIREBLOCKS_API_SECRET_KEY_PATH =
+export const DEFAULT_FIREBLOCKS_API_SECRET_KEY_PATH =
   'resources/keys/fireblocks-priv.pem';
-const DEFAULT_DFNS_SERVICE_ACCOUNT_PRIVATE_KEY_PATH =
+export const DEFAULT_DFNS_SERVICE_ACCOUNT_PRIVATE_KEY_PATH =
   'resources/keys/dfns-priv.pem';
 export const TEST_TIMEOUT = 10000; // 10 seconds
 
@@ -102,4 +102,4 @@ function checkEnvVariables(): void {
   }
 }
 
-checkEnvVariables();
+checkEnvVariables(); //! Beta

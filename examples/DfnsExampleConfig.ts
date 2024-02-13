@@ -18,17 +18,27 @@
  *
  */
 
-/**
- * Converts a hexadecimal string to a Uint8Array.
- *
- * @param hexString - The hexadecimal string to convert.
- * @returns The Uint8Array representation of the hexadecimal string.
- */
-export function hexStringToUint8Array(hexString: string): Uint8Array {
-  const uint8Array = new Uint8Array(hexString.length / 2);
-  for (let i = 0; i < hexString.length; i += 2) {
-    const decimal = parseInt(hexString.substring(i, i + 2), 16);
-    uint8Array[i / 2] = decimal;
+import { DFNSConfig } from 'index';
+import { AccountId, PublicKey } from '@hashgraph/sdk';
+
+export default class DfnsExampleConfig extends DFNSConfig {
+  walletHederaAccountId: AccountId;
+  walletPublicKey: PublicKey;
+  constructor(
+    config: DFNSConfig,
+    walletHederaAccountId: AccountId,
+    walletPublicKey: PublicKey,
+  ) {
+    super(
+      config.serviceAccountPrivateKey,
+      config.serviceAccountCredentialId,
+      config.serviceAccountAuthToken,
+      config.appOrigin,
+      config.appId,
+      config.baseUrl,
+      config.walletId,
+    );
+    this.walletHederaAccountId = walletHederaAccountId;
+    this.walletPublicKey = walletPublicKey;
   }
-  return uint8Array;
 }
