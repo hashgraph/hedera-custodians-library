@@ -20,8 +20,8 @@
 
 import inquirer, { Answers } from 'inquirer';
 import {
-  DEFAULT_DFNS_SERVICE_ACCOUNT_PRIVATE_KEY_PATH,
-  DEFAULT_FIREBLOCKS_API_SECRET_KEY_PATH,
+  DEFAULT_DFNS_SERVICE_ACCOUNT_PRIVATE_KEY,
+  DEFAULT_FIREBLOCKS_API_SECRET_KEY,
   dfnsConfig,
   fireblocksConfig,
 } from '../config';
@@ -127,7 +127,7 @@ async function askDfnsParams(): Promise<ExampleConfig> {
       type: 'input',
       name: 'dfnsServiceAccountPrivateKeyPath',
       message: 'Enter the path to the service account private key',
-      default: DEFAULT_DFNS_SERVICE_ACCOUNT_PRIVATE_KEY_PATH,
+      default: DEFAULT_DFNS_SERVICE_ACCOUNT_PRIVATE_KEY,
     },
     {
       type: 'input',
@@ -205,7 +205,7 @@ async function askFireblocksParams(): Promise<ExampleConfig> {
       type: 'input',
       name: 'apiSecretKeyPath',
       message: 'Enter the path to the Fireblocks API secret key',
-      default: DEFAULT_FIREBLOCKS_API_SECRET_KEY_PATH,
+      default: DEFAULT_FIREBLOCKS_API_SECRET_KEY,
     },
     {
       type: 'input',

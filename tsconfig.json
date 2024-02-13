@@ -9,13 +9,13 @@
     "forceConsistentCasingInFileNames": true /* Ensure that casing is correct in imports. */,
     "strict": true /* Enable all strict type-checking options. */,
     "skipLibCheck": true /* Skip type checking all .d.ts files. */,
-    "baseUrl": "src",
     "strictPropertyInitialization": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "resolveJsonModule": true,
+    "baseUrl": "src",
     "outDir": "./lib/esm"
   },
-  "exclude": ["build/**/*", "node_modules", "example/**/*"],
-  "include": ["src/**/*", "examples/**/*", "config.ts", "jest.config.ts"]
+  // jest configuration is included just for linter an ts checks
+  "include": ["src/**/*", "config.ts", "jest.config.ts", "examples/**/*"]
 }
