@@ -18,27 +18,26 @@
  *
  */
 
-import { DFNSConfig } from 'index';
 import { AccountId, PublicKey } from '@hashgraph/sdk';
+import { DFNSConfig, FireblocksConfig } from 'index';
 
-export default class DfnsExampleConfig extends DFNSConfig {
-  walletHederaAccountId: AccountId;
-  walletPublicKey: PublicKey;
+export default class ExampleConfig {
+  serviceSpecificConfig: DFNSConfig | FireblocksConfig;
+  hederaAccountId: AccountId;
+  publicKey: PublicKey;
   constructor(
-    config: DFNSConfig,
-    walletHederaAccountId: AccountId,
-    walletPublicKey: PublicKey,
+    config: DFNSConfig | FireblocksConfig,
+    hederaAccountId: AccountId | string,
+    publicKey: PublicKey | string,
   ) {
-    super(
-      config.serviceAccountPrivateKey,
-      config.serviceAccountCredentialId,
-      config.serviceAccountAuthToken,
-      config.appOrigin,
-      config.appId,
-      config.baseUrl,
-      config.walletId,
-    );
-    this.walletHederaAccountId = walletHederaAccountId;
-    this.walletPublicKey = walletPublicKey;
+    this.serviceSpecificConfig = config;
+    this.hederaAccountId =
+      typeof hederaAccountId === 'string'
+        ? AccountId.fromString(hederaAccountId)
+        : hederaAccountId;
+    this.publicKey =
+      typeof publicKey === 'string'
+        ? PublicKey.fromString(publicKey)
+        : publicKey;
   }
 }

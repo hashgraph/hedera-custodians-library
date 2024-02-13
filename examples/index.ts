@@ -27,9 +27,8 @@ import {
 } from '../config';
 import { DFNSConfig, FireblocksConfig } from 'index';
 import { readFileSync } from 'fs';
-import DfnsExample from './DfnsExample';
-import DfnsExampleConfig from './DfnsExampleConfig';
-import { AccountId, PublicKey } from '@hashgraph/sdk';
+import Example from './Example';
+import ExampleConfig from './ExampleConfig';
 
 async function main(): Promise<void> {
   const custodialAnwsers: Answers = await inquirer.prompt([
@@ -47,20 +46,18 @@ async function main(): Promise<void> {
       default: true,
     },
   ]);
-  let example: DfnsExample; // TODO: | FireblocksExample
+  let example: Example;
   switch (custodialAnwsers.custodialService) {
     case 'Dfns':
-      example = new DfnsExample(
-        custodialAnwsers.useEnvVars
-          ? new DfnsExampleConfig(
-              dfnsConfig,
-              AccountId.fromString(
-                process.env.DFNS_WALLET_HEDERA_ACCOUNT_ID ?? '',
-              ),
-              PublicKey.fromString(process.env.DFNS_WALLET_PUBLIC_KEY ?? ''),
-            )
-          : await askDfnsParams(),
-      );
+      if (custodialAnwsers.useEnvVars) {
+        example = new Example(
+          dfnsConfig,
+          process.env.DFNS_WALLET_HEDERA_ACCOUNT_ID ?? '',
+          process.env.DFNS_WALLET_PUBLIC_KEY ?? '',
+        );
+      } else {
+        example = new Example(await askDfnsParams());
+      }
       break;
     case 'Fireblocks':
       throw new Error('❌ 🥵 Fireblocks is not implemented yet'); // TODO
@@ -116,7 +113,7 @@ async function main(): Promise<void> {
   process.exit(0);
 }
 
-async function askDfnsParams(): Promise<DfnsExampleConfig> {
+async function askDfnsParams(): Promise<ExampleConfig> {
   const dfnsParams: Answers = await inquirer.prompt([
     {
       type: 'input',
@@ -164,16 +161,16 @@ async function askDfnsParams(): Promise<DfnsExampleConfig> {
       type: 'input',
       name: 'walletPublicKey',
       message: 'Enter the wallet public key',
-      default: process.env.WALLET_PUBLIC_KEY ?? '',
+      default: process.env.DFNS_WALLET_PUBLIC_KEY ?? '',
     },
     {
       type: 'input',
       name: 'walletHederaAccountId',
       message: 'Enter the wallet Hedera account ID',
-      default: process.env.WALLET_HEDERA_ACCOUNT_ID ?? '',
+      default: process.env.DFNS_WALLET_HEDERA_ACCOUNT_ID ?? '',
     },
   ]);
-  return new DfnsExampleConfig(
+  return new ExampleConfig(
     new DFNSConfig(
       readFileSync(dfnsParams.dfnsServiceAccountPrivateKeyPath, 'utf8'),
       dfnsParams.serviceAccountCredentialId,
@@ -188,7 +185,7 @@ async function askDfnsParams(): Promise<DfnsExampleConfig> {
   );
 }
 
-async function askFireblocksParams(): Promise<FireblocksConfig> {
+async function askFireblocksParams(): Promise<ExampleConfig> {
   const fireblocksParams: Answers = await inquirer.prompt([
     {
       type: 'input',
@@ -220,13 +217,29 @@ async function askFireblocksParams(): Promise<FireblocksConfig> {
       message: 'Enter the Fireblocks asset ID',
       default: fireblocksConfig.assetId,
     },
+    {
+      type: 'input',
+      name: 'hederaAccountId',
+      message: 'Enter the Hedera account ID',
+      default: process.env.FIREBLOCKS_HEDERA_ACCOUNT_ID ?? '',
+    },
+    {
+      type: 'input',
+      name: 'publicKey',
+      message: 'Enter the wallet public key',
+      default: process.env.FIREBLOCKS_PUBLIC_KEY ?? '',
+    },
   ]);
-  return new FireblocksConfig(
-    fireblocksParams.apiKey,
-    readFileSync(fireblocksParams.apiSecretKeyPath, 'utf8'),
-    fireblocksParams.baseUrl,
-    fireblocksParams.vaultAccountId,
-    fireblocksParams.assetId,
+  return new ExampleConfig(
+    new FireblocksConfig(
+      fireblocksParams.apiKey,
+      readFileSync(fireblocksParams.apiSecretKeyPath, 'utf8'),
+      fireblocksParams.baseUrl,
+      fireblocksParams.vaultAccountId,
+      fireblocksParams.assetId,
+    ),
+    fireblocksParams.hederaAccountId,
+    fireblocksParams.publicKey,
   );
 }
 

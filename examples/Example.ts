@@ -18,7 +18,12 @@
  *
  */
 
-import { CustodialWalletService, SignatureRequest } from 'index';
+import {
+  CustodialWalletService,
+  DFNSConfig,
+  FireblocksConfig,
+  SignatureRequest,
+} from 'index';
 import {
   Client,
   AccountCreateTransaction,
@@ -35,23 +40,46 @@ import {
   Status,
   TokenId,
 } from '@hashgraph/sdk';
-import DfnsExampleConfig from './DfnsExampleConfig';
 import nacl from 'tweetnacl';
+import ExampleConfig from './ExampleConfig';
 
-export default class DfnsExample {
-  config: DfnsExampleConfig;
+export default class Example {
+  config: ExampleConfig;
   service: CustodialWalletService;
   client: Client;
-  constructor(config: DfnsExampleConfig) {
-    this.config = config;
-    this.service = new CustodialWalletService(this.config);
+
+  private readonly signTransactionHandler = async (
+    message: Uint8Array,
+  ): Promise<Uint8Array> => {
+    const signatureRequest = new SignatureRequest(message);
+    return await this.service.signTransaction(signatureRequest);
+  };
+
+  constructor(config: ExampleConfig);
+  constructor(
+    config: FireblocksConfig | DFNSConfig,
+    hederaAccountId: AccountId | string,
+    publicKey: PublicKey | string,
+  );
+  constructor(
+    config: ExampleConfig | FireblocksConfig | DFNSConfig,
+    hederaAccountId?: AccountId | string,
+    publicKey?: PublicKey | string,
+  ) {
+    if (config instanceof ExampleConfig) {
+      this.config = config;
+    } else {
+      if (!hederaAccountId || !publicKey) {
+        throw new Error('❌ Missing Hedera account ID or public key');
+      }
+      this.config = new ExampleConfig(config, hederaAccountId, publicKey);
+    }
+    const { serviceSpecificConfig } = this.config;
+    this.service = new CustodialWalletService(serviceSpecificConfig);
     this.client = Client.forTestnet().setOperatorWith(
-      this.config.walletHederaAccountId,
-      this.config.walletPublicKey,
-      async (message: Uint8Array): Promise<Uint8Array> => {
-        const signatureRequest = new SignatureRequest(message);
-        return await this.service.signTransaction(signatureRequest);
-      },
+      this.config.hederaAccountId,
+      this.config.publicKey,
+      this.signTransactionHandler,
     );
   }
 
@@ -109,7 +137,7 @@ export default class DfnsExample {
 
     const tokenBalancesBefore = await Promise.all([
       this._getTokenBalance({
-        account: this.config.walletHederaAccountId,
+        account: this.config.hederaAccountId,
         tokenId,
       }),
       this._getTokenBalance({ account: newAccountId, tokenId }),
@@ -119,7 +147,7 @@ export default class DfnsExample {
     console.log('    💶 Main account balance: ', tokenBalancesBefore[0]);
     console.log('    💶 New account balance: ', tokenBalancesBefore[1]);
     await this._transferToken(
-      this.config.walletHederaAccountId,
+      this.config.hederaAccountId,
       newAccountId,
       tokenId,
       120,
@@ -127,7 +155,7 @@ export default class DfnsExample {
     await this._delay(3000);
     const tokenBalancesAfter = await Promise.all([
       this._getTokenBalance({
-        account: this.config.walletHederaAccountId,
+        account: this.config.hederaAccountId,
         tokenId,
       }),
       this._getTokenBalance({ account: newAccountId, tokenId }),
@@ -200,7 +228,7 @@ export default class DfnsExample {
     console.log('🔑 Creating new Hedera Account...');
     // Submit a transaction to your local node
     const newAccountTx = new AccountCreateTransaction()
-      .setKey(newAccountKey || this.config.walletPublicKey)
+      .setKey(newAccountKey || this.config.publicKey)
       .setInitialBalance(new Hbar(1));
     // Execute the transaction
     const newAccountResponse = await newAccountTx.execute(this.client);
@@ -249,9 +277,9 @@ export default class DfnsExample {
       .setTokenName(tokenInfo.name)
       .setTokenSymbol(tokenInfo.symbol)
       .setDecimals(tokenInfo.decimals)
-      .setTreasuryAccountId(this.config.walletHederaAccountId)
+      .setTreasuryAccountId(this.config.hederaAccountId)
       .setInitialSupply(tokenInfo.initSupply)
-      .setAdminKey(this.config.walletPublicKey)
+      .setAdminKey(this.config.publicKey)
       .setMaxTransactionFee(new Hbar(30)); // Change the default max transaction fee
     // Execute the transaction
     const createTokenResponse = await createTokenTx.execute(this.client);
