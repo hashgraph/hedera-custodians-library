@@ -61,7 +61,15 @@ async function main(): Promise<void> {
       break;
     case 'Fireblocks':
       throw new Error('❌ 🥵 Fireblocks is not implemented yet'); // TODO
-      // example = new FireblocksExample(custodialAnwsers.useEnvVars ? fireblocksConfig : await askFireblocksParams();
+      if (custodialAnwsers.useEnvVars) {
+        example = new Example(
+          fireblocksConfig,
+          process.env.FIREBLOCKS_HEDERA_ACCOUNT_ID ?? '',
+          process.env.FIREBLOCKS_PUBLIC_KEY ?? '',
+        );
+      } else {
+        example = new Example(await askFireblocksParams());
+      }
       break;
 
     default:
