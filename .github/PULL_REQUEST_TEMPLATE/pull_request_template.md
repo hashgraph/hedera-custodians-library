@@ -8,8 +8,6 @@ Fixes # (issue) 🛠️
 
 ## Type of change
 
-Please delete options that are not relevant.
-
 - [ ] Bug fix (non-breaking change which fixes an issue) 🐞
 - [ ] New feature (non-breaking change which adds functionality) ✨
 - [ ] Breaking change (fix or feature that would cause existing functionality to not work as expected) 💥
@@ -19,15 +17,28 @@ Please delete options that are not relevant.
 
 Please describe the tests that you ran to verify your changes. Provide instructions so we can reproduce. Please also list any relevant details for your test configuration. 🧪
 
-- [ ] Test A
-- [ ] Test B
+- [ ] Local Tests (npm run test)
+- [ ] Local Example (npx tsx examples/index.ts)
+- [ ] Local Github Actions (act pull_request)
 
 **Test Configuration**:
 
-- Firmware version:
-- Hardware:
-- Toolchain:
-- SDK:
+- OS:
+  - [ ] Mac
+  - [ ] Linux
+  - [ ] Windows
+- Architecture:
+  - [ ] x86-32
+  - [ ] x64 or x86-64 (AMD 64)
+  - [ ] ARM or ARM64
+- Node version:
+  - [ ] 16
+  - [ ] 18
+  - [ ] 20
+
+### Test Results (if any)
+
+Can be screenshots or anything
 
 ## Checklist:
 
