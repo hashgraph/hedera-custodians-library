@@ -25,7 +25,7 @@ import { DFNSConfig, FireblocksConfig } from './src';
 config();
 
 // Regex to validate path
-const pathRegex = /^(\/[^/]+|\\[^\\]+)+(\/[^/]+|\\[^\\]+)*$/;
+const pathRegex = /^(.+)\/([^/]+)$/;
 
 // Set default values for environment variables
 export const DEFAULT_FIREBLOCKS_API_SECRET_KEY =
@@ -39,7 +39,7 @@ const fireblocksApiSecretKey =
   process.env.FIREBLOCKS_API_SECRET_KEY || DEFAULT_FIREBLOCKS_API_SECRET_KEY;
 export const fireblocksConfig = new FireblocksConfig(
   process.env.FIREBLOCKS_API_KEY ?? '',
-  fireblocksApiSecretKey.match(pathRegex)
+  pathRegex.test(fireblocksApiSecretKey)
     ? fs.readFileSync(path.resolve(fireblocksApiSecretKey), 'utf8')
     : fireblocksApiSecretKey,
   process.env.FIREBLOCKS_BASE_URL ?? '',
@@ -52,7 +52,7 @@ const dfnsServiceAccountPrivateKey =
   process.env.DFNS_SERVICE_ACCOUNT_PRIVATE_KEY ||
   DEFAULT_DFNS_SERVICE_ACCOUNT_PRIVATE_KEY;
 export const dfnsConfig = new DFNSConfig(
-  dfnsServiceAccountPrivateKey.match(pathRegex)
+  pathRegex.test(dfnsServiceAccountPrivateKey)
     ? fs.readFileSync(path.resolve(dfnsServiceAccountPrivateKey), 'utf8')
     : dfnsServiceAccountPrivateKey,
   process.env.DFNS_SERVICE_ACCOUNT_CREDENTIAL_ID ?? '',
