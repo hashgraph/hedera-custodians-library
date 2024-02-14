@@ -17,7 +17,7 @@ Before running the examples, make sure you have the following prerequisites inst
 git clone https://github.com/your-username/hedera-custodians-library.git
 ```
 
-2. Navigate to the root directory of the library (if you are not there) and install the dependencies:
+2. Navigate to the **root directory of the library** (if you are not there) and install the dependencies:
 
 ```bash
 cd hedera-custodians-library

@@ -3,7 +3,7 @@
 [![License](https://img.shields.io/badge/license-apache2-blue.svg)](LICENSE)
 
 - [1. Overview](#1-overview)
-  - [Current services supported](#current-services-supported)
+    - [Current services supported](#current-services-supported)
 - [2. Architecture](#2-architecture)
 - [3. Technologies](#3-technologies)
 - [4. How to use it](#4-how-to-use-it)
@@ -17,7 +17,6 @@
 - [6. Test](#6-test)
   - [6.1. Files](#61-files)
   - [6.2 Configuration](#62-configuration)
-  - [6.3. Run](#63-run)
 - [7. Contributing](#7-contributing)
 - [8. Code of Conduct](#8-code-of-conduct)
 - [9. License](#9-license)
@@ -165,24 +164,27 @@ The tests, written using Jest in a Node.js environment, comprehensively cover si
 ### 6.2 Configuration
 
 The configuration for the tests is defined in the `jest.config.js` file located in the root directory of the library.
-`config.ts`: configuration file for the `hedera-custodians-library` tests. This file is responsible for setting up the configurations for the `FireblocksConfig` and `DFNSStrategy` classes, which are used to manage the interactions with the Fireblocks and DFNS APIs, respectively.
 
-The `dotenv` package is used to load environment variables from a `.env` file. These environment variables are necessary for the tests to run.
+The `config.ts` file is responsible for setting up the configurations for the `FireblocksConfig` and `DFNSStrategy` classes, which are used to manage the interactions with the Fireblocks and DFNS APIs, respectively.
 
-```env
-FIREBLOCKS_API_SECRET_KEY_PATH=Path to Fireblocks API secret key file
-FIREBLOCKS_API_KEY=Your Fireblocks API key
-FIREBLOCKS_BASE_URL=Base URL of Fireblocks API
-FIREBLOCKS_ASSET_ID=Asset ID for Fireblocks
-FIREBLOCKS_VAULT_ACCOUNT_ID=Vault account ID for Fireblocks
+To run the tests, you need to provide the following environment variables in a `.env` file:
 
-DFNS_SERVICE_ACCOUNT_AUTHORIZATION_TOKEN=Authorization token for DFNS service account
-DFNS_SERVICE_ACCOUNT_CREDENTIAL_ID=Credential ID for DFNS service account
-DFNS_SERVICE_ACCOUNT_PRIVATE_KEY_PATH=Path to DFNS service account private key file
-DFNS_APP_ORIGIN=URL origin of DFNS app
-DFNS_APP_ID=ID of DFNS app
-DFNS_TEST_URL=Test URL for DFNS API
-DFNS_WALLET_ID=Wallet ID for DFNS
+For Fireblocks:
+- `FIREBLOCKS_API_SECRET_KEY`: Path to Fireblocks API secret key file or secret key value
+- `FIREBLOCKS_API_KEY`: Your Fireblocks API key
+- `FIREBLOCKS_BASE_URL`: Base URL of Fireblocks API
+- `FIREBLOCKS_ASSET_ID`: Asset ID for Fireblocks
+- `FIREBLOCKS_VAULT_ACCOUNT_ID`: Vault account ID for Fireblocks
+
+For DFNS:
+- `DFNS_SERVICE_ACCOUNT_AUTHORIZATION_TOKEN`: Authorization token for DFNS service account
+- `DFNS_SERVICE_ACCOUNT_CREDENTIAL_ID`: Credential ID for DFNS service account
+- `DFNS_SERVICE_ACCOUNT_PRIVATE_KEY`: Path to DFNS service account private key file or private key value
+- `DFNS_APP_ORIGIN`: URL origin of DFNS app
+- `DFNS_APP_ID`: ID of DFNS app
+- `DFNS_TEST_URL`: Test URL for DFNS API
+- `DFNS_WALLET_ID`: Wallet ID for DFNS
+
 ```
 
 ### 6.3. Run

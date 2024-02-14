@@ -1,5 +1,5 @@
 message="$(cat $1)"
-requiredPattern="^(add|cut|fix|update|bump|make|start|stop|refactor|reformat|optimise|document|merge|Add|Cut|Fix|Update|Bump|Make|Start|Stop|Refactor|Reformat|Optimise|Document|Merge) .*"
+requiredPattern="^(add|remove|cut|fix|update|bump|make|start|stop|refactor|reformat|optimise|document|merge|Add|Remove|Cut|Fix|Update|Bump|Make|Start|Stop|Refactor|Reformat|Optimise|Document|Merge) .*"
 signedOffPattern="Signed-off-by:"
 
 # Check if the commit message has the required format
