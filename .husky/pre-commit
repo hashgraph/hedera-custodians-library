@@ -2,7 +2,7 @@ npm run lint
 npm run prettier
 npm run test
 
-# Verify GPG signature for the staged commits
+# Verify GPG signature for the previous HEAD commit
 if ! git verify-commit HEAD &>/dev/null; then
   echo "❌ Previos (HEAD) Commit does not have a valid GPG signature. Please sign your commits."
   exit 1
