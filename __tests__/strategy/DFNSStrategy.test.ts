@@ -24,7 +24,7 @@ import {
   DFNSStrategy,
   hexStringToUint8Array,
 } from '../../src';
-import { describe, expect, test, jest } from '@jest/globals';
+import { describe, expect, it, jest } from '@jest/globals';
 import { SignatureStatus } from '@dfns/sdk/codegen/datamodel/Wallets';
 
 const signatureResponse = {

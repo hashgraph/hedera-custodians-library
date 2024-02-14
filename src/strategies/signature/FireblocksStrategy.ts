@@ -75,7 +75,6 @@ export class FireblocksStrategy implements ISignatureStrategy {
   private async signMessage(message: string): Promise<string> {
     const { id } = await this.createFireblocksTransaction(message);
     const txInfo = await this.pollTransaction(id);
-    console.log('Transaction response:', txInfo);
     if (!txInfo.signedMessages || txInfo.signedMessages.length === 0) {
       throw new Error('No signature found in transaction response.');
     }
@@ -105,7 +104,7 @@ export class FireblocksStrategy implements ISignatureStrategy {
           return txInfo;
         }
       } catch (err) {
-        console.log(`Error polling transaction ${transactionId}:`, err);
+        console.error(`❌ Error polling transaction ${transactionId}:`, err);
       }
       await new Promise((resolve) => setTimeout(resolve, POLL_INTERVAL));
     }

@@ -18,7 +18,7 @@
  *
  */
 
-import { describe, expect, test } from '@jest/globals';
+import { describe, expect, it } from '@jest/globals';
 import { TransactionStatus } from 'fireblocks-sdk';
 import {
   FireblocksConfig,

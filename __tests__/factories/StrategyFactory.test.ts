@@ -18,7 +18,7 @@
  *
  */
 
-import { describe, expect, test } from '@jest/globals';
+import { describe, expect, it } from '@jest/globals';
 import { DFNSStrategy, FireblocksStrategy, StrategyFactory } from '../../src';
 import { TEST_TIMEOUT, dfnsConfig, fireblocksConfig } from '../../config';
 

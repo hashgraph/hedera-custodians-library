@@ -1,7 +1,9 @@
 name: Test
+
 on:
   pull_request:
     types: [opened, synchronize, reopened]
+
 jobs:
   test:
     name: test
@@ -73,5 +75,4 @@ jobs:
 
       - name: Test custodialwalletutils
         run: |
-          npm run test
-          npm run cleanCache
+          npm run test:ci
