@@ -68,7 +68,10 @@ async function createAccountWithDFNSKey(client: Client): Promise<string> {
   return dfnsAccountId.toString();
 }
 
-async function transferFunds(client: Client, dfnsAccountId: string): Promise<void> {
+async function transferFunds(
+  client: Client,
+  dfnsAccountId: string,
+): Promise<void> {
   client.setOperatorWith(
     dfnsAccountId,
     process.env.DFNS_WALLET_PUBLIC_KEY!,
