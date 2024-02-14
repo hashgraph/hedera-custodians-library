@@ -3,7 +3,7 @@
 [![License](https://img.shields.io/badge/license-apache2-blue.svg)](LICENSE)
 
 - [1. Overview](#1-overview)
-    - [Current services supported](#current-services-supported)
+  - [Current services supported](#current-services-supported)
 - [2. Architecture](#2-architecture)
 - [3. Technologies](#3-technologies)
 - [4. How to use it](#4-how-to-use-it)
@@ -170,6 +170,7 @@ The `config.ts` file is responsible for setting up the configurations for the `F
 To run the tests, you need to provide the following environment variables in a `.env` file:
 
 For Fireblocks:
+
 - `FIREBLOCKS_API_SECRET_KEY`: Path to Fireblocks API secret key file or secret key value
 - `FIREBLOCKS_API_KEY`: Your Fireblocks API key
 - `FIREBLOCKS_BASE_URL`: Base URL of Fireblocks API
@@ -177,6 +178,7 @@ For Fireblocks:
 - `FIREBLOCKS_VAULT_ACCOUNT_ID`: Vault account ID for Fireblocks
 
 For DFNS:
+
 - `DFNS_SERVICE_ACCOUNT_AUTHORIZATION_TOKEN`: Authorization token for DFNS service account
 - `DFNS_SERVICE_ACCOUNT_CREDENTIAL_ID`: Credential ID for DFNS service account
 - `DFNS_SERVICE_ACCOUNT_PRIVATE_KEY`: Path to DFNS service account private key file or private key value
@@ -185,7 +187,7 @@ For DFNS:
 - `DFNS_TEST_URL`: Test URL for DFNS API
 - `DFNS_WALLET_ID`: Wallet ID for DFNS
 
-```
+````
 
 ### 6.3. Run
 
@@ -193,7 +195,7 @@ To run the tests, navigate to the root directory of the hedera-custodians-librar
 
 ```sh
 npm run test
-```
+````
 
 ## 7. Contributing
 
