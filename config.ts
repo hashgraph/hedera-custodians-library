@@ -24,37 +24,37 @@ import { config } from 'dotenv';
 import { DFNSConfig, FireblocksConfig } from './src';
 config();
 
+// Regex to validate path
+const pathRegex = /^(.+)\/([^/]+)$/;
+
 // Set default values for environment variables
-export const DEFAULT_FIREBLOCKS_API_SECRET_KEY_PATH =
+export const DEFAULT_FIREBLOCKS_API_SECRET_KEY =
   'resources/keys/fireblocks-priv.pem';
-export const DEFAULT_DFNS_SERVICE_ACCOUNT_PRIVATE_KEY_PATH =
+export const DEFAULT_DFNS_SERVICE_ACCOUNT_PRIVATE_KEY =
   'resources/keys/dfns-priv.pem';
 export const TEST_TIMEOUT = 10000; // 10 seconds
 
 //* Fireblocks configuration
+const fireblocksApiSecretKey =
+  process.env.FIREBLOCKS_API_SECRET_KEY || DEFAULT_FIREBLOCKS_API_SECRET_KEY;
 export const fireblocksConfig = new FireblocksConfig(
   process.env.FIREBLOCKS_API_KEY ?? '',
-  fs.readFileSync(
-    path.resolve(
-      process.env.FIREBLOCKS_API_SECRET_KEY_PATH ||
-        DEFAULT_FIREBLOCKS_API_SECRET_KEY_PATH,
-    ),
-    'utf8',
-  ),
+  pathRegex.test(fireblocksApiSecretKey)
+    ? fs.readFileSync(path.resolve(fireblocksApiSecretKey), 'utf8')
+    : fireblocksApiSecretKey,
   process.env.FIREBLOCKS_BASE_URL ?? '',
   process.env.FIREBLOCKS_VAULT_ACCOUNT_ID ?? '',
   process.env.FIREBLOCKS_ASSET_ID ?? '',
 );
 
 //* DFNS configuration
+const dfnsServiceAccountPrivateKey =
+  process.env.DFNS_SERVICE_ACCOUNT_PRIVATE_KEY ||
+  DEFAULT_DFNS_SERVICE_ACCOUNT_PRIVATE_KEY;
 export const dfnsConfig = new DFNSConfig(
-  fs.readFileSync(
-    path.resolve(
-      process.env.DFNS_SERVICE_ACCOUNT_PRIVATE_KEY_PATH ||
-        DEFAULT_DFNS_SERVICE_ACCOUNT_PRIVATE_KEY_PATH,
-    ),
-    'utf8',
-  ),
+  pathRegex.test(dfnsServiceAccountPrivateKey)
+    ? fs.readFileSync(path.resolve(dfnsServiceAccountPrivateKey), 'utf8')
+    : dfnsServiceAccountPrivateKey,
   process.env.DFNS_SERVICE_ACCOUNT_CREDENTIAL_ID ?? '',
   process.env.DFNS_SERVICE_ACCOUNT_AUTHORIZATION_TOKEN ?? '',
   process.env.DFNS_APP_ORIGIN ?? '',
