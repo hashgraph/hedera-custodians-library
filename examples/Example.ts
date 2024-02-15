@@ -43,7 +43,7 @@ export default class Example {
   service: CustodialWalletService;
   client: Client;
 
-  private readonly signTransactionHandler = async (
+  protected readonly signTransactionHandler = async (
     message: Uint8Array,
   ): Promise<Uint8Array> => {
     const signatureRequest = new SignatureRequest(message);
@@ -106,7 +106,7 @@ export default class Example {
     // Submit a transaction to your local node
     const newAccountTx = new AccountCreateTransaction()
       .setKey(newAccountKey || this.config.publicKey)
-      .setInitialBalance(new Hbar(1));
+      .setInitialBalance(new Hbar(5));
     // Execute the transaction
     const newAccountResponse = await newAccountTx.execute(this.client);
     // Get receipt

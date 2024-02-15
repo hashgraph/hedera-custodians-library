@@ -30,6 +30,7 @@ import { readFileSync } from 'fs';
 import Example from './Example';
 import ExampleConfig from './ExampleConfig';
 import HtsExample from './HtsExample';
+import KeyListExample from './KeyListExample';
 
 async function main(): Promise<void> {
   const custodialAnwsers: Answers = await inquirer.prompt([
@@ -49,6 +50,7 @@ async function main(): Promise<void> {
   ]);
   let example: Example;
   let htsExample: HtsExample;
+  let keyListExample: KeyListExample;
   switch (custodialAnwsers.custodialService) {
     case 'Dfns':
       if (custodialAnwsers.useEnvVars) {
@@ -62,10 +64,16 @@ async function main(): Promise<void> {
           process.env.DFNS_WALLET_HEDERA_ACCOUNT_ID ?? '',
           process.env.DFNS_WALLET_PUBLIC_KEY ?? '',
         );
+        keyListExample = new KeyListExample(
+          dfnsConfig,
+          process.env.DFNS_WALLET_HEDERA_ACCOUNT_ID ?? '',
+          process.env.DFNS_WALLET_PUBLIC_KEY ?? '',
+        );
       } else {
         const dfnsParams = await askDfnsParams();
         example = new Example(dfnsParams);
         htsExample = new HtsExample(dfnsParams);
+        keyListExample = new KeyListExample(dfnsParams);
       }
       break;
     case 'Fireblocks':
@@ -81,10 +89,16 @@ async function main(): Promise<void> {
           process.env.FIREBLOCKS_HEDERA_ACCOUNT_ID ?? '',
           process.env.FIREBLOCKS_PUBLIC_KEY ?? '',
         );
+        keyListExample = new KeyListExample(
+          fireblocksConfig,
+          process.env.FIREBLOCKS_HEDERA_ACCOUNT_ID ?? '',
+          process.env.FIREBLOCKS_PUBLIC_KEY ?? '',
+        );
       } else {
         const fireblocksParams = await askFireblocksParams();
         example = new Example(fireblocksParams);
         htsExample = new HtsExample(fireblocksParams);
+        keyListExample = new KeyListExample(fireblocksParams);
       }
       break;
 
@@ -103,9 +117,10 @@ async function main(): Promise<void> {
         name: 'action',
         message: 'What action do you want to perform?',
         choices: [
-          '🔷 Create new Hedera Token',
-          '🔑 Create new Hedera Account',
-          '🚀 Interact with Hedera Token (New account, new hedera token, associate account and transfer token amount)',
+          '🔑 [HTS] Create new Hedera Account',
+          '🔷 [HTS] Create new Hedera Token',
+          '🚀 [HTS] Interact with Hedera Token (New account, new hedera token, associate account and transfer token amount)',
+          '🔑🔑 [KeyList] Transfer Hbar from Custodial KeyList',
           '🔴 Exit',
         ],
         default:
@@ -113,14 +128,17 @@ async function main(): Promise<void> {
       },
     ]);
     switch (actionAnwsers.action) {
-      case '🔑 Create new Hedera Account':
+      case '🔑 [HTS] Create new Hedera Account':
         await example.createAccount();
         break;
-      case '🔷 Create new Hedera Token':
+      case '🔷 [HTS] Create new Hedera Token':
         await htsExample.createNewHederaToken(await askTokenInfo());
         break;
-      case '🚀 Interact with Hedera Token (New account, new hedera token, associate account and transfer token amount)':
+      case '🚀 [HTS] Interact with Hedera Token (New account, new hedera token, associate account and transfer token amount)':
         await htsExample.interactWithHederaToken(await askTokenInfo());
+        break;
+      case '🔑🔑 [KeyList] Transfer Hbar from Custodial KeyList':
+        await keyListExample.mainExample();
         break;
       case '🔴 Exit':
         console.log('👋 Goodbye');
