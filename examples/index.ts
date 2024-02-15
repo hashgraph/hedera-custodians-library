@@ -29,6 +29,7 @@ import { DFNSConfig, FireblocksConfig } from 'index';
 import { readFileSync } from 'fs';
 import Example from './Example';
 import ExampleConfig from './ExampleConfig';
+import HtsExample from './HtsExample';
 
 async function main(): Promise<void> {
   const custodialAnwsers: Answers = await inquirer.prompt([
@@ -47,6 +48,7 @@ async function main(): Promise<void> {
     },
   ]);
   let example: Example;
+  let htsExample: HtsExample;
   switch (custodialAnwsers.custodialService) {
     case 'Dfns':
       if (custodialAnwsers.useEnvVars) {
@@ -55,8 +57,15 @@ async function main(): Promise<void> {
           process.env.DFNS_WALLET_HEDERA_ACCOUNT_ID ?? '',
           process.env.DFNS_WALLET_PUBLIC_KEY ?? '',
         );
+        htsExample = new HtsExample(
+          dfnsConfig,
+          process.env.DFNS_WALLET_HEDERA_ACCOUNT_ID ?? '',
+          process.env.DFNS_WALLET_PUBLIC_KEY ?? '',
+        );
       } else {
-        example = new Example(await askDfnsParams());
+        const dfnsParams = await askDfnsParams();
+        example = new Example(dfnsParams);
+        htsExample = new HtsExample(dfnsParams);
       }
       break;
     case 'Fireblocks':
@@ -67,8 +76,15 @@ async function main(): Promise<void> {
           process.env.FIREBLOCKS_HEDERA_ACCOUNT_ID ?? '',
           process.env.FIREBLOCKS_PUBLIC_KEY ?? '',
         );
+        htsExample = new HtsExample(
+          fireblocksConfig,
+          process.env.FIREBLOCKS_HEDERA_ACCOUNT_ID ?? '',
+          process.env.FIREBLOCKS_PUBLIC_KEY ?? '',
+        );
       } else {
-        example = new Example(await askFireblocksParams());
+        const fireblocksParams = await askFireblocksParams();
+        example = new Example(fireblocksParams);
+        htsExample = new HtsExample(fireblocksParams);
       }
       break;
 
@@ -98,13 +114,13 @@ async function main(): Promise<void> {
     ]);
     switch (actionAnwsers.action) {
       case '🔑 Create new Hedera Account':
-        await example._createAccount();
+        await example.createAccount();
         break;
       case '🔷 Create new Hedera Token':
-        await example.createNewHederaToken(await askTokenInfo());
+        await htsExample.createNewHederaToken(await askTokenInfo());
         break;
       case '🚀 Interact with Hedera Token (New account, new hedera token, associate account and transfer token amount)':
-        await example.interactWithHederaToken(await askTokenInfo());
+        await htsExample.interactWithHederaToken(await askTokenInfo());
         break;
       case '🔴 Exit':
         console.log('👋 Goodbye');
