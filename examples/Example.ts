@@ -43,6 +43,12 @@ export default class Example {
   service: CustodialWalletService;
   client: Client;
 
+  /**
+   * Handles signing a transaction.
+   *
+   * @param message - The message to be signed.
+   * @returns The signed message.
+   */
   protected readonly signTransactionHandler = async (
     message: Uint8Array,
   ): Promise<Uint8Array> => {
@@ -83,12 +89,14 @@ export default class Example {
    * @param newAccountKey The account key for the new account (optional).
    * @returns An object containing the new account ID, transaction response, and transaction receipt.
    */
-  public async createAccount(newAccountKey?: Key): Promise<{
+  public async createAccount({
+    newAccountKey,
+  }: { newAccountKey?: Key } = {}): Promise<{
     newAccountId: AccountId;
     response: TransactionResponse;
     receipt: TransactionReceipt;
   }> {
-    return this._createAccount(newAccountKey);
+    return this._createAccount({ newAccountKey });
   }
 
   /**
@@ -97,7 +105,9 @@ export default class Example {
    * @returns An object containing the new account ID, transaction response, and transaction receipt.
    * @throws Error if there is an error creating the new Hedera account.
    */
-  protected async _createAccount(newAccountKey?: Key): Promise<{
+  protected async _createAccount({
+    newAccountKey,
+  }: { newAccountKey?: Key } = {}): Promise<{
     newAccountId: AccountId;
     response: TransactionResponse;
     receipt: TransactionReceipt;
@@ -138,9 +148,12 @@ export default class Example {
    * @returns An object containing the private and public keys.
    * @throws Error if an invalid key type is provided.
    */
-  protected async _createKeyPair(
+  protected async _createKeyPair({
     type = 'ed25519',
-  ): Promise<{ privateKey: PrivateKey; publicKey: PublicKey }> {
+  }: { type?: string } = {}): Promise<{
+    privateKey: PrivateKey;
+    publicKey: PublicKey;
+  }> {
     let keyPair;
     switch (type) {
       case 'ed25519':
@@ -159,7 +172,7 @@ export default class Example {
    * @param ms The number of milliseconds to delay.
    * @returns A promise that resolves after the specified delay.
    */
-  protected async _delay(ms: number): Promise<unknown> {
+  protected async _delay({ ms }: { ms: number }): Promise<unknown> {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
 }

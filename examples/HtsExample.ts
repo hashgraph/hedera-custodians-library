@@ -32,23 +32,30 @@ import {
 } from '@hashgraph/sdk';
 import Example from './Example';
 
+/**
+ * Represents an example class for interacting with Hedera Token Service (HTS).
+ */
 export default class HtsExample extends Example {
   /**
    * Creates a new Hedera token.
    * @param tokenInfo - The information of the token to be created.
    * @returns A promise that resolves with the created token.
    */
-  public async createNewHederaToken(tokenInfo: {
-    name: string;
-    symbol: string;
-    decimals: number;
-    initSupply: number;
+  public async createNewHederaToken({
+    tokenInfo,
+  }: {
+    tokenInfo: {
+      name: string;
+      symbol: string;
+      decimals: number;
+      initSupply: number;
+    };
   }): Promise<{
     tokenId: TokenId;
     response: TransactionResponse;
     receipt: TransactionReceipt;
   }> {
-    return this._createNewHederaToken(tokenInfo);
+    return this._createNewHederaToken({ tokenInfo });
   }
 
   /**
@@ -60,17 +67,27 @@ export default class HtsExample extends Example {
    * @param tokenInfo.decimals - The number of decimal places for the token.
    * @param tokenInfo.initSupply - The initial supply of the token.
    */
-  public async interactWithHederaToken(tokenInfo: {
-    name: string;
-    symbol: string;
-    decimals: number;
-    initSupply: number;
+  public async interactWithHederaToken({
+    tokenInfo,
+  }: {
+    tokenInfo: {
+      name: string;
+      symbol: string;
+      decimals: number;
+      initSupply: number;
+    };
   }): Promise<void> {
     // Create a new account key pair
     const { privateKey: newAccPrivKey } = await this._createKeyPair();
-    const { newAccountId } = await this._createAccount(newAccPrivKey);
-    const { tokenId } = await this._createNewHederaToken(tokenInfo);
-    await this._associateTokenWithAccount(newAccountId, newAccPrivKey, tokenId);
+    const { newAccountId } = await this._createAccount({
+      newAccountKey: newAccPrivKey,
+    });
+    const { tokenId } = await this._createNewHederaToken({ tokenInfo });
+    await this._associateTokenWithAccount({
+      account: newAccountId,
+      privateKey: newAccPrivKey,
+      tokenId,
+    });
 
     const tokenBalancesBefore = await Promise.all([
       this._getTokenBalance({
@@ -79,17 +96,17 @@ export default class HtsExample extends Example {
       }),
       this._getTokenBalance({ account: newAccountId, tokenId }),
     ]);
-    await this._delay(3000);
+    await this._delay({ ms: 3000 });
     console.log('Balances before transfer:');
     console.log('    💶 Main account balance: ', tokenBalancesBefore[0]);
     console.log('    💶 New account balance: ', tokenBalancesBefore[1]);
-    await this._transferToken(
-      this.config.hederaAccountId,
-      newAccountId,
+    await this._transferToken({
+      from: this.config.hederaAccountId,
+      to: newAccountId,
       tokenId,
-      120,
-    );
-    await this._delay(3000);
+      amount: 120,
+    });
+    await this._delay({ ms: 3000 });
     const tokenBalancesAfter = await Promise.all([
       this._getTokenBalance({
         account: this.config.hederaAccountId,
@@ -111,11 +128,15 @@ export default class HtsExample extends Example {
    * @returns An object containing the associate transaction response and receipt.
    * @throws An error if there is an issue associating the token with the account.
    */
-  private async _associateTokenWithAccount(
-    account: AccountId,
-    privateKey: PrivateKey,
-    tokenId: TokenId,
-  ): Promise<{
+  private async _associateTokenWithAccount({
+    account,
+    privateKey,
+    tokenId,
+  }: {
+    account: AccountId;
+    privateKey: PrivateKey;
+    tokenId: TokenId;
+  }): Promise<{
     associateResponse: TransactionResponse;
     associateReceipt: TransactionReceipt;
   }> {
@@ -156,11 +177,15 @@ export default class HtsExample extends Example {
    * @returns An object containing the token ID, response, and receipt.
    * @throws An error if there is an issue creating the token.
    */
-  private async _createNewHederaToken(tokenInfo: {
-    name: string;
-    symbol: string;
-    decimals: number;
-    initSupply: number;
+  private async _createNewHederaToken({
+    tokenInfo,
+  }: {
+    tokenInfo: {
+      name: string;
+      symbol: string;
+      decimals: number;
+      initSupply: number;
+    };
   }): Promise<{
     tokenId: TokenId;
     response: TransactionResponse;
@@ -211,12 +236,17 @@ export default class HtsExample extends Example {
    * @returns An object containing the transfer response and receipt.
    * @throws An error if the token transfer fails.
    */
-  private async _transferToken(
-    from: AccountId,
-    to: AccountId,
-    tokenId: TokenId,
-    amount: number,
-  ): Promise<{
+  private async _transferToken({
+    from,
+    to,
+    tokenId,
+    amount,
+  }: {
+    from: AccountId;
+    to: AccountId;
+    tokenId: TokenId;
+    amount: number;
+  }): Promise<{
     transferResponse: TransactionResponse;
     transferReceipt: TransactionReceipt;
   }> {
@@ -248,6 +278,12 @@ export default class HtsExample extends Example {
    * @param account The account ID.
    * @param tokenId The token ID.
    * @returns The balance of the token.
+   */
+  /**
+   * Retrieves the balance of a specific token for a given account.
+   * @param account The account ID.
+   * @param tokenId The token ID.
+   * @returns The balance of the token as a number.
    */
   private async _getTokenBalance({
     account,

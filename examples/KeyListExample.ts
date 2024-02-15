@@ -34,7 +34,9 @@ import Example from './Example';
 export default class KeyListExample extends Example {
   public async mainExample(): Promise<void> {
     const keyList = await this._createNewKeyList([], 1);
-    const { newAccountId } = await this._createAccount(keyList);
+    const { newAccountId } = await this._createAccount({
+      newAccountKey: keyList,
+    });
     await this._transferHbar(newAccountId, this.config.hederaAccountId, 1);
   }
 

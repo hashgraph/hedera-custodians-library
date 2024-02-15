@@ -26,7 +26,7 @@ import {
   fireblocksConfig,
 } from '../config';
 import { DFNSConfig, FireblocksConfig } from 'index';
-import { readFileSync } from 'fs';
+import { WriteStream, readFileSync } from 'fs';
 import Example from './Example';
 import ExampleConfig from './ExampleConfig';
 import HtsExample from './HtsExample';
@@ -37,6 +37,8 @@ import HcsExample from './HcsExample';
 
 async function main(): Promise<void> {
   console.log('👋 Welcome to the Hedera Custodians Integration example');
+  // Avoid max listeners warning
+  WriteStream.setMaxListeners(30);
   const custodialAnwsers: Answers = await inquirer.prompt([
     {
       type: 'list',
@@ -178,10 +180,14 @@ async function main(): Promise<void> {
         await example.createAccount();
         break;
       case '🔷 [HTS] Create new Hedera Token':
-        await htsExample.createNewHederaToken(await askTokenInfo());
+        await htsExample.createNewHederaToken({
+          tokenInfo: await askTokenInfo(),
+        });
         break;
       case '🚀 [HTS] Interact with Hedera Token (New account, new hedera token, associate account and transfer token amount)':
-        await htsExample.interactWithHederaToken(await askTokenInfo());
+        await htsExample.interactWithHederaToken({
+          tokenInfo: await askTokenInfo(),
+        });
         break;
       case '📄 [HSCS] Create new Smart Contract (Storage example)':
         await hscsExample.createSmartContract();
