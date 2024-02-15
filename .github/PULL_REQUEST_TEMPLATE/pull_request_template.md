@@ -1,5 +1,3 @@
-# Pull Request Template
-
 ## Description
 
 Please include a summary of the change and which issue is fixed. Please also include relevant motivation and context. List any dependencies that are required for this change. 📝
@@ -23,31 +21,21 @@ Please describe the tests that you ran to verify your changes. Provide instructi
 
 **Test Configuration**:
 
-- OS:
-  - [ ] Mac
-  - [ ] Linux
-  - [ ] Windows
-- Architecture:
-  - [ ] x86-32
-  - [ ] x64 or x86-64 (AMD 64)
-  - [ ] ARM or ARM64
-- Node version:
+- Node version (latest LTS):
   - [ ] 16
   - [ ] 18
   - [ ] 20
 
 ### Test Results (if any)
 
-Can be screenshots or anything
-
 ## Checklist:
 
-- [ ] My code follows the style guidelines of this project ✅
-- [ ] I have performed a self-review of my own code 👀
-- [ ] I have commented my code, particularly in hard-to-understand areas 💬
-- [ ] I have made corresponding changes to the documentation 📚
-- [ ] My changes generate no new warnings ⚠️
-- [ ] I have added tests that prove my fix is effective or that my feature works ✔️
-- [ ] New and existing unit tests pass locally with my changes ✅
-- [ ] Any dependent changes have been merged and published in downstream modules 🔄
-- [ ] I have checked my code and corrected any misspellings 📝
+- **Style Guidelines** (My code follows the style guidelines of this project) ✅
+- **Self-Review** (I have performed a self-review of my own code) 👀
+- **Code Comments** (I have commented my code, particularly in hard-to-understand areas) 💬
+- **Documentation Updates** (I have made corresponding changes to the documentation) 📚
+- **Warning-Free Changes** (My changes generate no new warnings) ⚠️
+- **Effective Tests** (I have added tests that prove my fix is effective or that my feature works) ✔️
+- **Local Test Pass** (New and existing unit tests pass locally with my changes) ✅
+- **Dependency Updates** (Any dependent changes have been merged and published in downstream modules) 🔄
+- **Spellcheck** (I have checked my code and corrected any misspellings) 📝

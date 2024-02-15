@@ -8,6 +8,7 @@ Before running the examples, make sure you have the following prerequisites inst
 
 - [Node.js](https://nodejs.org) (version 12 or higher)
 - [npm](https://www.npmjs.com/) (Node package manager)
+- (Optional) TSX can be executed with npx
 
 ## Running the Examples
 
@@ -27,6 +28,9 @@ npm install
 3. Run an example:
 
 ```bash
+tsx examples/indes.ts
+# OR
+# It might ask you to install it the first time
 npx tsx examples/index.ts
 ```
 
@@ -34,7 +38,10 @@ npx tsx examples/index.ts
 
 ## List of Examples
 
-- DfnsExample.ts: This example demonstrates how to interact with the DFNS API using the Hedera Custodians Library.
+- HtsExample.ts: This example demonstrates how to interact with the Hedera Token Service from a custodial perspective.
+- HscsExample.ts: This example demonstrates how to interact with the Hedera Smart Contract Service.
+- HfssExample.ts: This example demonstrates how to interact with the Hedera File System Service.
+- KeyListExample.ts: This example demonstrates how to use a custodial to perform operations using key lists.
 
 ## Contributing
 
