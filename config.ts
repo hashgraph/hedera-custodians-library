@@ -25,7 +25,7 @@ import { DFNSConfig, FireblocksConfig } from './src';
 config();
 
 // Regex to validate path
-const pathRegex = /^(.+)\/([^/]+)$/;
+export const pathRegex = /^(.+)\/([^/]+)$/;
 
 // Set default values for environment variables
 export const DEFAULT_FIREBLOCKS_API_SECRET_KEY =

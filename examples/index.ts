@@ -32,8 +32,10 @@ import ExampleConfig from './ExampleConfig';
 import HtsExample from './HtsExample';
 import KeyListExample from './KeyListExample';
 import HscsExample from './HscsExample';
+import HfssExample from './HfssExample';
 
 async function main(): Promise<void> {
+  console.log('👋 Welcome to the Hedera Custodians Integration example');
   const custodialAnwsers: Answers = await inquirer.prompt([
     {
       type: 'list',
@@ -53,6 +55,7 @@ async function main(): Promise<void> {
   let htsExample: HtsExample;
   let hscsExample: HscsExample;
   let keyListExample: KeyListExample;
+  let hfssExample: HfssExample;
   switch (custodialAnwsers.custodialService) {
     case 'Dfns':
       if (custodialAnwsers.useEnvVars) {
@@ -71,6 +74,11 @@ async function main(): Promise<void> {
           process.env.DFNS_WALLET_HEDERA_ACCOUNT_ID ?? '',
           process.env.DFNS_WALLET_PUBLIC_KEY ?? '',
         );
+        hfssExample = new HfssExample(
+          dfnsConfig,
+          process.env.DFNS_WALLET_HEDERA_ACCOUNT_ID ?? '',
+          process.env.DFNS_WALLET_PUBLIC_KEY ?? '',
+        );
         keyListExample = new KeyListExample(
           dfnsConfig,
           process.env.DFNS_WALLET_HEDERA_ACCOUNT_ID ?? '',
@@ -81,6 +89,7 @@ async function main(): Promise<void> {
         example = new Example(dfnsParams);
         htsExample = new HtsExample(dfnsParams);
         hscsExample = new HscsExample(dfnsParams);
+        hfssExample = new HfssExample(dfnsParams);
         keyListExample = new KeyListExample(dfnsParams);
       }
       break;
@@ -102,6 +111,11 @@ async function main(): Promise<void> {
           process.env.FIREBLOCKS_HEDERA_ACCOUNT_ID ?? '',
           process.env.FIREBLOCKS_PUBLIC_KEY ?? '',
         );
+        hfssExample = new HfssExample(
+          fireblocksConfig,
+          process.env.FIREBLOCKS_HEDERA_ACCOUNT_ID ?? '',
+          process.env.FIREBLOCKS_PUBLIC_KEY ?? '',
+        );
         keyListExample = new KeyListExample(
           fireblocksConfig,
           process.env.FIREBLOCKS_HEDERA_ACCOUNT_ID ?? '',
@@ -112,6 +126,7 @@ async function main(): Promise<void> {
         example = new Example(fireblocksParams);
         htsExample = new HtsExample(fireblocksParams);
         hscsExample = new HscsExample(fireblocksParams);
+        hfssExample = new HfssExample(fireblocksParams);
         keyListExample = new KeyListExample(fireblocksParams);
       }
       break;
@@ -135,6 +150,7 @@ async function main(): Promise<void> {
           '🔷 [HTS] Create new Hedera Token',
           '🚀 [HTS] Interact with Hedera Token (New account, new hedera token, associate account and transfer token amount)',
           '📄 [HSCS] Create new Smart Contract (Storage example)',
+          '📂 [HFSS] Create new File',
           '🔑🔑 [KeyList] Transfer Hbar from Custodial KeyList',
           '🔴 Exit',
         ],
@@ -154,6 +170,9 @@ async function main(): Promise<void> {
         break;
       case '📄 [HSCS] Create new Smart Contract (Storage example)':
         await hscsExample.createSmartContract();
+        break;
+      case '📂 [HFSS] Create new File':
+        await hfssExample.createNewFile();
         break;
       case '🔑🔑 [KeyList] Transfer Hbar from Custodial KeyList':
         await keyListExample.mainExample();
