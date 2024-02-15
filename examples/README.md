@@ -8,7 +8,7 @@ Before running the examples, make sure you have the following prerequisites inst
 
 - [Node.js](https://nodejs.org) (version 12 or higher)
 - [npm](https://www.npmjs.com/) (Node package manager)
-- (Optional) TSX can be executed with npx
+- (Optional) TSX can be executed with npx (`npm install -g tsx`)
 
 ## Running the Examples
 
@@ -42,6 +42,7 @@ npx tsx examples/index.ts
 - HscsExample.ts: This example demonstrates how to interact with the Hedera Smart Contract Service.
 - HfssExample.ts: This example demonstrates how to interact with the Hedera File System Service.
 - KeyListExample.ts: This example demonstrates how to use a custodial to perform operations using key lists.
+- HcsExample.ts: This example demonstrates how to interact with the Hedera Consensus Service.
 
 ## Contributing
 
