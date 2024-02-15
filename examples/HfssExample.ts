@@ -39,9 +39,13 @@ export default class HfssExample extends Example {
    * Creates a new file and returns the file ID and its content.
    * @returns A promise that resolves to an object containing the new file ID and its content.
    */
-  public async createNewFile(): Promise<{ newFileId: FileId; fileContent: string; }> {
+  public async createNewFile(): Promise<{
+    newFileId: FileId;
+    fileContent: string;
+  }> {
     const { newFileId } = await this._createNewFile({
-      filePathOrContent: 'This is the content of an example file',
+      filePathOrContent: `This is the content of an example file
+       It Works!! 🙌🏼`,
     });
     const fileContent = await this._getFileContent({ fileId: newFileId });
     return { newFileId, fileContent };
