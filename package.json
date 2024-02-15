@@ -1,6 +1,6 @@
 {
   "name": "@hashgraph/hedera-custodians-integration",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "A library to provide integration with custodial wallets",
   "exports": {
     ".": {
@@ -49,7 +49,7 @@
     "lint": "eslint . --ext .ts",
     "format": "prettier --write \"**/*.{ts,js,json,md}\"",
     "prettier": "prettier --config .prettierrc --write .",
-    "prepublishOnly": "run lint && run prettier && run compile",
+    "prepublishOnly": "npm run lint && npm run prettier && npm run compile",
     "prepare": "husky"
   },
   "devDependencies": {
