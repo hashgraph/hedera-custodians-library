@@ -49,6 +49,7 @@
     "lint": "eslint . --ext .ts",
     "format": "prettier --write \"**/*.{ts,js,json,md}\"",
     "prettier": "prettier --config .prettierrc --write .",
+    "pre-commit": "npm run prettier && npm run test && npm run lint",
     "prepublishOnly": "npm run lint && npm run prettier && npm run compile",
     "prepare": "husky"
   },

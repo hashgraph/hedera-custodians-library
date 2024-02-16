@@ -26,11 +26,19 @@ import {
   fireblocksConfig,
 } from '../config';
 import { DFNSConfig, FireblocksConfig } from 'index';
-import { readFileSync } from 'fs';
+import { WriteStream, readFileSync } from 'fs';
 import Example from './Example';
 import ExampleConfig from './ExampleConfig';
+import HtsExample from './HtsExample';
+import KeyListExample from './KeyListExample';
+import HscsExample from './HscsExample';
+import HfssExample from './HfssExample';
+import HcsExample from './HcsExample';
 
 async function main(): Promise<void> {
+  console.log('👋 Welcome to the Hedera Custodians Integration example');
+  // Avoid max listeners warning
+  WriteStream.setMaxListeners(30);
   const custodialAnwsers: Answers = await inquirer.prompt([
     {
       type: 'list',
@@ -47,6 +55,11 @@ async function main(): Promise<void> {
     },
   ]);
   let example: Example;
+  let htsExample: HtsExample;
+  let hscsExample: HscsExample;
+  let hfssExample: HfssExample;
+  let hcsExample: HcsExample;
+  let keyListExample: KeyListExample;
   switch (custodialAnwsers.custodialService) {
     case 'Dfns':
       if (custodialAnwsers.useEnvVars) {
@@ -55,8 +68,39 @@ async function main(): Promise<void> {
           process.env.DFNS_WALLET_HEDERA_ACCOUNT_ID ?? '',
           process.env.DFNS_WALLET_PUBLIC_KEY ?? '',
         );
+        htsExample = new HtsExample(
+          dfnsConfig,
+          process.env.DFNS_WALLET_HEDERA_ACCOUNT_ID ?? '',
+          process.env.DFNS_WALLET_PUBLIC_KEY ?? '',
+        );
+        hscsExample = new HscsExample(
+          dfnsConfig,
+          process.env.DFNS_WALLET_HEDERA_ACCOUNT_ID ?? '',
+          process.env.DFNS_WALLET_PUBLIC_KEY ?? '',
+        );
+        hfssExample = new HfssExample(
+          dfnsConfig,
+          process.env.DFNS_WALLET_HEDERA_ACCOUNT_ID ?? '',
+          process.env.DFNS_WALLET_PUBLIC_KEY ?? '',
+        );
+        hcsExample = new HcsExample(
+          dfnsConfig,
+          process.env.DFNS_WALLET_HEDERA_ACCOUNT_ID ?? '',
+          process.env.DFNS_WALLET_PUBLIC_KEY ?? '',
+        );
+        keyListExample = new KeyListExample(
+          dfnsConfig,
+          process.env.DFNS_WALLET_HEDERA_ACCOUNT_ID ?? '',
+          process.env.DFNS_WALLET_PUBLIC_KEY ?? '',
+        );
       } else {
-        example = new Example(await askDfnsParams());
+        const dfnsParams = await askDfnsParams();
+        example = new Example(dfnsParams);
+        htsExample = new HtsExample(dfnsParams);
+        hscsExample = new HscsExample(dfnsParams);
+        hfssExample = new HfssExample(dfnsParams);
+        hcsExample = new HcsExample(dfnsParams);
+        keyListExample = new KeyListExample(dfnsParams);
       }
       break;
     case 'Fireblocks':
@@ -67,8 +111,39 @@ async function main(): Promise<void> {
           process.env.FIREBLOCKS_HEDERA_ACCOUNT_ID ?? '',
           process.env.FIREBLOCKS_PUBLIC_KEY ?? '',
         );
+        htsExample = new HtsExample(
+          fireblocksConfig,
+          process.env.FIREBLOCKS_HEDERA_ACCOUNT_ID ?? '',
+          process.env.FIREBLOCKS_PUBLIC_KEY ?? '',
+        );
+        hscsExample = new HscsExample(
+          fireblocksConfig,
+          process.env.FIREBLOCKS_HEDERA_ACCOUNT_ID ?? '',
+          process.env.FIREBLOCKS_PUBLIC_KEY ?? '',
+        );
+        hfssExample = new HfssExample(
+          fireblocksConfig,
+          process.env.FIREBLOCKS_HEDERA_ACCOUNT_ID ?? '',
+          process.env.FIREBLOCKS_PUBLIC_KEY ?? '',
+        );
+        hcsExample = new HcsExample(
+          fireblocksConfig,
+          process.env.FIREBLOCKS_HEDERA_ACCOUNT_ID ?? '',
+          process.env.FIREBLOCKS_PUBLIC_KEY ?? '',
+        );
+        keyListExample = new KeyListExample(
+          fireblocksConfig,
+          process.env.FIREBLOCKS_HEDERA_ACCOUNT_ID ?? '',
+          process.env.FIREBLOCKS_PUBLIC_KEY ?? '',
+        );
       } else {
-        example = new Example(await askFireblocksParams());
+        const fireblocksParams = await askFireblocksParams();
+        example = new Example(fireblocksParams);
+        htsExample = new HtsExample(fireblocksParams);
+        hscsExample = new HscsExample(fireblocksParams);
+        hfssExample = new HfssExample(fireblocksParams);
+        hcsExample = new HcsExample(fireblocksParams);
+        keyListExample = new KeyListExample(fireblocksParams);
       }
       break;
 
@@ -87,9 +162,13 @@ async function main(): Promise<void> {
         name: 'action',
         message: 'What action do you want to perform?',
         choices: [
-          '🔷 Create new Hedera Token',
-          '🔑 Create new Hedera Account',
-          '🚀 Interact with Hedera Token (New account, new hedera token, associate account and transfer token amount)',
+          '🔑 [HTS] Create new Hedera Account',
+          '🔷 [HTS] Create new Hedera Token',
+          '🚀 [HTS] Interact with Hedera Token (New account, new hedera token, associate account and transfer token amount)',
+          '📄 [HSCS] Create new Smart Contract (Storage example)',
+          '📂 [HFSS] Create new File',
+          '🗳️ [HCS] Create new Topic',
+          '🔑🔑 [KeyList] Transfer Hbar from Custodial KeyList',
           '🔴 Exit',
         ],
         default:
@@ -97,14 +176,30 @@ async function main(): Promise<void> {
       },
     ]);
     switch (actionAnwsers.action) {
-      case '🔑 Create new Hedera Account':
-        await example._createAccount();
+      case '🔑 [HTS] Create new Hedera Account':
+        await example.createAccount();
         break;
-      case '🔷 Create new Hedera Token':
-        await example.createNewHederaToken(await askTokenInfo());
+      case '🔷 [HTS] Create new Hedera Token':
+        await htsExample.createNewHederaToken({
+          tokenInfo: await askTokenInfo(),
+        });
         break;
-      case '🚀 Interact with Hedera Token (New account, new hedera token, associate account and transfer token amount)':
-        await example.interactWithHederaToken(await askTokenInfo());
+      case '🚀 [HTS] Interact with Hedera Token (New account, new hedera token, associate account and transfer token amount)':
+        await htsExample.interactWithHederaToken({
+          tokenInfo: await askTokenInfo(),
+        });
+        break;
+      case '📄 [HSCS] Create new Smart Contract (Storage example)':
+        await hscsExample.createSmartContract();
+        break;
+      case '📂 [HFSS] Create new File':
+        await hfssExample.createNewFile();
+        break;
+      case '🗳️ [HCS] Create new Topic':
+        await hcsExample.createTopic();
+        break;
+      case '🔑🔑 [KeyList] Transfer Hbar from Custodial KeyList':
+        await keyListExample.mainExample();
         break;
       case '🔴 Exit':
         console.log('👋 Goodbye');
