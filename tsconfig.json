@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "ES2020" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
+    "module": "ES2020" /* Specify what module code is generated. */,
+    "moduleResolution": "node",
+    "declaration": true /* Generate .d.ts files from TypeScript and JavaScript files in your project. */,
+    "allowSyntheticDefaultImports": true /* Allow 'import x from y' when a module doesn't have a default export. */,
+    "esModuleInterop": true /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */,
+    "forceConsistentCasingInFileNames": true /* Ensure that casing is correct in imports. */,
+    "strict": true /* Enable all strict type-checking options. */,
+    "skipLibCheck": true /* Skip type checking all .d.ts files. */,
+    "strictPropertyInitialization": false,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "resolveJsonModule": true,
+    "baseUrl": "src",
+    "outDir": "./lib/esm"
+  },
+  // jest configuration is included just for linter an ts checks
+  "include": ["src/**/*", "config.ts", "jest.config.ts", "examples/**/*"]
+}

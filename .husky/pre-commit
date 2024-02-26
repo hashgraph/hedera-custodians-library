@@ -1,0 +1,6 @@
+npm run lint
+npm run prettier
+npm run test
+
+##! Uncomment for Testing
+#exit 1
