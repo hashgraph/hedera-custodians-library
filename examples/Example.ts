@@ -23,7 +23,7 @@ import {
   DFNSConfig,
   FireblocksConfig,
   SignatureRequest,
-} from 'index';
+} from '../src';
 import {
   Client,
   AccountCreateTransaction,
