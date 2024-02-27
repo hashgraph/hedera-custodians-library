@@ -1,13 +1,7 @@
 {
   "name": "@hashgraph/hedera-custodians-integration",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "A library to provide integration with custodial wallets",
-  "exports": {
-    ".": {
-      "import": "./build/esm/src/index.js",
-      "require": "./build/cjs/src/index.js"
-    }
-  },
   "homepage": "https://github.com/hashgraph/hedera-custodians-library",
   "repository": {
     "type": "git",
@@ -36,8 +30,7 @@
   "module": "./lib/esm/src/index.js",
   "types": "./lib/esm/src/index.d.ts",
   "files": [
-    "lib/esm/src",
-    "lib/cjs/src"
+    "lib"
   ],
   "scripts": {
     "compile": "tsc -p tsconfig.json && tsc -p tsconfig-cjs.json",

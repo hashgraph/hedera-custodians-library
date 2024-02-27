@@ -21,7 +21,7 @@
 //* Factories
 export * from './factories/StrategyFactory.js';
 //* Models
-export * from './models/signature/SignatureRequest';
+export * from './models/signature/SignatureRequest.js';
 //* Services
 export * from './services/CustodialWalletService.js';
 //* Strategies
