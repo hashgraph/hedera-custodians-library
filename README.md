@@ -13,13 +13,15 @@
     - [4.3.1. Create Service](#431-create-service)
     - [4.3.2. Create Signature Request](#432-create-signature-request)
     - [4.3.3. Sign Transaction](#433-sign-transaction)
-- [5. Build](#5-build)
-- [6. Test](#6-test)
-  - [6.1. Files](#61-files)
-  - [6.2 Configuration](#62-configuration)
-- [7. Contributing](#7-contributing)
-- [8. Code of Conduct](#8-code-of-conduct)
-- [9. License](#9-license)
+- [5. Examples](#5-examples)
+- [6. Build](#6-build)
+- [7. Test](#7-test)
+  - [7.1. Files](#71-files)
+  - [7.2 Configuration](#72-configuration)
+  - [7.3. Run](#73-run)
+- [8. Contributing](#8-contributing)
+- [9. Code of Conduct](#9-code-of-conduct)
+- [10. License](#10-license)
 
 ## 1. Overview
 
@@ -74,10 +76,13 @@ This command installs all the dependencies listed in the [`package.json`](packag
 To use a function or class from the hedera-custodians-library library in your code, you first need to import it. Here's an example of how to import a function:
 
 ```typescript
-const { functionName } = require('hedera-custodians-library');
+// ESM import
+import { function, Class, Type, Interface } from 'hedera-custodians-library';
+// or CJS require
+const { function, Class, Type, Interface } = require('hedera-custodians-library');
 ```
 
-Replace `functionName` with the actual name of the function you want to use.
+Replace `function, Class, Type, Interface` with the actual name of the component you want to use.
 
 ### 4.3. Run
 
@@ -131,7 +136,11 @@ const signature = await service.signTransaction(request);
 
 This will return a `Uint8Array` containing the signature of the transaction.
 
-## 5. Build
+## 5. Examples
+
+A set of examples with detailed usage of this library is available at [examples](./examples/README.md).
+
+## 6. Build
 
 To compile TypeScript files into JavaScript. The command `tsc -p tsconfig.json` is typically run before deploying the application or testing the compiled JavaScript code.
 
@@ -143,9 +152,9 @@ Here's a breakdown of the command:
 
 When you run `npm run build` in your terminal, npm will execute this script command, which will compile your TypeScript code into JavaScript using the settings from your `tsconfig.json` file.
 
-## 6. Test
+## 7. Test
 
-### 6.1. Files
+### 7.1. Files
 
 Test files for the `hedera-custodians-library` library are in the `__tests__/` directory, corresponding to the source files in the `src/` directory. Key test files include:
 
@@ -161,7 +170,7 @@ Test files for the `hedera-custodians-library` library are in the `__tests__/` d
 
 The tests, written using Jest in a Node.js environment, comprehensively cover signature strategies, transaction handling, and other functionalities of the library.
 
-### 6.2 Configuration
+### 7.2 Configuration
 
 The configuration for the tests is defined in the `jest.config.js` file located in the root directory of the library.
 
@@ -187,29 +196,27 @@ For DFNS:
 - `DFNS_TEST_URL`: Test URL for DFNS API
 - `DFNS_WALLET_ID`: Wallet ID for DFNS
 
-````
-
-### 6.3. Run
+### 7.3. Run
 
 To run the tests, navigate to the root directory of the hedera-custodians-library library and run the following command:
 
 ```sh
 npm run test
-````
+```
 
-## 7. Contributing
+## 8. Contributing
 
 Contributions are welcome. Please see the
 [contributing guide](https://github.com/hashgraph/.github/blob/main/CONTRIBUTING.md)
 to see how you can get involved.
 
-## 8. Code of Conduct
+## 9. Code of Conduct
 
 This project is governed by the
 [Contributor Covenant Code of Conduct](https://github.com/hashgraph/.github/blob/main/CODE_OF_CONDUCT.md). By
 participating, you are expected to uphold this code of conduct. Please report unacceptable behavior
 to [oss@hedera.com](mailto:oss@hedera.com).
 
-## 9. License
+## 10. License
 
 [Apache License 2.0](LICENSE)
