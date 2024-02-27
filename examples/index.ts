@@ -25,7 +25,7 @@ import {
   dfnsConfig,
   fireblocksConfig,
 } from '../config';
-import { DFNSConfig, FireblocksConfig } from 'index';
+import { DFNSConfig, FireblocksConfig } from '../src';
 import { WriteStream, readFileSync } from 'fs';
 import Example from './Example';
 import ExampleConfig from './ExampleConfig';

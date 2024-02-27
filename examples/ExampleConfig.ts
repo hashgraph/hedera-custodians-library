@@ -19,7 +19,7 @@
  */
 
 import { AccountId, PublicKey } from '@hashgraph/sdk';
-import { DFNSConfig, FireblocksConfig } from 'index';
+import { DFNSConfig, FireblocksConfig } from '../src';
 
 export default class ExampleConfig {
   serviceSpecificConfig: DFNSConfig | FireblocksConfig;
