@@ -277,12 +277,6 @@ export default class HtsExample extends Example {
    * Retrieves the balance of a specific token for a given account.
    * @param account The account ID.
    * @param tokenId The token ID.
-   * @returns The balance of the token.
-   */
-  /**
-   * Retrieves the balance of a specific token for a given account.
-   * @param account The account ID.
-   * @param tokenId The token ID.
    * @returns The balance of the token as a number.
    */
   private async _getTokenBalance({
