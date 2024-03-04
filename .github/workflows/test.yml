@@ -40,7 +40,7 @@ jobs:
       - name: Create file
         run: |
           touch .env
-          echo "FIREBLOCKS_API_SECRET_KEY=${{secrets.FIREBLOCKS_API_SECRET_KEY}}" >> .env
+          echo "FIREBLOCKS_API_SECRET_KEY=${{secrets.FIREBLOCKS_API_SECRET_KEY}}" | tr -d "'" >> .env
           echo "FIREBLOCKS_API_KEY=${{secrets.FIREBLOCKS_API_KEY}}" >> .env
           if [ -z "${{ secrets.FIREBLOCKS_BASE_URL }}" ]; then
             echo "FIREBLOCKS_BASE_URL=https://api.fireblocks.io" >> .env
@@ -60,7 +60,7 @@ jobs:
           echo "FIREBLOCKS_PUBLIC_KEY=${{secrets.FIREBLOCKS_PUBLIC_KEY}}" >> .env
           echo "FIREBLOCKS_HEDERA_ACCOUNT_ID=${{secrets.FIREBLOCKS_HEDERA_ACCOUNT_ID}}" >> .env
           echo "DFNS_SERVICE_ACCOUNT_AUTHORIZATION_TOKEN=${{secrets.DFNS_SERVICE_ACCOUNT_AUTHORIZATION_TOKEN}}" >> .env
-          echo "DFNS_SERVICE_ACCOUNT_PRIVATE_KEY=${{secrets.DFNS_SERVICE_ACCOUNT_PRIVATE_KEY}}" >> .env
+          echo "DFNS_SERVICE_ACCOUNT_PRIVATE_KEY=${{secrets.DFNS_SERVICE_ACCOUNT_PRIVATE_KEY}}" | tr -d "'" >> .env
           echo "DFNS_SERVICE_ACCOUNT_CREDENTIAL_ID=${{secrets.DFNS_SERVICE_ACCOUNT_CREDENTIAL_ID}}" >> .env
           if [ -z "${{ secrets.DFNS_APP_ORIGIN }}" ]; then
             echo "DFNS_APP_ORIGIN=http://stablecoin.es" >> .env
