@@ -49,7 +49,7 @@ export class DFNSConfig implements IStrategyConfig {
     public appOrigin: string,
     public appId: string,
     public baseUrl: string,
-    public walletId: string,
+    public walletId: string
   ) {}
 
   /**

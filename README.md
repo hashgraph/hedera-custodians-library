@@ -105,7 +105,7 @@ const config = new FireblocksConfig(
   FIREBLOCKS_API_SECRET_KEY,
   FIREBLOCKS_BASE_URL,
   FIREBLOCKS_VAULT_ACCOUNT_ID,
-  FIREBLOCKS_ASSET_ID,
+  FIREBLOCKS_ASSET_ID
 );
 
 const service = new CustodialWalletService(config);

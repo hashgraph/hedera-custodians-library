@@ -44,7 +44,7 @@ export class FireblocksConfig implements IStrategyConfig {
     public apiSecretKey: string,
     public baseUrl: string,
     public vaultAccountId: string,
-    public assetId: string,
+    public assetId: string
   ) {}
 
   /**

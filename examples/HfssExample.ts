@@ -68,12 +68,12 @@ export default class HfssExample extends Example {
 
     //Sign with client operator private key and submit the query to a Hedera network
     const contents = Buffer.from(await query.execute(this.client)).toString(
-      'utf-8',
+      'utf-8'
     );
 
     if (contents === null) {
       throw new Error(
-        '❌ File content was not retrieved. Contents were not set in the response',
+        '❌ File content was not retrieved. Contents were not set in the response'
       );
     }
     console.log('✅ The file content is: ' + contents);
@@ -122,7 +122,7 @@ export default class HfssExample extends Example {
     const newFileId = receipt.fileId;
     if (newFileId === null) {
       throw new Error(
-        '❌ File was not created. File ID was not set in the receipt',
+        '❌ File was not created. File ID was not set in the receipt'
       );
     }
     console.log('✅ The new file ID is: ' + newFileId);

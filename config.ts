@@ -44,7 +44,7 @@ export const fireblocksConfig = new FireblocksConfig(
     : fireblocksApiSecretKey,
   process.env.FIREBLOCKS_BASE_URL ?? '',
   process.env.FIREBLOCKS_VAULT_ACCOUNT_ID ?? '',
-  process.env.FIREBLOCKS_ASSET_ID ?? '',
+  process.env.FIREBLOCKS_ASSET_ID ?? ''
 );
 
 //* DFNS configuration
@@ -60,5 +60,5 @@ export const dfnsConfig = new DFNSConfig(
   process.env.DFNS_APP_ORIGIN ?? '',
   process.env.DFNS_APP_ID ?? '',
   process.env.DFNS_BASE_URL ?? '',
-  process.env.DFNS_WALLET_ID ?? '',
+  process.env.DFNS_WALLET_ID ?? ''
 );

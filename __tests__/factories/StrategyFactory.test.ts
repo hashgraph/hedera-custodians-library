@@ -32,7 +32,7 @@ describe('🧪 Factory TESTS', () => {
 
         expect(strategy instanceof FireblocksStrategy).toEqual(true);
       },
-      TEST_TIMEOUT,
+      TEST_TIMEOUT
     );
   });
 
@@ -44,7 +44,7 @@ describe('🧪 Factory TESTS', () => {
 
         expect(strategy instanceof DFNSStrategy).toEqual(true);
       },
-      TEST_TIMEOUT,
+      TEST_TIMEOUT
     );
   });
 });

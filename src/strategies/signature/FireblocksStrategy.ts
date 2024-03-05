@@ -49,7 +49,7 @@ export class FireblocksStrategy implements ISignatureStrategy {
     this.fireblocks = new FireblocksSDK(
       strategyConfig.apiSecretKey,
       strategyConfig.apiKey,
-      strategyConfig.baseUrl,
+      strategyConfig.baseUrl
     );
     this.config = strategyConfig;
   }
@@ -61,7 +61,7 @@ export class FireblocksStrategy implements ISignatureStrategy {
    */
   async sign(request: SignatureRequest): Promise<Uint8Array> {
     const serializedTransaction = Buffer.from(
-      request.getTransactionBytes(),
+      request.getTransactionBytes()
     ).toString('hex');
     const signatureHex = await this.signMessage(serializedTransaction);
     return hexStringToUint8Array(signatureHex);
@@ -90,7 +90,7 @@ export class FireblocksStrategy implements ISignatureStrategy {
    * @throws An error if the transaction does not complete within the expected time frame.
    */
   private async pollTransaction(
-    transactionId: string,
+    transactionId: string
   ): Promise<TransactionResponse> {
     for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
       try {
@@ -98,7 +98,7 @@ export class FireblocksStrategy implements ISignatureStrategy {
           await this.fireblocks.getTransactionById(transactionId);
         if (
           [TransactionStatus.COMPLETED, TransactionStatus.FAILED].includes(
-            txInfo.status,
+            txInfo.status
           )
         ) {
           return txInfo;
@@ -109,7 +109,7 @@ export class FireblocksStrategy implements ISignatureStrategy {
       await new Promise((resolve) => setTimeout(resolve, POLL_INTERVAL));
     }
     throw new Error(
-      `Transaction ${transactionId} did not complete within the expected time frame.`,
+      `Transaction ${transactionId} did not complete within the expected time frame.`
     );
   }
 
@@ -119,13 +119,18 @@ export class FireblocksStrategy implements ISignatureStrategy {
    * @returns A promise that resolves to the created transaction response.
    */
   private async createFireblocksTransaction(
-    message: string,
+    message: string
   ): Promise<CreateTransactionResponse> {
     return await this.fireblocks.createTransaction({
       operation: TransactionOperation.RAW,
       assetId: this.config.assetId,
-      source: { type: PeerType.VAULT_ACCOUNT, id: this.config.vaultAccountId },
-      extraParameters: { rawMessageData: { messages: [{ content: message }] } },
+      source: {
+        type: PeerType.VAULT_ACCOUNT,
+        id: this.config.vaultAccountId,
+      },
+      extraParameters: {
+        rawMessageData: { messages: [{ content: message }] },
+      },
     });
   }
 }
