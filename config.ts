@@ -41,7 +41,7 @@ export const fireblocksConfig = new FireblocksConfig(
   process.env.FIREBLOCKS_API_KEY ?? '',
   pathRegex.test(fireblocksApiSecretKey)
     ? fs.readFileSync(path.resolve(fireblocksApiSecretKey), 'utf8')
-    : fireblocksApiSecretKey,
+    : Buffer.from(fireblocksApiSecretKey, 'base64').toString('utf8'),
   process.env.FIREBLOCKS_BASE_URL ?? '',
   process.env.FIREBLOCKS_VAULT_ACCOUNT_ID ?? '',
   process.env.FIREBLOCKS_ASSET_ID ?? ''
@@ -54,7 +54,7 @@ const dfnsServiceAccountPrivateKey =
 export const dfnsConfig = new DFNSConfig(
   pathRegex.test(dfnsServiceAccountPrivateKey)
     ? fs.readFileSync(path.resolve(dfnsServiceAccountPrivateKey), 'utf8')
-    : dfnsServiceAccountPrivateKey,
+    : Buffer.from(dfnsServiceAccountPrivateKey, 'base64').toString('utf8'),
   process.env.DFNS_SERVICE_ACCOUNT_CREDENTIAL_ID ?? '',
   process.env.DFNS_SERVICE_ACCOUNT_AUTHORIZATION_TOKEN ?? '',
   process.env.DFNS_APP_ORIGIN ?? '',
