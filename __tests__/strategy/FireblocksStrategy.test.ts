@@ -67,9 +67,9 @@ describe('🧪 FireblocksStrategy TESTS', () => {
       fireblocksStrategy['fireblocks']['getTransactionById']
     ).toHaveBeenCalledTimes(1);
     expect(result).toEqual(
-      hexStringToUint8Array(
-        signatureResponse.signedMessages[0].signature.fullSig
-      )
+      hexStringToUint8Array({
+        hexString: signatureResponse.signedMessages[0].signature.fullSig,
+      })
     );
   });
 });

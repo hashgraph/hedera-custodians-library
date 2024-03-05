@@ -62,13 +62,13 @@ describe('🧪 DFNSStrategy TESTS', () => {
     );
     const result = await dfnsStrategy.sign(mockSignatureRequest);
     expect(signatureResponse.signature).not.toBeNull();
-    const expectedSignatureResponse = hexStringToUint8Array(
-      Buffer.from(
+    const expectedSignatureResponse = hexStringToUint8Array({
+      hexString: Buffer.from(
         signatureResponse.signature!.r.substring(2) +
           signatureResponse.signature!.s.substring(2),
         'hex'
-      ).toString('hex')
-    );
+      ).toString('hex'),
+    });
 
     expect(
       dfnsStrategy['dfnsApiClient']['wallets']['generateSignature']

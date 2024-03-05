@@ -64,7 +64,7 @@ export class FireblocksStrategy implements ISignatureStrategy {
       request.getTransactionBytes()
     ).toString('hex');
     const signatureHex = await this.signMessage(serializedTransaction);
-    return hexStringToUint8Array(signatureHex);
+    return hexStringToUint8Array({ hexString: signatureHex });
   }
 
   /**
