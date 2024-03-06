@@ -29,7 +29,7 @@ The hedera-custodians-library library is a Typescript utility designed to simpli
 
 Optimized for integration with the Hedera network, it supports services like Fireblocks and Dfns and is scalable for various wallet services. The library's code is organized in a clear directory structure, with source code and unit and integration tests in separate folders. It's developed in Typescript, optimized for Node.js, and managed through npm for easy dependency handling and testing. The library is user-friendly, emphasizing developer experience and code readability. It includes extensive unit tests, ensuring its reliability and stability for managing custodial wallets in Typescript applications.
 
-#### Current services supported
+### Current services supported
 
 - DFNS
 - Fireblocks
@@ -105,7 +105,7 @@ const config = new FireblocksConfig(
   FIREBLOCKS_API_SECRET_KEY,
   FIREBLOCKS_BASE_URL,
   FIREBLOCKS_VAULT_ACCOUNT_ID,
-  FIREBLOCKS_ASSET_ID,
+  FIREBLOCKS_ASSET_ID
 );
 
 const service = new CustodialWalletService(config);
@@ -180,21 +180,25 @@ To run the tests, you need to provide the following environment variables in a `
 
 For Fireblocks:
 
-- `FIREBLOCKS_API_SECRET_KEY`: Path to Fireblocks API secret key file or secret key value
+- `FIREBLOCKS_API_SECRET_KEY`: Path to Fireblocks API secret key file or secret key value **encoded in Base64**
 - `FIREBLOCKS_API_KEY`: Your Fireblocks API key
 - `FIREBLOCKS_BASE_URL`: Base URL of Fireblocks API
 - `FIREBLOCKS_ASSET_ID`: Asset ID for Fireblocks
 - `FIREBLOCKS_VAULT_ACCOUNT_ID`: Vault account ID for Fireblocks
+- `FIREBLOCKS_PUBLIC_KEY`: Public key of the Vault for Fireblocks
+- `FIREBLOCKS_HEDERA_ACCOUNT_ID`: Hedera Account ID linked to the public key of the vault for Fireblocks
 
 For DFNS:
 
 - `DFNS_SERVICE_ACCOUNT_AUTHORIZATION_TOKEN`: Authorization token for DFNS service account
 - `DFNS_SERVICE_ACCOUNT_CREDENTIAL_ID`: Credential ID for DFNS service account
-- `DFNS_SERVICE_ACCOUNT_PRIVATE_KEY`: Path to DFNS service account private key file or private key value
+- `DFNS_SERVICE_ACCOUNT_PRIVATE_KEY`: Path to DFNS service account private key file or private key value **encoded in Base64**
 - `DFNS_APP_ORIGIN`: URL origin of DFNS app
 - `DFNS_APP_ID`: ID of DFNS app
 - `DFNS_TEST_URL`: Test URL for DFNS API
 - `DFNS_WALLET_ID`: Wallet ID for DFNS
+- `DFNS_WALLET_PUBLIC_KEY`: Public key of the Wallet for Dfns
+- `DFNS_WALLET_HEDERA_ACCOUNT_ID`: Hedera Account ID linked to the public key of the Wallet for Dfns. In Dfns the Hedera Account must be generated as an additional step
 
 ### 7.3. Run
 
@@ -202,6 +206,8 @@ To run the tests, navigate to the root directory of the hedera-custodians-librar
 
 ```sh
 npm run test
+# or
+npm run test:coverage
 ```
 
 ## 8. Contributing

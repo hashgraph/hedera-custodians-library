@@ -25,7 +25,8 @@ cd hedera-custodians-library
 npm install
 ```
 
-3. Run an example:
+3. Configure the Environment variables ([explained here](../README.md#72-configuration))
+4. Run an example:
 
 ```bash
 tsx examples/indes.ts

@@ -45,7 +45,7 @@ describe('🧪 Service TESTS', () => {
         expect(config.vaultAccountId).toEqual(fireblocksConfig.vaultAccountId);
         expect(config.assetId).toEqual(fireblocksConfig.assetId);
       },
-      TEST_TIMEOUT,
+      TEST_TIMEOUT
     );
 
     it(
@@ -57,20 +57,20 @@ describe('🧪 Service TESTS', () => {
 
         expect(config).toBeInstanceOf(DFNSConfig);
         expect(config.serviceAccountPrivateKey).toEqual(
-          dfnsConfig.serviceAccountPrivateKey,
+          dfnsConfig.serviceAccountPrivateKey
         );
         expect(config.serviceAccountCredentialId).toEqual(
-          dfnsConfig.serviceAccountCredentialId,
+          dfnsConfig.serviceAccountCredentialId
         );
         expect(config.serviceAccountAuthToken).toEqual(
-          dfnsConfig.serviceAccountAuthToken,
+          dfnsConfig.serviceAccountAuthToken
         );
         expect(config.appOrigin).toEqual(dfnsConfig.appOrigin);
         expect(config.appId).toEqual(dfnsConfig.appId);
         expect(config.baseUrl).toEqual(dfnsConfig.baseUrl);
         expect(config.walletId).toEqual(dfnsConfig.walletId);
       },
-      TEST_TIMEOUT,
+      TEST_TIMEOUT
     );
 
     it(
@@ -83,20 +83,20 @@ describe('🧪 Service TESTS', () => {
 
         expect(config).toBeInstanceOf(DFNSConfig);
         expect(config.serviceAccountPrivateKey).toEqual(
-          dfnsConfig.serviceAccountPrivateKey,
+          dfnsConfig.serviceAccountPrivateKey
         );
         expect(config.serviceAccountCredentialId).toEqual(
-          dfnsConfig.serviceAccountCredentialId,
+          dfnsConfig.serviceAccountCredentialId
         );
         expect(config.serviceAccountAuthToken).toEqual(
-          dfnsConfig.serviceAccountAuthToken,
+          dfnsConfig.serviceAccountAuthToken
         );
         expect(config.appOrigin).toEqual(dfnsConfig.appOrigin);
         expect(config.appId).toEqual(dfnsConfig.appId);
         expect(config.baseUrl).toEqual(dfnsConfig.baseUrl);
         expect(config.walletId).toEqual(dfnsConfig.walletId);
       },
-      TEST_TIMEOUT,
+      TEST_TIMEOUT
     );
 
     it(
@@ -114,7 +114,7 @@ describe('🧪 Service TESTS', () => {
         expect(config.vaultAccountId).toEqual(fireblocksConfig.vaultAccountId);
         expect(config.assetId).toEqual(fireblocksConfig.assetId);
       },
-      TEST_TIMEOUT,
+      TEST_TIMEOUT
     );
   });
   describe('[Fireblocks] Signatures', () => {
@@ -126,7 +126,7 @@ describe('🧪 Service TESTS', () => {
           await signatureService.signTransaction(signatureRequest);
         expect(signature.length).toBeGreaterThan(0);
       },
-      TEST_TIMEOUT,
+      TEST_TIMEOUT
     );
   });
 
@@ -139,7 +139,7 @@ describe('🧪 Service TESTS', () => {
           await signatureService.signTransaction(signatureRequest);
         expect(signature.length).toBeGreaterThan(0);
       },
-      TEST_TIMEOUT,
+      TEST_TIMEOUT
     );
   });
 });

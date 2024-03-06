@@ -141,7 +141,7 @@ export default class HtsExample extends Example {
     associateReceipt: TransactionReceipt;
   }> {
     console.log(
-      `🔗 Associating token(${tokenId}) with new account(${account}) ...`,
+      `🔗 Associating token(${tokenId}) with new account(${account}) ...`
     );
     // Associate a token to an account and freeze the unsigned transaction for signing
     const associateTx = new TokenAssociateTransaction()
@@ -163,11 +163,11 @@ export default class HtsExample extends Example {
 
     if (!associateTxStatus || associateTxStatus !== Status.Success) {
       throw new Error(
-        `❌ Error associating token: ${tokenId} with account: ${account}`,
+        `❌ Error associating token: ${tokenId} with account: ${account}`
       );
     }
     console.log(
-      '✅ Associate transaction done ' + associateTxStatus.toString(),
+      '✅ Associate transaction done ' + associateTxStatus.toString()
     );
     return { associateResponse, associateReceipt };
   }
@@ -205,7 +205,7 @@ export default class HtsExample extends Example {
     const createTokenResponse = await createTokenTx.execute(this.client);
     // Get receipt
     const createTokenReceipt = await createTokenResponse.getReceipt(
-      this.client,
+      this.client
     );
     // Get the token ID
     const tokenId = createTokenReceipt.tokenId;
@@ -213,11 +213,11 @@ export default class HtsExample extends Example {
       throw new Error('❌ Error creating new Hedera Token');
     }
     console.log(
-      `✅ New Token Created with ID: ${tokenId.toString()} (https://hashscan.io/testnet/token/${tokenId.toString()})`,
+      `✅ New Token Created with ID: ${tokenId.toString()} (https://hashscan.io/testnet/token/${tokenId.toString()})`
     );
     console.log(
       '⛓️  Transaction Hash: ',
-      Buffer.from(createTokenResponse.transactionHash).toString('hex'),
+      Buffer.from(createTokenResponse.transactionHash).toString('hex')
     );
     return {
       tokenId: tokenId,
@@ -266,19 +266,13 @@ export default class HtsExample extends Example {
     const transferTxStatus = transferReceipt.status;
     if (!transferTxStatus || transferTxStatus !== Status.Success) {
       throw new Error(
-        `❌ Error transferring token: ${tokenId} from account: ${from} to account: ${to}`,
+        `❌ Error transferring token: ${tokenId} from account: ${from} to account: ${to}`
       );
     }
     console.log('✅ Transfer transaction done ' + transferTxStatus.toString());
     return { transferResponse, transferReceipt };
   }
 
-  /**
-   * Retrieves the balance of a specific token for a given account.
-   * @param account The account ID.
-   * @param tokenId The token ID.
-   * @returns The balance of the token.
-   */
   /**
    * Retrieves the balance of a specific token for a given account.
    * @param account The account ID.

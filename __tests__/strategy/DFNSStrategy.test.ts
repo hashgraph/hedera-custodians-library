@@ -58,23 +58,23 @@ describe('🧪 DFNSStrategy TESTS', () => {
 
   it('should correctly sign a signature request', async () => {
     const mockSignatureRequest = new SignatureRequest(
-      new Uint8Array([1, 2, 3]),
+      new Uint8Array([1, 2, 3])
     );
     const result = await dfnsStrategy.sign(mockSignatureRequest);
     expect(signatureResponse.signature).not.toBeNull();
-    const expectedSignatureResponse = hexStringToUint8Array(
-      Buffer.from(
+    const expectedSignatureResponse = hexStringToUint8Array({
+      hexString: Buffer.from(
         signatureResponse.signature!.r.substring(2) +
           signatureResponse.signature!.s.substring(2),
-        'hex',
+        'hex'
       ).toString('hex'),
-    );
+    });
 
     expect(
-      dfnsStrategy['dfnsApiClient']['wallets']['generateSignature'],
+      dfnsStrategy['dfnsApiClient']['wallets']['generateSignature']
     ).toHaveBeenCalledTimes(1);
     expect(
-      dfnsStrategy['dfnsApiClient']['wallets']['getSignature'],
+      dfnsStrategy['dfnsApiClient']['wallets']['getSignature']
     ).toHaveBeenCalledTimes(1);
     expect(result).toEqual(expectedSignatureResponse);
   });
@@ -88,7 +88,7 @@ const setupDfnsStrategy = (walletId: string): DFNSStrategy => {
     'mockedAppOrigin',
     'mockedAppId',
     'mockedBaseUrl',
-    walletId,
+    walletId
   );
   return new DFNSStrategy(mockStrategyConfig);
 };

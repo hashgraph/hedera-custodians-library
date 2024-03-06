@@ -35,7 +35,7 @@ describe('🧪 Models TESTS', () => {
           expect(retrievedMessage[i]).toEqual(message[i]);
         }
       },
-      TEST_TIMEOUT,
+      TEST_TIMEOUT
     );
 
     it(
@@ -51,7 +51,7 @@ describe('🧪 Models TESTS', () => {
           expect(retrievedMessage[i]).toEqual(message_two[i]);
         }
       },
-      TEST_TIMEOUT,
+      TEST_TIMEOUT
     );
   });
 });

@@ -28,7 +28,7 @@ export default class ExampleConfig {
   constructor(
     config: DFNSConfig | FireblocksConfig,
     hederaAccountId: AccountId | string,
-    publicKey: PublicKey | string,
+    publicKey: PublicKey | string
   ) {
     this.serviceSpecificConfig = config;
     this.hederaAccountId =

@@ -66,32 +66,32 @@ async function main(): Promise<void> {
         example = new Example(
           dfnsConfig,
           process.env.DFNS_WALLET_HEDERA_ACCOUNT_ID ?? '',
-          process.env.DFNS_WALLET_PUBLIC_KEY ?? '',
+          process.env.DFNS_WALLET_PUBLIC_KEY ?? ''
         );
         htsExample = new HtsExample(
           dfnsConfig,
           process.env.DFNS_WALLET_HEDERA_ACCOUNT_ID ?? '',
-          process.env.DFNS_WALLET_PUBLIC_KEY ?? '',
+          process.env.DFNS_WALLET_PUBLIC_KEY ?? ''
         );
         hscsExample = new HscsExample(
           dfnsConfig,
           process.env.DFNS_WALLET_HEDERA_ACCOUNT_ID ?? '',
-          process.env.DFNS_WALLET_PUBLIC_KEY ?? '',
+          process.env.DFNS_WALLET_PUBLIC_KEY ?? ''
         );
         hfssExample = new HfssExample(
           dfnsConfig,
           process.env.DFNS_WALLET_HEDERA_ACCOUNT_ID ?? '',
-          process.env.DFNS_WALLET_PUBLIC_KEY ?? '',
+          process.env.DFNS_WALLET_PUBLIC_KEY ?? ''
         );
         hcsExample = new HcsExample(
           dfnsConfig,
           process.env.DFNS_WALLET_HEDERA_ACCOUNT_ID ?? '',
-          process.env.DFNS_WALLET_PUBLIC_KEY ?? '',
+          process.env.DFNS_WALLET_PUBLIC_KEY ?? ''
         );
         keyListExample = new KeyListExample(
           dfnsConfig,
           process.env.DFNS_WALLET_HEDERA_ACCOUNT_ID ?? '',
-          process.env.DFNS_WALLET_PUBLIC_KEY ?? '',
+          process.env.DFNS_WALLET_PUBLIC_KEY ?? ''
         );
       } else {
         const dfnsParams = await askDfnsParams();
@@ -109,32 +109,32 @@ async function main(): Promise<void> {
         example = new Example(
           fireblocksConfig,
           process.env.FIREBLOCKS_HEDERA_ACCOUNT_ID ?? '',
-          process.env.FIREBLOCKS_PUBLIC_KEY ?? '',
+          process.env.FIREBLOCKS_PUBLIC_KEY ?? ''
         );
         htsExample = new HtsExample(
           fireblocksConfig,
           process.env.FIREBLOCKS_HEDERA_ACCOUNT_ID ?? '',
-          process.env.FIREBLOCKS_PUBLIC_KEY ?? '',
+          process.env.FIREBLOCKS_PUBLIC_KEY ?? ''
         );
         hscsExample = new HscsExample(
           fireblocksConfig,
           process.env.FIREBLOCKS_HEDERA_ACCOUNT_ID ?? '',
-          process.env.FIREBLOCKS_PUBLIC_KEY ?? '',
+          process.env.FIREBLOCKS_PUBLIC_KEY ?? ''
         );
         hfssExample = new HfssExample(
           fireblocksConfig,
           process.env.FIREBLOCKS_HEDERA_ACCOUNT_ID ?? '',
-          process.env.FIREBLOCKS_PUBLIC_KEY ?? '',
+          process.env.FIREBLOCKS_PUBLIC_KEY ?? ''
         );
         hcsExample = new HcsExample(
           fireblocksConfig,
           process.env.FIREBLOCKS_HEDERA_ACCOUNT_ID ?? '',
-          process.env.FIREBLOCKS_PUBLIC_KEY ?? '',
+          process.env.FIREBLOCKS_PUBLIC_KEY ?? ''
         );
         keyListExample = new KeyListExample(
           fireblocksConfig,
           process.env.FIREBLOCKS_HEDERA_ACCOUNT_ID ?? '',
-          process.env.FIREBLOCKS_PUBLIC_KEY ?? '',
+          process.env.FIREBLOCKS_PUBLIC_KEY ?? ''
         );
       } else {
         const fireblocksParams = await askFireblocksParams();
@@ -149,7 +149,7 @@ async function main(): Promise<void> {
 
     default:
       throw new Error(
-        '❌ 🐛 Invalid custodial service. You should not be able to get here 🧐.',
+        '❌ 🐛 Invalid custodial service. You should not be able to get here 🧐.'
       );
   }
 
@@ -207,7 +207,7 @@ async function main(): Promise<void> {
         break;
       default:
         throw new Error(
-          '❌ 🐛 Invalid action. You should not be able to get here 🧐.',
+          '❌ 🐛 Invalid action. You should not be able to get here 🧐.'
         );
     }
   } while (!exit);
@@ -281,10 +281,10 @@ async function askDfnsParams(): Promise<ExampleConfig> {
       dfnsParams.appOrigin,
       dfnsParams.appId,
       dfnsParams.baseUrl,
-      dfnsParams.walletId,
+      dfnsParams.walletId
     ),
     dfnsParams.walletHederaAccountId,
-    dfnsParams.walletPublicKey,
+    dfnsParams.walletPublicKey
   );
 }
 
@@ -339,10 +339,10 @@ async function askFireblocksParams(): Promise<ExampleConfig> {
       readFileSync(fireblocksParams.apiSecretKeyPath, 'utf8'),
       fireblocksParams.baseUrl,
       fireblocksParams.vaultAccountId,
-      fireblocksParams.assetId,
+      fireblocksParams.assetId
     ),
     fireblocksParams.hederaAccountId,
-    fireblocksParams.publicKey,
+    fireblocksParams.publicKey
   );
 }
 

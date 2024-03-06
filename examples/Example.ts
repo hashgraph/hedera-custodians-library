@@ -50,7 +50,7 @@ export default class Example {
    * @returns The signed message.
    */
   protected readonly signTransactionHandler = async (
-    message: Uint8Array,
+    message: Uint8Array
   ): Promise<Uint8Array> => {
     const signatureRequest = new SignatureRequest(message);
     return await this.service.signTransaction(signatureRequest);
@@ -60,12 +60,12 @@ export default class Example {
   constructor(
     config: FireblocksConfig | DFNSConfig,
     hederaAccountId: AccountId | string,
-    publicKey: PublicKey | string,
+    publicKey: PublicKey | string
   );
   constructor(
     config: ExampleConfig | FireblocksConfig | DFNSConfig,
     hederaAccountId?: AccountId | string,
-    publicKey?: PublicKey | string,
+    publicKey?: PublicKey | string
   ) {
     if (config instanceof ExampleConfig) {
       this.config = config;
@@ -80,7 +80,7 @@ export default class Example {
     this.client = Client.forTestnet().setOperatorWith(
       this.config.hederaAccountId,
       this.config.publicKey,
-      this.signTransactionHandler,
+      this.signTransactionHandler
     );
   }
 
@@ -129,11 +129,11 @@ export default class Example {
     console.log(
       '✅ New account ID Created: ',
       newAccountId.toString(),
-      `(https://hashscan.io/testnet/account/${newAccountId.toString()})`,
+      `(https://hashscan.io/testnet/account/${newAccountId.toString()})`
     );
     console.log(
       '⛓️  Transaction Hash: ',
-      Buffer.from(newAccountResponse.transactionHash).toString('hex'),
+      Buffer.from(newAccountResponse.transactionHash).toString('hex')
     );
     return {
       newAccountId: newAccountId,

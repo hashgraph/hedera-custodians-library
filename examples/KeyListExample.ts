@@ -42,7 +42,7 @@ export default class KeyListExample extends Example {
 
   private async _createNewKeyList(
     publicKeyList: PublicKey[] = [],
-    threshold?: number,
+    threshold?: number
   ): Promise<KeyList> {
     console.log('Creating a new key list...');
     if (publicKeyList.length === 0) {
@@ -57,7 +57,7 @@ export default class KeyListExample extends Example {
   private async _transferHbar(
     from: AccountId,
     to: AccountId,
-    amount: number | Hbar,
+    amount: number | Hbar
   ): Promise<{
     transferResponse: TransactionResponse;
     transferReceipt: TransactionReceipt;
@@ -73,7 +73,7 @@ export default class KeyListExample extends Example {
     const keyListDfnsClient = Client.forTestnet().setOperatorWith(
       from,
       this.config.publicKey,
-      this.signTransactionHandler,
+      this.signTransactionHandler
     );
     const signedTransferTx =
       await transferTx.signWithOperator(keyListDfnsClient);
@@ -85,7 +85,7 @@ export default class KeyListExample extends Example {
     const transferTxStatus = transferReceipt.status;
     if (!transferTxStatus || transferTxStatus !== Status.Success) {
       throw new Error(
-        `❌ Error transferring ${amount} Hbar from account: ${from} to account: ${to}`,
+        `❌ Error transferring ${amount} Hbar from account: ${from} to account: ${to}`
       );
     }
     console.log('✅ Transfer transaction done ' + transferTxStatus.toString());

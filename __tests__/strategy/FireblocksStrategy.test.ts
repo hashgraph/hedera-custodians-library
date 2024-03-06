@@ -56,20 +56,20 @@ describe('🧪 FireblocksStrategy TESTS', () => {
 
   it('should correctly sign a signature request', async () => {
     const mockSignatureRequest = new SignatureRequest(
-      new Uint8Array([1, 2, 3]),
+      new Uint8Array([1, 2, 3])
     );
     const result = await fireblocksStrategy.sign(mockSignatureRequest);
 
     expect(
-      fireblocksStrategy['fireblocks']['createTransaction'],
+      fireblocksStrategy['fireblocks']['createTransaction']
     ).toHaveBeenCalledTimes(1);
     expect(
-      fireblocksStrategy['fireblocks']['getTransactionById'],
+      fireblocksStrategy['fireblocks']['getTransactionById']
     ).toHaveBeenCalledTimes(1);
     expect(result).toEqual(
-      hexStringToUint8Array(
-        signatureResponse.signedMessages[0].signature.fullSig,
-      ),
+      hexStringToUint8Array({
+        hexString: signatureResponse.signedMessages[0].signature.fullSig,
+      })
     );
   });
 });
@@ -81,7 +81,7 @@ const setupFireblocksStrategy = (): FireblocksStrategy => {
       'mockedApiKey',
       'mockedBaseUrl',
       'mockedVaultAccountId',
-      'mockedAssetId',
-    ),
+      'mockedAssetId'
+    )
   );
 };

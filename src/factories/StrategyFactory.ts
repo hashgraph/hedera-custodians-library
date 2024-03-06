@@ -38,7 +38,7 @@ export class StrategyFactory {
    * @returns {ISignatureStrategy} An instance of a class that implements the ISignatureStrategy interface.
    */
   static createSignatureStrategy(
-    strategyConfig: IStrategyConfig,
+    strategyConfig: IStrategyConfig
   ): ISignatureStrategy {
     return strategyConfig.getSignatureStrategy();
   }

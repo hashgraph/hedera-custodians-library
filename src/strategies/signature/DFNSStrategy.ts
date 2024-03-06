@@ -77,10 +77,10 @@ export class DFNSStrategy implements ISignatureStrategy {
    */
   async sign(request: SignatureRequest): Promise<Uint8Array> {
     const serializedTransaction = Buffer.from(
-      request.getTransactionBytes(),
+      request.getTransactionBytes()
     ).toString('hex');
     const signatureHex = await this.signMessage(serializedTransaction);
-    return hexStringToUint8Array(signatureHex);
+    return hexStringToUint8Array({ hexString: signatureHex });
   }
 
   /**

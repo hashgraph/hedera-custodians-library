@@ -24,7 +24,11 @@
  * @param hexString - The hexadecimal string to convert.
  * @returns The Uint8Array representation of the hexadecimal string.
  */
-export function hexStringToUint8Array(hexString: string): Uint8Array {
+export function hexStringToUint8Array({
+  hexString,
+}: {
+  hexString: string;
+}): Uint8Array {
   const uint8Array = new Uint8Array(hexString.length / 2);
   for (let i = 0; i < hexString.length; i += 2) {
     const decimal = parseInt(hexString.substring(i, i + 2), 16);
