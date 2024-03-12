@@ -23,7 +23,7 @@ import { DfnsApiClient } from '@dfns/sdk';
 import {
   SignatureKind,
   SignatureStatus,
-} from '@dfns/sdk/codegen/datamodel/Wallets';
+} from '@dfns/sdk/codegen/datamodel/Wallets/index.js';
 import { ISignatureStrategy } from '../signature/ISignatureStrategy.js';
 import { DFNSConfig } from '../config/DFNSConfig.js';
 import { SignatureRequest } from '../../models/signature/SignatureRequest.js';
