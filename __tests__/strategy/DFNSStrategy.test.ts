@@ -25,7 +25,7 @@ import {
   hexStringToUint8Array,
 } from '../../src';
 import { describe, expect, it, jest } from '@jest/globals';
-import { SignatureStatus } from '@dfns/sdk/codegen/datamodel/Wallets';
+import { SignatureStatus } from '@dfns/sdk/codegen/datamodel/Wallets/index.js';
 
 const signatureResponse = {
   id: 'signature-id',
