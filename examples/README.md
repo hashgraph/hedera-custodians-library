@@ -29,7 +29,7 @@ npm install
 4. Run an example:
 
 ```bash
-tsx examples/indes.ts
+tsx examples/index.ts
 # OR
 # It might ask you to install it the first time
 npx tsx examples/index.ts
