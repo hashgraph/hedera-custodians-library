@@ -63,13 +63,11 @@ The strategy classes in the src/ directory, following a factory-strategy pattern
 
 ### 4.1. Install
 
-To install the hedera-custodians-library library, navigate to the root directory of the library and run the following command:
-
+To install the hedera-custodians-library, you can easily get it from NPM. Run the following command in your terminal:
 ```sh
-npm install
+npm install @hashgraph/hedera-custodians-integration
 ```
-
-This command installs all the dependencies listed in the [`package.json`](package.json) file.
+This command will install the hedera-custodians-library along with all its necessary dependencies. Ensure you are in your project’s root directory or the appropriate subdirectory where you wish to add the library.
 
 ### 4.2. Import
 
