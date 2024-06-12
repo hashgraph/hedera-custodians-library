@@ -29,6 +29,7 @@ export * from './strategies/config/DFNSConfig.js';
 export * from './strategies/config/FireblocksConfig.js';
 export * from './strategies/config/IStrategyConfig.js';
 export * from './strategies/signature/DFNSStrategy.js';
+export * from './strategies/signature/BitGoStrategy.js';
 export * from './strategies/signature/FireblocksStrategy.js';
 export * from './strategies/signature/ISignatureStrategy.js';
 //* Utils
