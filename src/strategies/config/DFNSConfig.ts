@@ -41,6 +41,7 @@ export class DFNSConfig implements IStrategyConfig {
    * @param {string} appId - The ID of the origin application.
    * @param {string} baseUrl - The base URL for requests.
    * @param {string} walletId - The ID of the associated wallet.
+   * @param {string} publicKey - The public Key of the associated wallet.
    */
   constructor(
     public serviceAccountPrivateKey: string,
@@ -49,7 +50,8 @@ export class DFNSConfig implements IStrategyConfig {
     public appOrigin: string,
     public appId: string,
     public baseUrl: string,
-    public walletId: string
+    public walletId: string,
+    public publicKey: string
   ) {}
 
   /**

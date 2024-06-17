@@ -28,6 +28,7 @@ import { ISignatureStrategy } from '../signature/ISignatureStrategy.js';
 import { DFNSConfig } from '../config/DFNSConfig.js';
 import { SignatureRequest } from '../../models/signature/SignatureRequest.js';
 import { hexStringToUint8Array } from '../../utils/utilities.js';
+import { keccak256 } from 'ethereum-cryptography/keccak';
 
 const sleep = (interval = 0): Promise<void> =>
   new Promise((resolve) => setTimeout(resolve, interval));
@@ -40,6 +41,7 @@ const DEFAULT_RETRY_INTERVAL = 1000;
 export class DFNSStrategy implements ISignatureStrategy {
   private readonly dfnsApiClient: DfnsApiClient;
   private readonly walletId: string;
+  private readonly publicKey: string;
 
   /**
    * Creates an instance of DFNSStrategy.
@@ -48,6 +50,7 @@ export class DFNSStrategy implements ISignatureStrategy {
   constructor(strategyConfig: DFNSConfig) {
     this.dfnsApiClient = this.createDfnsApiClient(strategyConfig);
     this.walletId = strategyConfig.walletId;
+    this.publicKey = strategyConfig.publicKey;
   }
 
   /**
@@ -76,11 +79,19 @@ export class DFNSStrategy implements ISignatureStrategy {
    * @returns A Promise that resolves to the signature as a Uint8Array.
    */
   async sign(request: SignatureRequest): Promise<Uint8Array> {
-    const serializedTransaction = Buffer.from(
-      request.getTransactionBytes()
-    ).toString('hex');
-    const signatureHex = await this.signMessage(serializedTransaction);
-    return hexStringToUint8Array({ hexString: signatureHex });
+    let stringToSign;
+    if (this.publicKey.length == 64) {
+      const serializedTransaction = Buffer.from(
+        request.getTransactionBytes()
+      ).toString('hex');
+      stringToSign = await this.signMessage(serializedTransaction);
+    } else {
+      const bytesToSignHash = this.calcKeccak256(request.getTransactionBytes());
+      const bytesToSignHashHex = this.fromUint8Array(bytesToSignHash);
+      stringToSign = await this.signHash(bytesToSignHashHex);
+    }
+
+    return hexStringToUint8Array({ hexString: stringToSign });
   }
 
   /**
@@ -92,6 +103,19 @@ export class DFNSStrategy implements ISignatureStrategy {
     const response = await this.dfnsApiClient.wallets.generateSignature({
       walletId: this.walletId,
       body: { kind: SignatureKind.Message, message: `0x${message}` },
+    });
+    return this.waitForSignature(response.id);
+  }
+
+  /**
+   * Signs a hash using the DFNSStrategy.
+   * @param hash - The hash to be signed.
+   * @returns A promise that resolves to the generated signature.
+   */
+  private async signHash(hash: string): Promise<string> {
+    const response = await this.dfnsApiClient.wallets.generateSignature({
+      walletId: this.walletId,
+      body: { kind: SignatureKind.Hash, hash: hash },
     });
 
     return this.waitForSignature(response.id);
@@ -121,5 +145,15 @@ export class DFNSStrategy implements ISignatureStrategy {
       await sleep(DEFAULT_RETRY_INTERVAL);
     }
     throw new Error(`DFNS Signature request ${signatureId} failed.`);
+  }
+
+  calcKeccak256(message: Uint8Array): Buffer {
+    return Buffer.from(keccak256(message));
+  }
+
+  fromUint8Array(uint8ArrayKey: Uint8Array): string {
+    return Array.from(uint8ArrayKey, (byte) =>
+      ('0' + byte.toString(16)).slice(-2)
+    ).join('');
   }
 }
