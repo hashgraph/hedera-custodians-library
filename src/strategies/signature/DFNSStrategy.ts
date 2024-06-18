@@ -27,8 +27,12 @@ import {
 import { ISignatureStrategy } from '../signature/ISignatureStrategy.js';
 import { DFNSConfig } from '../config/DFNSConfig.js';
 import { SignatureRequest } from '../../models/signature/SignatureRequest.js';
-import { hexStringToUint8Array } from '../../utils/utilities.js';
-import { keccak256 } from 'ethereum-cryptography/keccak';
+import {
+  hexStringToUint8Array,
+  calcKeccak256,
+  uint8ArrayToHexString,
+} from '../../utils/utilities.js';
+import { ED25519_KEY_LENGTH } from '../../utils/constants.js';
 
 const sleep = (interval = 0): Promise<void> =>
   new Promise((resolve) => setTimeout(resolve, interval));
@@ -79,19 +83,19 @@ export class DFNSStrategy implements ISignatureStrategy {
    * @returns A Promise that resolves to the signature as a Uint8Array.
    */
   async sign(request: SignatureRequest): Promise<Uint8Array> {
-    let stringToSign;
-    if (this.publicKey.length == 64) {
+    let signedMessage;
+    if (this.publicKey.length == ED25519_KEY_LENGTH) {
       const serializedTransaction = Buffer.from(
         request.getTransactionBytes()
       ).toString('hex');
-      stringToSign = await this.signMessage(serializedTransaction);
+      signedMessage = await this.signMessage(serializedTransaction);
     } else {
-      const bytesToSignHash = this.calcKeccak256(request.getTransactionBytes());
-      const bytesToSignHashHex = this.fromUint8Array(bytesToSignHash);
-      stringToSign = await this.signHash(bytesToSignHashHex);
+      const bytesToSignHash = calcKeccak256(request.getTransactionBytes());
+      const bytesToSignHashHex = uint8ArrayToHexString(bytesToSignHash);
+      signedMessage = await this.signHash(bytesToSignHashHex);
     }
 
-    return hexStringToUint8Array({ hexString: stringToSign });
+    return hexStringToUint8Array({ hexString: signedMessage });
   }
 
   /**
@@ -145,15 +149,5 @@ export class DFNSStrategy implements ISignatureStrategy {
       await sleep(DEFAULT_RETRY_INTERVAL);
     }
     throw new Error(`DFNS Signature request ${signatureId} failed.`);
-  }
-
-  calcKeccak256(message: Uint8Array): Buffer {
-    return Buffer.from(keccak256(message));
-  }
-
-  fromUint8Array(uint8ArrayKey: Uint8Array): string {
-    return Array.from(uint8ArrayKey, (byte) =>
-      ('0' + byte.toString(16)).slice(-2)
-    ).join('');
   }
 }
