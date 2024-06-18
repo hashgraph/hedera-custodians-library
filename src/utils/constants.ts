@@ -25,27 +25,4 @@
  * @returns The Uint8Array representation of the hexadecimal string.
  */
 
-import { keccak256 } from 'ethereum-cryptography/keccak';
-
-export function hexStringToUint8Array({
-  hexString,
-}: {
-  hexString: string;
-}): Uint8Array {
-  const uint8Array = new Uint8Array(hexString.length / 2);
-  for (let i = 0; i < hexString.length; i += 2) {
-    const decimal = parseInt(hexString.substring(i, i + 2), 16);
-    uint8Array[i / 2] = decimal;
-  }
-  return uint8Array;
-}
-
-export function calcKeccak256(message: Uint8Array): Buffer {
-  return Buffer.from(keccak256(message));
-}
-
-export function uint8ArrayToHexString(uint8ArrayKey: Uint8Array): string {
-  return Array.from(uint8ArrayKey, (byte) =>
-    ('0' + byte.toString(16)).slice(-2)
-  ).join('');
-}
+export const ED25519_KEY_LENGTH = 64;

@@ -23,6 +23,7 @@ import {
   DEFAULT_DFNS_SERVICE_ACCOUNT_PRIVATE_KEY,
   DEFAULT_FIREBLOCKS_API_SECRET_KEY,
   dfnsConfig,
+  dfnsConfig_ECDSA,
   fireblocksConfig,
 } from '../config';
 import { DFNSConfig, FireblocksConfig } from '../src';
@@ -44,7 +45,7 @@ async function main(): Promise<void> {
       type: 'list',
       name: 'custodialService',
       message: 'What custodial service do you use?',
-      choices: ['Dfns', 'Fireblocks'],
+      choices: ['Dfns', 'Dfns_ECDSA', 'Fireblocks'],
       default: 'Dfns',
     },
     {
@@ -92,6 +93,48 @@ async function main(): Promise<void> {
           dfnsConfig,
           process.env.DFNS_WALLET_HEDERA_ACCOUNT_ID ?? '',
           process.env.DFNS_WALLET_PUBLIC_KEY ?? ''
+        );
+      } else {
+        const dfnsParams = await askDfnsParams();
+        example = new Example(dfnsParams);
+        htsExample = new HtsExample(dfnsParams);
+        hscsExample = new HscsExample(dfnsParams);
+        hfssExample = new HfssExample(dfnsParams);
+        hcsExample = new HcsExample(dfnsParams);
+        keyListExample = new KeyListExample(dfnsParams);
+      }
+      break;
+    case 'Dfns_ECDSA':
+      if (custodialAnwsers.useEnvVars) {
+        example = new Example(
+          dfnsConfig_ECDSA,
+          process.env.DFNS_WALLET_HEDERA_ACCOUNT_ID_ECDSA ?? '',
+          process.env.DFNS_WALLET_PUBLIC_KEY_ECDSA ?? ''
+        );
+        htsExample = new HtsExample(
+          dfnsConfig_ECDSA,
+          process.env.DFNS_WALLET_HEDERA_ACCOUNT_ID_ECDSA ?? '',
+          process.env.DFNS_WALLET_PUBLIC_KEY_ECDSA ?? ''
+        );
+        hscsExample = new HscsExample(
+          dfnsConfig_ECDSA,
+          process.env.DFNS_WALLET_HEDERA_ACCOUNT_ID_ECDSA ?? '',
+          process.env.DFNS_WALLET_PUBLIC_KEY_ECDSA ?? ''
+        );
+        hfssExample = new HfssExample(
+          dfnsConfig_ECDSA,
+          process.env.DFNS_WALLET_HEDERA_ACCOUNT_ID_ECDSA ?? '',
+          process.env.DFNS_WALLET_PUBLIC_KEY_ECDSA ?? ''
+        );
+        hcsExample = new HcsExample(
+          dfnsConfig_ECDSA,
+          process.env.DFNS_WALLET_HEDERA_ACCOUNT_ID_ECDSA ?? '',
+          process.env.DFNS_WALLET_PUBLIC_KEY_ECDSA ?? ''
+        );
+        keyListExample = new KeyListExample(
+          dfnsConfig_ECDSA,
+          process.env.DFNS_WALLET_HEDERA_ACCOUNT_ID_ECDSA ?? '',
+          process.env.DFNS_WALLET_PUBLIC_KEY_ECDSA ?? ''
         );
       } else {
         const dfnsParams = await askDfnsParams();
@@ -281,7 +324,8 @@ async function askDfnsParams(): Promise<ExampleConfig> {
       dfnsParams.appOrigin,
       dfnsParams.appId,
       dfnsParams.baseUrl,
-      dfnsParams.walletId
+      dfnsParams.walletId,
+      dfnsParams.walletPublicKey
     ),
     dfnsParams.walletHederaAccountId,
     dfnsParams.walletPublicKey
