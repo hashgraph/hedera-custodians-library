@@ -25,9 +25,21 @@ import {
   FireblocksConfig,
   SignatureRequest,
 } from '../../src'; // Replace '@src' with the actual file path of the module being imported
-import { dfnsConfig, fireblocksConfig, TEST_TIMEOUT } from '../../config';
+import {
+  dfnsConfig,
+  dfnsConfig_ECDSA,
+  fireblocksConfig,
+  TEST_TIMEOUT,
+} from '../../config';
 
 const signatureRequest = new SignatureRequest(new Uint8Array([1, 2, 3]));
+
+const signatureRequest_Hash = new SignatureRequest(
+  new Uint8Array([
+    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 1, 2, 3, 4, 5, 6, 7,
+    8, 9, 10, 11, 12, 13, 14, 15, 16,
+  ])
+);
 
 describe('🧪 Service TESTS', () => {
   describe('Configuration', () => {
@@ -132,11 +144,22 @@ describe('🧪 Service TESTS', () => {
 
   describe('[DFNS] Signatures', () => {
     it(
-      'Sign bunch of bytes',
+      'Sign bunch of bytes with EDD25519 key',
       async () => {
         const signatureService = new CustodialWalletService(dfnsConfig);
         const signature =
           await signatureService.signTransaction(signatureRequest);
+        expect(signature.length).toBeGreaterThan(0);
+      },
+      TEST_TIMEOUT
+    );
+    it(
+      'Sign hash with ECDSA key',
+      async () => {
+        const signatureService = new CustodialWalletService(dfnsConfig_ECDSA);
+        const signature = await signatureService.signTransaction(
+          signatureRequest_Hash
+        );
         expect(signature.length).toBeGreaterThan(0);
       },
       TEST_TIMEOUT

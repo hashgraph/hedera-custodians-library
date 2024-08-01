@@ -88,7 +88,8 @@ const setupDfnsStrategy = (walletId: string): DFNSStrategy => {
     'mockedAppOrigin',
     'mockedAppId',
     'mockedBaseUrl',
-    walletId
+    walletId,
+    'mockedPublicKey'
   );
   return new DFNSStrategy(mockStrategyConfig);
 };

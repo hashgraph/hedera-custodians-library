@@ -81,6 +81,9 @@ jobs:
           echo "DFNS_WALLET_ID=${{secrets.DFNS_WALLET_ID}}" >> .env
           echo "DFNS_WALLET_PUBLIC_KEY=${{secrets.DFNS_WALLET_PUBLIC_KEY}}" >> .env
           echo "DFNS_WALLET_HEDERA_ACCOUNT_ID=${{secrets.DFNS_WALLET_HEDERA_ACCOUNT_ID}}" >> .env
+          echo "DFNS_WALLET_ID_ECDSA=${{secrets.DFNS_WALLET_ID_ECDSA}}" >> .env
+          echo "DFNS_WALLET_HEDERA_ACCOUNT_ID_ECDSA=${{secrets.DFNS_WALLET_HEDERA_ACCOUNT_ID_ECDSA}}" >> .env
+          echo "DFNS_WALLET_PUBLIC_KEY_ECDSA=${{secrets.DFNS_WALLET_PUBLIC_KEY_ECDSA}}" >> .env
 
       - name: Test custodialwalletutils
         run: |

@@ -60,5 +60,18 @@ export const dfnsConfig = new DFNSConfig(
   process.env.DFNS_APP_ORIGIN ?? '',
   process.env.DFNS_APP_ID ?? '',
   process.env.DFNS_BASE_URL ?? '',
-  process.env.DFNS_WALLET_ID ?? ''
+  process.env.DFNS_WALLET_ID ?? '',
+  process.env.DFNS_WALLET_PUBLIC_KEY ?? ''
+);
+export const dfnsConfig_ECDSA = new DFNSConfig(
+  pathRegex.test(dfnsServiceAccountPrivateKey)
+    ? fs.readFileSync(path.resolve(dfnsServiceAccountPrivateKey), 'utf8')
+    : Buffer.from(dfnsServiceAccountPrivateKey, 'base64').toString('utf8'),
+  process.env.DFNS_SERVICE_ACCOUNT_CREDENTIAL_ID ?? '',
+  process.env.DFNS_SERVICE_ACCOUNT_AUTHORIZATION_TOKEN ?? '',
+  process.env.DFNS_APP_ORIGIN ?? '',
+  process.env.DFNS_APP_ID ?? '',
+  process.env.DFNS_BASE_URL ?? '',
+  process.env.DFNS_WALLET_ID_ECDSA ?? '',
+  process.env.DFNS_WALLET_PUBLIC_KEY_ECDSA ?? ''
 );
