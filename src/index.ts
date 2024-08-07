@@ -24,9 +24,10 @@ export * from './factories/StrategyFactory.js';
 export * from './models/signature/SignatureRequest.js';
 //* Services
 export * from './services/CustodialWalletService.js';
-//* Strategies
+//* Strategies & Configs
 export * from './strategies/config/DFNSConfig.js';
 export * from './strategies/config/FireblocksConfig.js';
+export * from './strategies/config/AWSKMSConfig.js';
 export * from './strategies/config/IStrategyConfig.js';
 export * from './strategies/signature/DFNSStrategy.js';
 export * from './strategies/signature/FireblocksStrategy.js';
