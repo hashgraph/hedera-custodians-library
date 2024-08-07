@@ -20,7 +20,7 @@
 
 import { ISignatureStrategy } from '../signature/ISignatureStrategy.js';
 import { DFNSStrategy } from '../signature/DFNSStrategy.js';
-import { IStrategyConfig } from '../config/IStrategyConfig.js';
+import { IStrategyConfig } from './IStrategyConfig';
 
 /**
  * Configuration for the DFNS strategy.
