@@ -37,6 +37,7 @@ export default [
       'tmp',
       'package*.json',
       'tsconfig*.json',
+      'commitlint.config.ts',
     ],
     rules: {
       'tsEsLint/explicit-function-return-type': 'warn',
