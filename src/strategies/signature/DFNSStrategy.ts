@@ -24,15 +24,15 @@ import {
   SignatureKind,
   SignatureStatus,
 } from '@dfns/sdk/codegen/datamodel/Wallets/index.js';
-import { ISignatureStrategy } from '../signature/ISignatureStrategy.js';
-import { DFNSConfig } from '../config/DFNSConfig.js';
-import { SignatureRequest } from '../../models/signature/SignatureRequest.js';
 import {
+  ISignatureStrategy,
+  DFNSConfig,
+  SignatureRequest,
   hexStringToUint8Array,
   calcKeccak256,
   uint8ArrayToHexString,
-} from '../../utils/utilities.js';
-import { ED25519_KEY_LENGTH } from '../../utils/constants.js';
+  ED25519_KEY_LENGTH,
+} from '../../../src';
 
 const sleep = (interval = 0): Promise<void> =>
   new Promise((resolve) => setTimeout(resolve, interval));

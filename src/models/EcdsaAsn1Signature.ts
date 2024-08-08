@@ -25,7 +25,10 @@ import {
   DERElement,
 } from 'asn1-ts';
 
-export default class EcdsaAsn1Signature {
+/**
+ * Represents an ECDSA ASN.1 signature.
+ */
+export class EcdsaAsn1Signature {
   r: Uint8Array;
   s: Uint8Array;
 

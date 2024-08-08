@@ -21,16 +21,20 @@
 //* Factories
 export * from './factories/StrategyFactory.js';
 //* Models
-export * from './models/signature/SignatureRequest.js';
+export * from './models/EcdsaAsn1Signature.js';
+export * from './models/SignatureRequest.js';
 //* Services
 export * from './services/CustodialWalletService.js';
-//* Strategies & Configs
+//* Configs
+export * from './strategies/config/AWSKMSConfig.js';
 export * from './strategies/config/DFNSConfig.js';
 export * from './strategies/config/FireblocksConfig.js';
-export * from './strategies/config/AWSKMSConfig.js';
 export * from './strategies/config/IStrategyConfig.js';
+//* Strategies
+export * from './strategies/signature/AWSKMSStrategy.js';
 export * from './strategies/signature/DFNSStrategy.js';
 export * from './strategies/signature/FireblocksStrategy.js';
 export * from './strategies/signature/ISignatureStrategy.js';
 //* Utils
+export * from './utils/constants.js';
 export * from './utils/utilities.js';

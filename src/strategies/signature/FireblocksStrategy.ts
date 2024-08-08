@@ -26,10 +26,12 @@ import {
   TransactionStatus,
 } from 'fireblocks-sdk';
 import { CreateTransactionResponse } from 'fireblocks-sdk/dist/src/types';
-import { ISignatureStrategy } from '../signature/ISignatureStrategy.js';
-import { FireblocksConfig } from '../config/FireblocksConfig.js';
-import { SignatureRequest } from '../../models/signature/SignatureRequest.js';
-import { hexStringToUint8Array } from '../../utils/utilities.js';
+import {
+  ISignatureStrategy,
+  FireblocksConfig,
+  SignatureRequest,
+  hexStringToUint8Array,
+} from '../../../src';
 
 const MAX_RETRIES = 10;
 const POLL_INTERVAL = 1000;

@@ -19,8 +19,8 @@
  */
 
 import { describe, expect, it } from '@jest/globals';
-import { TEST_TIMEOUT } from '../../config';
 import { SignatureRequest } from '../../src';
+import { TEST_TIMEOUT } from '../../config';
 
 describe('🧪 Models TESTS', () => {
   describe('Signatures Request', () => {

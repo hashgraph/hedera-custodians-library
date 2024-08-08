@@ -18,7 +18,7 @@
  *
  */
 
-import { SignatureRequest } from '../../models/signature/SignatureRequest.js';
+import { SignatureRequest } from '../../../src';
 
 /**
  * Represents a signature strategy for signing requests.

@@ -18,14 +18,14 @@
  *
  */
 
+import { describe, expect, it, jest } from '@jest/globals';
+import { SignatureStatus } from '@dfns/sdk/codegen/datamodel/Wallets/index.js';
 import {
   DFNSConfig,
   SignatureRequest,
   DFNSStrategy,
   hexStringToUint8Array,
 } from '../../src';
-import { describe, expect, it, jest } from '@jest/globals';
-import { SignatureStatus } from '@dfns/sdk/codegen/datamodel/Wallets/index.js';
 
 const signatureResponse = {
   id: 'signature-id',

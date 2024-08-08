@@ -18,12 +18,14 @@
  *
  */
 
-import { ISignatureStrategy } from './ISignatureStrategy';
-import { AWSKMSConfig } from '../config/AWSKMSConfig';
-import { SignatureRequest } from '../../models/signature/SignatureRequest';
 import { KMSClient, SignCommand, SignCommandInput } from '@aws-sdk/client-kms';
-import { calcKeccak256 } from '../../utils/utilities';
-import EcdsaAsn1Signature from '../../models/signature/EcdsaAsn1Signature';
+import {
+  EcdsaAsn1Signature,
+  ISignatureStrategy,
+  AWSKMSConfig,
+  SignatureRequest,
+  calcKeccak256,
+} from '../../../src';
 
 const SIGNING_ALGORITHM = 'ECDSA_SHA_256';
 const MESSAGE_TYPE = 'DIGEST';

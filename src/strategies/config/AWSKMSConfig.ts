@@ -18,9 +18,11 @@
  *
  */
 
-import { IStrategyConfig } from './IStrategyConfig';
-import { ISignatureStrategy } from '../signature/ISignatureStrategy';
-import { AWSKMSStrategy } from '../signature/AWSKMSStrategy';
+import {
+  AWSKMSStrategy,
+  ISignatureStrategy,
+  IStrategyConfig,
+} from '../../../src';
 
 /**
  * Configuration for the AWS KMS strategy.

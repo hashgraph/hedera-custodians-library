@@ -19,7 +19,7 @@
  */
 
 import { IStrategyConfig } from '../strategies/config/IStrategyConfig.js';
-import { SignatureRequest } from '../models/signature/SignatureRequest.js';
+import { SignatureRequest } from '../models/SignatureRequest.js';
 import { StrategyFactory } from '../factories/StrategyFactory.js';
 
 /**
