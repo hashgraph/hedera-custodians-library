@@ -58,7 +58,7 @@ export class EcdsaAsn1Signature {
     return EcdsaAsn1Signature.fromElement(element);
   }
 
-  toBytes(): Uint8Array {
+  toBytes(): Buffer {
     const rElement = new DERElement();
     rElement.tagClass = ASN1TagClass.universal;
     rElement.tagNumber = ASN1UniversalType.integer;
