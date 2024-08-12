@@ -50,7 +50,6 @@ describe('🧪 EcdsaAsn1Signature TESTS', () => {
     const expectedBytes = Buffer.from(
       new Uint8Array([48, 10, 2, 3, 1, 2, 3, 2, 3, 4, 5, 6])
     );
-    console.log('bytes', bytes, 'expectedBytes', expectedBytes);
     expect(bytes).toEqual(expectedBytes);
   });
 });

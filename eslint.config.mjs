@@ -2,6 +2,7 @@ import tsEsLint from '@typescript-eslint/eslint-plugin';
 import tsParser from '@typescript-eslint/parser';
 import jest from 'jest';
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
+import eslintConfigPrettier from 'eslint-config-prettier';
 import licenseHeader from 'eslint-plugin-license-header';
 
 export default [
@@ -47,5 +48,6 @@ export default [
     },
   },
   eslintPluginPrettierRecommended,
+  eslintConfigPrettier,
   // You can add more configuration objects if needed for different file patterns or environments
 ];

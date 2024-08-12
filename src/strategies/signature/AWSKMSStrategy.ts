@@ -30,14 +30,13 @@ import {
 const SIGNING_ALGORITHM = 'ECDSA_SHA_256';
 const MESSAGE_TYPE = 'DIGEST';
 
-let kmsClient: KMSClient;
-
 export class AWSKMSStrategy implements ISignatureStrategy {
   private readonly strategyConfig: AWSKMSConfig;
+  private readonly kmsClient: KMSClient;
 
   constructor(strategyConfig: AWSKMSConfig) {
     this.strategyConfig = strategyConfig;
-    kmsClient = new KMSClient({
+    this.kmsClient = new KMSClient({
       region: this.strategyConfig.awsRegion,
       credentials: {
         accessKeyId: this.strategyConfig.awsAccessKeyId,
@@ -57,9 +56,10 @@ export class AWSKMSStrategy implements ISignatureStrategy {
       SigningAlgorithm: SIGNING_ALGORITHM,
       MessageType: MESSAGE_TYPE,
     } as SignCommandInput;
+    console.log('Signing with KMS:', signCommandInput);
     const command = new SignCommand(signCommandInput);
-    const response = await kmsClient.send(command);
-    if (!response.Signature) {
+    const response = await this.kmsClient.send(command);
+    if (!response || !response.Signature) {
       throw new Error('Signature not found');
     }
 
