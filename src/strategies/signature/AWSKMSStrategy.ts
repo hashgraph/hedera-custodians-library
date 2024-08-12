@@ -56,7 +56,6 @@ export class AWSKMSStrategy implements ISignatureStrategy {
       SigningAlgorithm: SIGNING_ALGORITHM,
       MessageType: MESSAGE_TYPE,
     } as SignCommandInput;
-    console.log('Signing with KMS:', signCommandInput);
     const command = new SignCommand(signCommandInput);
     const response = await this.kmsClient.send(command);
     if (!response || !response.Signature) {
@@ -73,6 +72,6 @@ export class AWSKMSStrategy implements ISignatureStrategy {
       ecdsaSignature.s[0] == 0 ? ecdsaSignature.s.slice(1) : ecdsaSignature.s,
     ]).valueOf();
 
-    return rawSignature;
+    return new Uint8Array(rawSignature);
   }
 }
