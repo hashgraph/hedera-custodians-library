@@ -19,8 +19,17 @@
  */
 
 import { describe, expect, it, jest } from '@jest/globals';
-import { SignCommandOutput } from '@aws-sdk/client-kms';
-import { SignatureRequest, AWSKMSStrategy, AWSKMSConfig } from '../../src';
+import {
+  KMSClient,
+  SignCommandInput,
+  SignCommandOutput,
+} from '@aws-sdk/client-kms';
+import {
+  SignatureRequest,
+  AWSKMSStrategy,
+  AWSKMSConfig,
+  calcKeccak256,
+} from '../../src';
 const EXAMPLE_DER_SIGNATURE = new Uint8Array([
   48, 69, 2, 32, 106, 83, 175, 75, 8, 232, 155, 63, 17, 93, 150, 137, 172, 254,
   239, 255, 246, 1, 106, 180, 240, 53, 247, 66, 142, 240, 185, 235, 172, 101,
@@ -34,6 +43,14 @@ const EXAMPLE_RAW_SIGNATURE = new Uint8Array([
   218, 66, 178, 57, 16, 75, 111, 184, 162, 232, 167, 148, 27, 127, 194, 94, 213,
   11, 196, 0, 125, 162, 125, 234, 70, 245, 208, 254, 8, 112, 43,
 ]);
+
+const SIGNING_ALGORITHM = 'ECDSA_SHA_256';
+const MESSAGE_TYPE = 'DIGEST';
+
+const MOCKED_AWS_ACCESS_KEY_ID = 'mockedAwsAccessKeyId';
+const MOCKED_AWS_SECRET_ACCESS_KEY = 'mockedAwsSecretAccessKey';
+const MOCKED_AWS_REGION = 'mockedAwsRegion';
+const MOCKED_AWS_KMS_KEY_ID = 'AKIAQD75ZRQQDVRM5YXUT';
 
 const mockSignatureResponse: SignCommandOutput = {
   $metadata: {
@@ -49,53 +66,71 @@ const mockSignatureResponse: SignCommandOutput = {
 };
 
 let awsKmsStrategy: AWSKMSStrategy;
-
-jest.mock('@aws-sdk/client-kms', () => ({
-  KMSClient: jest.fn().mockImplementation(() => ({
-    send: jest
-      .fn()
-      .mockImplementation(() => Promise.resolve(mockSignatureResponse)),
-  })),
-}));
+const mocks = {
+  kms: {
+    send: jest.spyOn(KMSClient.prototype, 'send'),
+  },
+};
 
 describe('🧪 DFNSStrategy TESTS', () => {
-  beforeEach(() => {
-    // mocks.kms.send.mockImplementation(() => {
-    //   Promise.resolve(mockSignatureResponse);
-    // });
-    awsKmsStrategy = setupAwsKmsStrategy();
+  beforeAll(() => {
+    mocks.kms.send.mockImplementation(() =>
+      Promise.resolve(mockSignatureResponse)
+    );
   });
   afterAll(() => {
     jest.resetAllMocks();
     jest.restoreAllMocks();
   });
 
-  //! Bypass husky pre-commit hook, DELETE THIS Code
-  it('should bypass husky pre-commit hook', () => {
-    expect(true).toBeTruthy();
+  it('should correctly create an instance of AWSKMSStrategy', () => {
+    // Arrange
+    const expectedStrategyConfig = new AWSKMSConfig(
+      MOCKED_AWS_ACCESS_KEY_ID,
+      MOCKED_AWS_SECRET_ACCESS_KEY,
+      MOCKED_AWS_REGION,
+      MOCKED_AWS_KMS_KEY_ID
+    );
+    // Act
+    const result = setupAwsKmsStrategy();
+    // Assert
+    expect(result).toBeInstanceOf(AWSKMSStrategy);
+    expect(result['strategyConfig']).toEqual(expectedStrategyConfig);
+    expect(result['kmsClient']).toBeInstanceOf(KMSClient);
   });
 
-  // it('should correctly sign a signature request', async () => {
-  //   // Arrange
-  //   const mockSignatureRequest = new SignatureRequest(
-  //     new Uint8Array([1, 2, 3])
-  //   );
-  //   const expectedSignatureResponse = EXAMPLE_RAW_SIGNATURE;
-  //   // Act
-  //   const result = await awsKmsStrategy.sign(mockSignatureRequest);
-  //   // Assert
-  //   // expect(mocks.kms.send).toHaveBeenCalledTimes(1);
-  //   expect(awsKmsStrategy['kmsClient']['send']).toHaveBeenCalledTimes(1);
-  //   expect(result).toEqual(expectedSignatureResponse);
-  // });
+  it('should correctly sign a signature request', async () => {
+    // Arrange
+    // Setup AWS KMS Strategy
+    awsKmsStrategy = setupAwsKmsStrategy();
+    const mockSignatureRequest = new SignatureRequest(
+      new Uint8Array([1, 2, 3])
+    );
+    const expectedSignatureResponse = EXAMPLE_RAW_SIGNATURE;
+    const expectedCommand = {
+      Message: calcKeccak256(mockSignatureRequest.getTransactionBytes()),
+      KeyId: MOCKED_AWS_KMS_KEY_ID,
+      SigningAlgorithm: SIGNING_ALGORITHM,
+      MessageType: MESSAGE_TYPE,
+    } as SignCommandInput;
+    // Act
+    const result = await awsKmsStrategy.sign(mockSignatureRequest);
+    // Assert
+    expect(mocks.kms.send).toHaveBeenCalledTimes(1);
+    expect(mocks.kms.send).toHaveBeenCalledWith(
+      expect.objectContaining({ input: expectedCommand })
+    );
+    expect(result).toEqual(expectedSignatureResponse);
+  });
 });
 
-const setupAwsKmsStrategy = (): AWSKMSStrategy => {
-  const mockStrategyConfig = new AWSKMSConfig(
-    'mockedAwsAccessKeyId',
-    'mockedAwsSecretAccessKey',
-    'mockedAwsRegion',
-    'AKIAQD75ZRQQDVRM5YXUT'
+function setupAwsKmsStrategy(): AWSKMSStrategy {
+  return new AWSKMSStrategy(
+    new AWSKMSConfig(
+      MOCKED_AWS_ACCESS_KEY_ID,
+      MOCKED_AWS_SECRET_ACCESS_KEY,
+      MOCKED_AWS_REGION,
+      MOCKED_AWS_KMS_KEY_ID
+    )
   );
-  return new AWSKMSStrategy(mockStrategyConfig);
-};
+}
