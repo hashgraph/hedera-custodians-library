@@ -1,6 +1,6 @@
 {
   "name": "@hashgraph/hedera-custodians-integration",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "A library to provide integration with custodial wallets",
   "homepage": "https://github.com/hashgraph/hedera-custodians-library",
   "repository": {
