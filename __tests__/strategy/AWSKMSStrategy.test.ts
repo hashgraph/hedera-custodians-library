@@ -51,8 +51,7 @@ const MOCKED_AWS_KMS_CONFIG = new AWSKMSConfig(
   'mockedAwsAccessKeyId',
   'mockedAwsSecretAccessKey',
   'mockedAwsRegion',
-  'AKIAQD75ZRQQDVRM5YXUT',
-  'mockedAwsPublicKey'
+  'AKIAQD75ZRQQDVRM5YXUT'
 );
 
 const mockSignatureResponse: SignCommandOutput = {
