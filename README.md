@@ -18,6 +18,9 @@
 - [7. Test](#7-test)
   - [7.1. Files](#71-files)
   - [7.2 Configuration](#72-configuration)
+    - [Fireblocks](#fireblocks)
+    - [Dfns](#dfns)
+    - [AWS KMS](#aws-kms)
   - [7.3. Run](#73-run)
 - [8. Contributing](#8-contributing)
 - [9. Code of Conduct](#9-code-of-conduct)
@@ -31,7 +34,7 @@ Optimized for integration with the Hedera network, it supports services like Fir
 
 ### Current services supported
 
-- DFNS
+- Dfns
 - Fireblocks
 
 ## 2. Architecture
@@ -158,13 +161,13 @@ When you run `npm run build` in your terminal, npm will execute this script comm
 
 Test files for the `hedera-custodians-library` library are in the `__tests__/` directory, corresponding to the source files in the `src/` directory. Key test files include:
 
-- **StrategyFactory.test.ts**: Tests the `StrategyFactory` for both Fireblocks and DFNS configurations. Verifies if the factory correctly instantiates `FireblocksStrategy` with Fireblocks config, and `DFNSStrategy` with DFNS config, ensuring each strategy is appropriately created.
+- **StrategyFactory.test.ts**: Tests the `StrategyFactory` for both Fireblocks and Dfns configurations. Verifies if the factory correctly instantiates `FireblocksStrategy` with Fireblocks config, and `DFNSStrategy` with Dfns config, ensuring each strategy is appropriately created.
 
 - **Model.test.ts**: Focuses on the `SignatureRequest` class, testing methods like `getTransactionBytes` and `setTransactionBytes` for handling transaction bytes.
 
-- **Service.test.ts**: An integration test suite for the `CustodialWalletService` class. It assesses the class's ability to manage configurations and sign transactions. The suite features distinct test cases, focusing on configuration settings and the signing process, with special attention to the integration with Fireblocks and DFNS services.
+- **Service.test.ts**: An integration test suite for the `CustodialWalletService` class. It assesses the class's ability to manage configurations and sign transactions. The suite features distinct test cases, focusing on configuration settings and the signing process, with special attention to the integration with Fireblocks and Dfns services.
 
-- **DFNSStrategy.test.ts**: Tests the `DFNSStrategy` class, especially the `sign` method, using a mock DFNS API client for signature generation and verification.
+- **DFNSStrategy.test.ts**: Tests the `DFNSStrategy` class, especially the `sign` method, using a mock Dfns API client for signature generation and verification.
 
 - **FireblocksStrategy.test.ts**: Similar to DFNSStrategy tests, but focused on the `FireblocksStrategy` class, using a mock Fireblocks SDK for the signing process.
 
@@ -174,11 +177,11 @@ The tests, written using Jest in a Node.js environment, comprehensively cover si
 
 The configuration for the tests is defined in the `jest.config.js` file located in the root directory of the library.
 
-The `config.ts` file is responsible for setting up the configurations for the `FireblocksConfig` and `DFNSStrategy` classes, which are used to manage the interactions with the Fireblocks and DFNS APIs, respectively.
+The `config.ts` file is responsible for setting up the configurations for the `FireblocksConfig` and `DFNSStrategy` classes, which are used to manage the interactions with the Fireblocks and Dfns APIs, respectively.
 
 To run the tests, you need to provide the following environment variables in a `.env` file:
 
-For Fireblocks:
+#### Fireblocks
 
 - `FIREBLOCKS_API_SECRET_KEY`: Path to Fireblocks API secret key file or secret key value **encoded in Base64**
 - `FIREBLOCKS_API_KEY`: Your Fireblocks API key
@@ -188,17 +191,29 @@ For Fireblocks:
 - `FIREBLOCKS_PUBLIC_KEY`: Public key of the Vault for Fireblocks
 - `FIREBLOCKS_HEDERA_ACCOUNT_ID`: Hedera Account ID linked to the public key of the vault for Fireblocks
 
-For DFNS:
+#### Dfns
 
-- `DFNS_SERVICE_ACCOUNT_AUTHORIZATION_TOKEN`: Authorization token for DFNS service account
-- `DFNS_SERVICE_ACCOUNT_CREDENTIAL_ID`: Credential ID for DFNS service account
-- `DFNS_SERVICE_ACCOUNT_PRIVATE_KEY`: Path to DFNS service account private key file or private key value **encoded in Base64**
-- `DFNS_APP_ORIGIN`: URL origin of DFNS app
-- `DFNS_APP_ID`: ID of DFNS app
-- `DFNS_TEST_URL`: Test URL for DFNS API
-- `DFNS_WALLET_ID`: Wallet ID for DFNS
+- `DFNS_SERVICE_ACCOUNT_AUTHORIZATION_TOKEN`: Authorization token for Dfns service account
+- `DFNS_SERVICE_ACCOUNT_CREDENTIAL_ID`: Credential ID for Dfns service account
+- `DFNS_SERVICE_ACCOUNT_PRIVATE_KEY`: Path to Dfns service account private key file or private key value **encoded in Base64**
+- `DFNS_APP_ORIGIN`: URL origin of Dfns app
+- `DFNS_APP_ID`: ID of Dfns app
+- `DFNS_TEST_URL`: Test URL for Dfns API
+- `DFNS_WALLET_ID`: Wallet ID for Dfns
 - `DFNS_WALLET_PUBLIC_KEY`: Public key of the Wallet for Dfns
 - `DFNS_WALLET_HEDERA_ACCOUNT_ID`: Hedera Account ID linked to the public key of the Wallet for Dfns. In Dfns the Hedera Account must be generated as an additional step
+- `DFNS_WALLET_ID_ECDSA`: Wallet ID for Dfns ECDSA key
+- `DFNS_WALLET_PUBLIC_KEY_ECDSA`: Public key of the Wallet for Dfns ECDSA key
+- `DFNS_WALLET_HEDERA_ACCOUNT_ID_ECDSA`: Hedera Account ID linked to the public key of the Wallet for Dfns ECDSA key. In Dfns the Hedera Account must be generated as an additional step
+
+#### AWS KMS
+
+- `AWS_ACCESS_KEY_ID`: AWS access key ID for KMS
+- `AWS_SECRET_ACCESS_KEY`: AWS secret access key for KMS
+- `AWS_REGION`: AWS region for KMS
+- `AWS_KMS_KEY_ID`: AWS KMS key ID
+- `AWS_KMS_PUBLIC_KEY`: AWS KMS public key in PEM format. File path to a .pem file is recommended. You can also set it to the .pem file content base64 encoded
+- `AWS_HEDERA_ACCOUNT_ID`: AWS Hedera account ID
 
 ### 7.3. Run
 

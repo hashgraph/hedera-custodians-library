@@ -47,10 +47,13 @@ const EXAMPLE_RAW_SIGNATURE = new Uint8Array([
 const SIGNING_ALGORITHM = 'ECDSA_SHA_256';
 const MESSAGE_TYPE = 'DIGEST';
 
-const MOCKED_AWS_ACCESS_KEY_ID = 'mockedAwsAccessKeyId';
-const MOCKED_AWS_SECRET_ACCESS_KEY = 'mockedAwsSecretAccessKey';
-const MOCKED_AWS_REGION = 'mockedAwsRegion';
-const MOCKED_AWS_KMS_KEY_ID = 'AKIAQD75ZRQQDVRM5YXUT';
+const MOCKED_AWS_KMS_CONFIG = new AWSKMSConfig(
+  'mockedAwsAccessKeyId',
+  'mockedAwsSecretAccessKey',
+  'mockedAwsRegion',
+  'AKIAQD75ZRQQDVRM5YXUT',
+  'mockedAwsPublicKey'
+);
 
 const mockSignatureResponse: SignCommandOutput = {
   $metadata: {
@@ -85,12 +88,7 @@ describe('🧪 DFNSStrategy TESTS', () => {
 
   it('should correctly create an instance of AWSKMSStrategy', () => {
     // Arrange
-    const expectedStrategyConfig = new AWSKMSConfig(
-      MOCKED_AWS_ACCESS_KEY_ID,
-      MOCKED_AWS_SECRET_ACCESS_KEY,
-      MOCKED_AWS_REGION,
-      MOCKED_AWS_KMS_KEY_ID
-    );
+    const expectedStrategyConfig = MOCKED_AWS_KMS_CONFIG;
     // Act
     const result = setupAwsKmsStrategy();
     // Assert
@@ -109,7 +107,7 @@ describe('🧪 DFNSStrategy TESTS', () => {
     const expectedSignatureResponse = EXAMPLE_RAW_SIGNATURE;
     const expectedCommand = {
       Message: calcKeccak256(mockSignatureRequest.getTransactionBytes()),
-      KeyId: MOCKED_AWS_KMS_KEY_ID,
+      KeyId: MOCKED_AWS_KMS_CONFIG.awsKmsKeyId,
       SigningAlgorithm: SIGNING_ALGORITHM,
       MessageType: MESSAGE_TYPE,
     } as SignCommandInput;
@@ -125,12 +123,5 @@ describe('🧪 DFNSStrategy TESTS', () => {
 });
 
 function setupAwsKmsStrategy(): AWSKMSStrategy {
-  return new AWSKMSStrategy(
-    new AWSKMSConfig(
-      MOCKED_AWS_ACCESS_KEY_ID,
-      MOCKED_AWS_SECRET_ACCESS_KEY,
-      MOCKED_AWS_REGION,
-      MOCKED_AWS_KMS_KEY_ID
-    )
-  );
+  return new AWSKMSStrategy(MOCKED_AWS_KMS_CONFIG);
 }

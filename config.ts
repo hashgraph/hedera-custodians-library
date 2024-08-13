@@ -21,7 +21,7 @@
 import fs from 'fs';
 import path from 'path';
 import { config } from 'dotenv';
-import { DFNSConfig, FireblocksConfig } from './src';
+import { DFNSConfig, FireblocksConfig, AWSKMSConfig } from './src';
 config();
 
 // Regex to validate path
@@ -32,6 +32,8 @@ export const DEFAULT_FIREBLOCKS_API_SECRET_KEY =
   'resources/keys/fireblocks-priv.pem';
 export const DEFAULT_DFNS_SERVICE_ACCOUNT_PRIVATE_KEY =
   'resources/keys/dfns-priv.pem';
+export const DEFAULT_AWS_KMS_PUBLIC_KEY =
+  'resources/keys/aws-public-b6961cc4-ca88-4bcf-9e0f-51696c7fd230.pem';
 export const TEST_TIMEOUT = 10000; // 10 seconds
 
 //* Fireblocks configuration
@@ -74,4 +76,26 @@ export const dfnsConfig_ECDSA = new DFNSConfig(
   process.env.DFNS_BASE_URL ?? '',
   process.env.DFNS_WALLET_ID_ECDSA ?? '',
   process.env.DFNS_WALLET_PUBLIC_KEY_ECDSA ?? ''
+);
+
+//* AWS KMS configuration
+const kmsPubKeyPathOrEncoded =
+  process.env.AWS_KMS_PUBLIC_KEY || DEFAULT_AWS_KMS_PUBLIC_KEY;
+const kmsPubKeyPem = pathRegex.test(kmsPubKeyPathOrEncoded)
+  ? fs.readFileSync(path.resolve(kmsPubKeyPathOrEncoded), 'utf8')
+  : Buffer.from(kmsPubKeyPathOrEncoded, 'base64').toString('utf8');
+const kmsPubKeyDerBuffer = Buffer.from(
+  kmsPubKeyPem.replace(
+    /^-----BEGIN PUBLIC KEY-----[\r\n]+|[\r\n]+-----END PUBLIC KEY-----$/g,
+    ''
+  ),
+  'base64'
+);
+const kmsPubKeyDerHex = kmsPubKeyDerBuffer.toString('hex');
+export const awsKMSConfig = new AWSKMSConfig(
+  process.env.AWS_ACCESS_KEY_ID ?? '',
+  process.env.AWS_SECRET_ACCESS_KEY ?? '',
+  process.env.AWS_REGION ?? '',
+  process.env.AWS_KMS_KEY_ID ?? '',
+  kmsPubKeyDerHex
 );

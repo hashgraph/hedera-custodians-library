@@ -25,8 +25,9 @@ import {
   dfnsConfig,
   dfnsConfig_ECDSA,
   fireblocksConfig,
+  awsKMSConfig,
 } from '../config';
-import { DFNSConfig, FireblocksConfig } from '../src';
+import { AWSKMSConfig, DFNSConfig, FireblocksConfig } from '../src';
 import { WriteStream, readFileSync } from 'fs';
 import Example from './Example';
 import ExampleConfig from './ExampleConfig';
@@ -45,7 +46,12 @@ async function main(): Promise<void> {
       type: 'list',
       name: 'custodialService',
       message: 'What custodial service do you use?',
-      choices: ['Dfns', 'Dfns_ECDSA', 'Fireblocks'],
+      choices: [
+        'Dfns',
+        'Dfns_ECDSA',
+        'Fireblocks',
+        'AWS Key Management Service',
+      ],
       default: 'Dfns',
     },
     {
@@ -187,6 +193,49 @@ async function main(): Promise<void> {
         hfssExample = new HfssExample(fireblocksParams);
         hcsExample = new HcsExample(fireblocksParams);
         keyListExample = new KeyListExample(fireblocksParams);
+      }
+      break;
+
+    case 'AWS Key Management Service':
+      if (custodialAnwsers.useEnvVars) {
+        example = new Example(
+          awsKMSConfig,
+          process.env.AWS_KMS_HEDERA_ACCOUNT_ID ?? '',
+          awsKMSConfig.awsKmsPublicKey
+        );
+        htsExample = new HtsExample(
+          awsKMSConfig,
+          process.env.AWS_KMS_HEDERA_ACCOUNT_ID ?? '',
+          awsKMSConfig.awsKmsPublicKey
+        );
+        hscsExample = new HscsExample(
+          awsKMSConfig,
+          process.env.AWS_KMS_HEDERA_ACCOUNT_ID ?? '',
+          awsKMSConfig.awsKmsPublicKey
+        );
+        hfssExample = new HfssExample(
+          awsKMSConfig,
+          process.env.AWS_KMS_HEDERA_ACCOUNT_ID ?? '',
+          awsKMSConfig.awsKmsPublicKey
+        );
+        hcsExample = new HcsExample(
+          awsKMSConfig,
+          process.env.AWS_KMS_HEDERA_ACCOUNT_ID ?? '',
+          awsKMSConfig.awsKmsPublicKey
+        );
+        keyListExample = new KeyListExample(
+          awsKMSConfig,
+          process.env.AWS_KMS_HEDERA_ACCOUNT_ID ?? '',
+          awsKMSConfig.awsKmsPublicKey
+        );
+      } else {
+        const awsKmsParams = await askAwsKmsParams();
+        example = new Example(awsKmsParams);
+        htsExample = new HtsExample(awsKmsParams);
+        hscsExample = new HscsExample(awsKmsParams);
+        hfssExample = new HfssExample(awsKmsParams);
+        hcsExample = new HcsExample(awsKmsParams);
+        keyListExample = new KeyListExample(awsKmsParams);
       }
       break;
 
@@ -387,6 +436,58 @@ async function askFireblocksParams(): Promise<ExampleConfig> {
     ),
     fireblocksParams.hederaAccountId,
     fireblocksParams.publicKey
+  );
+}
+
+async function askAwsKmsParams(): Promise<ExampleConfig> {
+  const awsKmsParams: Answers = await inquirer.prompt([
+    {
+      type: 'input',
+      name: 'accessKeyId',
+      message: 'Enter the AWS access key ID',
+      default: awsKMSConfig.awsAccessKeyId,
+    },
+    {
+      type: 'input',
+      name: 'secretAccessKey',
+      message: 'Enter the path to the AWS secret access key',
+      default: awsKMSConfig.awsSecretAccessKey,
+    },
+    {
+      type: 'input',
+      name: 'region',
+      message: 'Enter the AWS region',
+      default: awsKMSConfig.awsRegion,
+    },
+    {
+      type: 'input',
+      name: 'kmsKeyId',
+      message: 'Enter the AWS KMS key ID',
+      default: awsKMSConfig.awsKmsKeyId,
+    },
+    {
+      type: 'input',
+      name: 'publicKey',
+      message: 'Enter the AWS KMS public key',
+      default: awsKMSConfig.awsKmsPublicKey,
+    },
+    {
+      type: 'input',
+      name: 'hederaAccountId',
+      message: 'Enter the Hedera account ID',
+      default: process.env.AWS_KMS_HEDERA_ACCOUNT_ID ?? '',
+    },
+  ]);
+  return new ExampleConfig(
+    new AWSKMSConfig(
+      awsKmsParams.accessKeyId,
+      awsKmsParams.secretAccessKey,
+      awsKmsParams.region,
+      awsKmsParams.kmsKeyId,
+      awsKmsParams.publicKey
+    ),
+    awsKmsParams.hederaAccountId,
+    awsKmsParams.publicKey
   );
 }
 

@@ -19,14 +19,18 @@
  */
 
 import { AccountId, PublicKey } from '@hashgraph/sdk';
-import { DFNSConfig, FireblocksConfig } from '../src';
+import { AWSKMSConfig, DFNSConfig, FireblocksConfig } from '../src';
 
+/**
+ * Represents the configuration for an example service.
+ */
 export default class ExampleConfig {
-  serviceSpecificConfig: DFNSConfig | FireblocksConfig;
+  serviceSpecificConfig: DFNSConfig | FireblocksConfig | AWSKMSConfig;
   hederaAccountId: AccountId;
   publicKey: PublicKey;
+
   constructor(
-    config: DFNSConfig | FireblocksConfig,
+    config: DFNSConfig | FireblocksConfig | AWSKMSConfig,
     hederaAccountId: AccountId | string,
     publicKey: PublicKey | string
   ) {

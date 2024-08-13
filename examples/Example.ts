@@ -19,6 +19,7 @@
  */
 
 import {
+  AWSKMSConfig,
   CustodialWalletService,
   DFNSConfig,
   FireblocksConfig,
@@ -43,27 +44,14 @@ export default class Example {
   service: CustodialWalletService;
   client: Client;
 
-  /**
-   * Handles signing a transaction.
-   *
-   * @param message - The message to be signed.
-   * @returns The signed message.
-   */
-  protected readonly signTransactionHandler = async (
-    message: Uint8Array
-  ): Promise<Uint8Array> => {
-    const signatureRequest = new SignatureRequest(message);
-    return await this.service.signTransaction(signatureRequest);
-  };
-
   constructor(config: ExampleConfig);
   constructor(
-    config: FireblocksConfig | DFNSConfig,
+    config: FireblocksConfig | DFNSConfig | AWSKMSConfig,
     hederaAccountId: AccountId | string,
     publicKey: PublicKey | string
   );
   constructor(
-    config: ExampleConfig | FireblocksConfig | DFNSConfig,
+    config: ExampleConfig | FireblocksConfig | DFNSConfig | AWSKMSConfig,
     hederaAccountId?: AccountId | string,
     publicKey?: PublicKey | string
   ) {
@@ -83,6 +71,19 @@ export default class Example {
       this.signTransactionHandler
     );
   }
+
+  /**
+   * Handles signing a transaction.
+   *
+   * @param message - The message to be signed.
+   * @returns The signed message.
+   */
+  protected readonly signTransactionHandler = async (
+    message: Uint8Array
+  ): Promise<Uint8Array> => {
+    const signatureRequest = new SignatureRequest(message);
+    return await this.service.signTransaction(signatureRequest);
+  };
 
   /**
    * Creates a new account with an optional account key.

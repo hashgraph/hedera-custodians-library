@@ -39,12 +39,14 @@ export class AWSKMSConfig implements IStrategyConfig {
    * @param {string} awsSecretAccessKey - The AWS secret access key.
    * @param {string} awsRegion - The AWS region.
    * @param {string} awsKmsKeyId - The AWS KMS key ID.
+   * @param {string} awsKmsPublicKey - The AWS KMS public key.
    */
   constructor(
     public awsAccessKeyId: string,
     public awsSecretAccessKey: string,
     public awsRegion: string,
-    public awsKmsKeyId: string
+    public awsKmsKeyId: string,
+    public awsKmsPublicKey: string
   ) {}
 
   /**

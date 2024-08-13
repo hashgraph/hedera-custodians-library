@@ -45,7 +45,14 @@ export class AWSKMSStrategy implements ISignatureStrategy {
     });
   }
 
-  async sign(request: SignatureRequest): Promise<Uint8Array> {
+  /**
+   * Signs a signature request using AWS KMS.
+   *
+   * @param request - The signature request.
+   * @returns The raw ECDSA signature as a Uint8Array.
+   * @throws Error if the signature is not found.
+   */
+  public async sign(request: SignatureRequest): Promise<Uint8Array> {
     // Create keccak256 message digest
     const hash = calcKeccak256(request.getTransactionBytes());
 
