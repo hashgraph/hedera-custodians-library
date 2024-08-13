@@ -81,21 +81,39 @@ export const dfnsConfig_ECDSA = new DFNSConfig(
 //* AWS KMS configuration
 const kmsPubKeyPathOrEncoded =
   process.env.AWS_KMS_PUBLIC_KEY || DEFAULT_AWS_KMS_PUBLIC_KEY;
-const kmsPubKeyPem = pathRegex.test(kmsPubKeyPathOrEncoded)
-  ? fs.readFileSync(path.resolve(kmsPubKeyPathOrEncoded), 'utf8')
-  : Buffer.from(kmsPubKeyPathOrEncoded, 'base64').toString('utf8');
-const kmsPubKeyDerBuffer = Buffer.from(
-  kmsPubKeyPem.replace(
-    /^-----BEGIN PUBLIC KEY-----[\r\n]+|[\r\n]+-----END PUBLIC KEY-----$/g,
-    ''
-  ),
-  'base64'
-);
-const kmsPubKeyDerHex = kmsPubKeyDerBuffer.toString('hex');
+let kmsPubKeyPem: string | undefined;
+let kmsPubKeyDerHex: string | undefined;
+if (kmsPubKeyPathOrEncoded) {
+  if (
+    pathRegex.test(kmsPubKeyPathOrEncoded) &&
+    fs.existsSync(kmsPubKeyPathOrEncoded)
+  ) {
+    kmsPubKeyPem = fs.readFileSync(
+      path.resolve(kmsPubKeyPathOrEncoded),
+      'utf8'
+    );
+  } else if (!pathRegex.test(kmsPubKeyPathOrEncoded)) {
+    kmsPubKeyPem = Buffer.from(kmsPubKeyPathOrEncoded, 'base64').toString(
+      'utf8'
+    );
+  } else {
+    kmsPubKeyPem = undefined;
+  }
+  if (kmsPubKeyPem) {
+    const kmsPubKeyDerBuffer = Buffer.from(
+      kmsPubKeyPem.replace(
+        /^-----BEGIN PUBLIC KEY-----[\r\n]+|[\r\n]+-----END PUBLIC KEY-----$/g,
+        ''
+      ),
+      'base64'
+    );
+    kmsPubKeyDerHex = kmsPubKeyDerBuffer.toString('hex');
+  }
+}
 export const awsKMSConfig = new AWSKMSConfig(
   process.env.AWS_ACCESS_KEY_ID ?? '',
   process.env.AWS_SECRET_ACCESS_KEY ?? '',
   process.env.AWS_REGION ?? '',
   process.env.AWS_KMS_KEY_ID ?? '',
-  kmsPubKeyDerHex
+  kmsPubKeyDerHex ?? ''
 );

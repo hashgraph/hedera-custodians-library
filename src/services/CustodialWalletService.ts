@@ -21,7 +21,6 @@
 import { IStrategyConfig } from '../strategies/config/IStrategyConfig.js';
 import { SignatureRequest } from '../models/SignatureRequest.js';
 import { StrategyFactory } from '../factories/StrategyFactory.js';
-import { PublicKey } from '@hashgraph/sdk';
 
 /**
  * Service class for managing custodial wallet operations.

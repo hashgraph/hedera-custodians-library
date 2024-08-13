@@ -19,7 +19,7 @@
  */
 
 import { AccountId, PublicKey } from '@hashgraph/sdk';
-import { AWSKMSConfig, DFNSConfig, FireblocksConfig } from '../src';
+import { AWSKMSConfig, FireblocksConfig, DFNSConfig } from '../src';
 
 /**
  * Represents the configuration for an example service.
