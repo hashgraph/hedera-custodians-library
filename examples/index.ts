@@ -25,8 +25,10 @@ import {
   dfnsConfig,
   dfnsConfig_ECDSA,
   fireblocksConfig,
+  awsKMSConfig,
+  pathRegex,
 } from '../config';
-import { DFNSConfig, FireblocksConfig } from '../src';
+import { AWSKMSConfig, DFNSConfig, FireblocksConfig } from '../src';
 import { WriteStream, readFileSync } from 'fs';
 import Example from './Example';
 import ExampleConfig from './ExampleConfig';
@@ -35,6 +37,9 @@ import KeyListExample from './KeyListExample';
 import HscsExample from './HscsExample';
 import HfssExample from './HfssExample';
 import HcsExample from './HcsExample';
+import fs from 'fs';
+import path from 'path';
+import { PublicKey } from '@hashgraph/sdk';
 
 async function main(): Promise<void> {
   console.log('👋 Welcome to the Hedera Custodians Integration example');
@@ -45,7 +50,12 @@ async function main(): Promise<void> {
       type: 'list',
       name: 'custodialService',
       message: 'What custodial service do you use?',
-      choices: ['Dfns', 'Dfns_ECDSA', 'Fireblocks'],
+      choices: [
+        'Dfns',
+        'Dfns_ECDSA',
+        'Fireblocks',
+        'AWS Key Management Service',
+      ],
       default: 'Dfns',
     },
     {
@@ -187,6 +197,86 @@ async function main(): Promise<void> {
         hfssExample = new HfssExample(fireblocksParams);
         hcsExample = new HcsExample(fireblocksParams);
         keyListExample = new KeyListExample(fireblocksParams);
+      }
+      break;
+
+    case 'AWS Key Management Service':
+      // Get the AWS KMS public key
+      const DEFAULT_AWS_KMS_PUBLIC_KEY =
+        'resources/keys/aws-public-b6961cc4-ca88-4bcf-9e0f-51696c7fd230.pem';
+      const kmsPubKeyPathOrEncoded =
+        process.env.AWS_KMS_PUBLIC_KEY || DEFAULT_AWS_KMS_PUBLIC_KEY;
+      let kmsPubKeyPem: string | undefined;
+      let kmsPublicKey: PublicKey | undefined;
+      if (kmsPubKeyPathOrEncoded) {
+        if (
+          pathRegex.test(kmsPubKeyPathOrEncoded) &&
+          fs.existsSync(kmsPubKeyPathOrEncoded)
+        ) {
+          kmsPubKeyPem = fs.readFileSync(
+            path.resolve(kmsPubKeyPathOrEncoded),
+            'utf8'
+          );
+        } else if (!pathRegex.test(kmsPubKeyPathOrEncoded)) {
+          kmsPubKeyPem = Buffer.from(kmsPubKeyPathOrEncoded, 'base64').toString(
+            'utf8'
+          );
+        } else {
+          kmsPubKeyPem = undefined;
+        }
+        if (kmsPubKeyPem) {
+          const kmsPubKeyDerBuffer = Buffer.from(
+            kmsPubKeyPem.replace(
+              /^-----BEGIN PUBLIC KEY-----[\r\n]+|[\r\n]+-----END PUBLIC KEY-----$/g,
+              ''
+            ),
+            'base64'
+          );
+          const kmsPubKeyDerHex = kmsPubKeyDerBuffer.toString('hex');
+          kmsPublicKey = PublicKey.fromString(kmsPubKeyDerHex);
+        }
+      }
+      if (custodialAnwsers.useEnvVars) {
+        example = new Example(
+          awsKMSConfig,
+          process.env.AWS_KMS_HEDERA_ACCOUNT_ID ?? '',
+          kmsPublicKey ?? ''
+        );
+        htsExample = new HtsExample(
+          awsKMSConfig,
+          process.env.AWS_KMS_HEDERA_ACCOUNT_ID ?? '',
+          kmsPublicKey ?? ''
+        );
+        hscsExample = new HscsExample(
+          awsKMSConfig,
+          process.env.AWS_KMS_HEDERA_ACCOUNT_ID ?? '',
+          kmsPublicKey ?? ''
+        );
+        hfssExample = new HfssExample(
+          awsKMSConfig,
+          process.env.AWS_KMS_HEDERA_ACCOUNT_ID ?? '',
+          kmsPublicKey ?? ''
+        );
+        hcsExample = new HcsExample(
+          awsKMSConfig,
+          process.env.AWS_KMS_HEDERA_ACCOUNT_ID ?? '',
+          kmsPublicKey ?? ''
+        );
+        keyListExample = new KeyListExample(
+          awsKMSConfig,
+          process.env.AWS_KMS_HEDERA_ACCOUNT_ID ?? '',
+          kmsPublicKey ?? ''
+        );
+      } else {
+        const awsKmsParams = await askAwsKmsParams({
+          kmsPubKeyPem: kmsPubKeyPem,
+        });
+        example = new Example(awsKmsParams);
+        htsExample = new HtsExample(awsKmsParams);
+        hscsExample = new HscsExample(awsKmsParams);
+        hfssExample = new HfssExample(awsKmsParams);
+        hcsExample = new HcsExample(awsKmsParams);
+        keyListExample = new KeyListExample(awsKmsParams);
       }
       break;
 
@@ -387,6 +477,72 @@ async function askFireblocksParams(): Promise<ExampleConfig> {
     ),
     fireblocksParams.hederaAccountId,
     fireblocksParams.publicKey
+  );
+}
+
+async function askAwsKmsParams({
+  kmsPubKeyPem,
+}: { kmsPubKeyPem?: string } = {}): Promise<ExampleConfig> {
+  const awsKmsParams: Answers = await inquirer.prompt([
+    {
+      type: 'input',
+      name: 'accessKeyId',
+      message: 'Enter the AWS access key ID',
+      default: awsKMSConfig.awsAccessKeyId,
+    },
+    {
+      type: 'input',
+      name: 'secretAccessKey',
+      message: 'Enter the path to the AWS secret access key',
+      default: awsKMSConfig.awsSecretAccessKey,
+    },
+    {
+      type: 'input',
+      name: 'region',
+      message: 'Enter the AWS region',
+      default: awsKMSConfig.awsRegion,
+    },
+    {
+      type: 'input',
+      name: 'kmsKeyId',
+      message: 'Enter the AWS KMS key ID',
+      default: awsKMSConfig.awsKmsKeyId,
+    },
+    {
+      type: 'input',
+      name: 'publicKey',
+      message: 'Enter the AWS KMS public key',
+      default: kmsPubKeyPem,
+    },
+    {
+      type: 'input',
+      name: 'hederaAccountId',
+      message: 'Enter the Hedera account ID',
+      default: process.env.AWS_KMS_HEDERA_ACCOUNT_ID ?? '',
+    },
+  ]);
+  // Parse the AWS KMS public key from PEM to PublicKey
+  if (!kmsPubKeyPem) {
+    throw new Error('❌ Missing AWS KMS public key');
+  }
+  const kmsPubKeyDerBuffer = Buffer.from(
+    kmsPubKeyPem.replace(
+      /^-----BEGIN PUBLIC KEY-----[\r\n]+|[\r\n]+-----END PUBLIC KEY-----$/g,
+      ''
+    ),
+    'base64'
+  );
+  const kmsPubKeyDerHex = kmsPubKeyDerBuffer.toString('hex');
+  const kmsPublicKey = PublicKey.fromString(kmsPubKeyDerHex);
+  return new ExampleConfig(
+    new AWSKMSConfig(
+      awsKmsParams.accessKeyId,
+      awsKmsParams.secretAccessKey,
+      awsKmsParams.region,
+      awsKmsParams.kmsKeyId
+    ),
+    awsKmsParams.hederaAccountId,
+    kmsPublicKey
   );
 }
 

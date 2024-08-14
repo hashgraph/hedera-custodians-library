@@ -21,7 +21,7 @@
 import fs from 'fs';
 import path from 'path';
 import { config } from 'dotenv';
-import { DFNSConfig, FireblocksConfig } from './src';
+import { DFNSConfig, FireblocksConfig, AWSKMSConfig } from './src';
 config();
 
 // Regex to validate path
@@ -74,4 +74,12 @@ export const dfnsConfig_ECDSA = new DFNSConfig(
   process.env.DFNS_BASE_URL ?? '',
   process.env.DFNS_WALLET_ID_ECDSA ?? '',
   process.env.DFNS_WALLET_PUBLIC_KEY_ECDSA ?? ''
+);
+
+//* AWS KMS configuration
+export const awsKMSConfig = new AWSKMSConfig(
+  process.env.AWS_ACCESS_KEY_ID ?? '',
+  process.env.AWS_SECRET_ACCESS_KEY ?? '',
+  process.env.AWS_REGION ?? '',
+  process.env.AWS_KMS_KEY_ID ?? ''
 );

@@ -19,7 +19,7 @@
  */
 
 import { IStrategyConfig } from '../strategies/config/IStrategyConfig.js';
-import { SignatureRequest } from '../models/signature/SignatureRequest.js';
+import { SignatureRequest } from '../models/SignatureRequest.js';
 import { StrategyFactory } from '../factories/StrategyFactory.js';
 
 /**
@@ -41,7 +41,7 @@ export class CustodialWalletService {
    *
    * @returns {IStrategyConfig} The current strategy configuration.
    */
-  getConfig(): IStrategyConfig {
+  public getConfig(): IStrategyConfig {
     return this.config;
   }
 
@@ -50,7 +50,7 @@ export class CustodialWalletService {
    *
    * @param {IStrategyConfig} newConfig - The new configuration for the signature strategy.
    */
-  setConfig(newConfig: IStrategyConfig): void {
+  public setConfig(newConfig: IStrategyConfig): void {
     this.config = newConfig;
   }
 
@@ -61,7 +61,9 @@ export class CustodialWalletService {
    * @param {SignatureRequest} signatureRequest - The request containing the transaction details to be signed.
    * @returns {Promise<Uint8Array>} A promise that resolves to the signed transaction bytes.
    */
-  signTransaction(signatureRequest: SignatureRequest): Promise<Uint8Array> {
+  public async signTransaction(
+    signatureRequest: SignatureRequest
+  ): Promise<Uint8Array> {
     const strategy = StrategyFactory.createSignatureStrategy(this.config);
     return strategy.sign(signatureRequest);
   }

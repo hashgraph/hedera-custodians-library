@@ -18,7 +18,7 @@
  *
  */
 
-import { ISignatureStrategy } from '../signature/ISignatureStrategy.js';
+import { ISignatureStrategy } from '../../../src';
 
 /**
  * Represents the configuration for a strategy.

@@ -18,8 +18,7 @@
  *
  */
 
-import { ISignatureStrategy } from '../strategies/signature/ISignatureStrategy.js';
-import { IStrategyConfig } from '../strategies/config/IStrategyConfig.js';
+import { ISignatureStrategy, IStrategyConfig } from '../../src';
 
 /**
  * Factory class for creating signature strategies.
