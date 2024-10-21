@@ -8,6 +8,9 @@ env:
   # Disable Husky during the workflow
   HUSKY: 0
 
+permissions:
+  contents: read
+
 jobs:
   test:
     name: test
