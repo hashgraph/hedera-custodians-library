@@ -12,6 +12,9 @@ env:
   # Disable Husky during the workflow
   HUSKY: 0
 
+permissions:
+  contents: read
+
 jobs:
   #! Test bypassed for now
   #   test:
