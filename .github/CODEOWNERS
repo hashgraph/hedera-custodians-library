@@ -2,17 +2,17 @@
 ##### Global Protection Rule ######
 ###################################
 # NOTE: This rule is overriden by the more specific rules below. This is the catch-all rule for all files not covered by the more specific rules below.
-*                                               @hashgraph/developer-advocates @hashgraph/iobuilders-hedera-committers
+*                                               @hashgraph/developer-advocates @hashgraph/devops-ci @hashgraph/release-engineering-managers @hashgraph/iobuilders-hedera
 
 ############################
 #####  Project Files  ######
 ############################
 
-/src/**                                         @hashgraph/developer-advocates @hashgraph/iobuilders-hedera-committers
-/__tests__/**                                   @hashgraph/developer-advocates @hashgraph/iobuilders-hedera-committers
-/resources/**                                   @hashgraph/developer-advocates @hashgraph/iobuilders-hedera-committers
-/examples/**                                    @hashgraph/developer-advocates @hashgraph/iobuilders-hedera-committers
-/.husky/**                                      @hashgraph/developer-advocates @hashgraph/iobuilders-hedera-committers
+/src/**                                         @hashgraph/developer-advocates @hashgraph/devops-ci @hashgraph/release-engineering-managers @hashgraph/iobuilders-hedera
+/__tests__/**                                   @hashgraph/developer-advocates @hashgraph/devops-ci @hashgraph/release-engineering-managers @hashgraph/iobuilders-hedera
+/resources/**                                   @hashgraph/developer-advocates @hashgraph/devops-ci @hashgraph/release-engineering-managers @hashgraph/iobuilders-hedera
+/examples/**                                    @hashgraph/developer-advocates @hashgraph/devops-ci @hashgraph/release-engineering-managers @hashgraph/iobuilders-hedera
+/.husky/**                                      @hashgraph/developer-advocates @hashgraph/devops-ci @hashgraph/release-engineering-managers @hashgraph/iobuilders-hedera
 
 #########################
 #####  Core Files  ######
@@ -21,30 +21,30 @@
 # NOTE: Must be placed last to ensure enforcement over all other rules
 
 # Protection Rules for Github Configuration Files and Actions Workflows
-/.github/                                       @hashgraph/devops-ci
+/.github/                                       @hashgraph/devops-ci @hashgraph/release-engineering-managers
 
 # Gradle project files
-/build-logic/**                                 @hashgraph/devops-ci
-**/*.gradle.kts                                 @hashgraph/devops-ci
-/gradle/**                                      @hashgraph/devops-ci
+/build-logic/**                                 @hashgraph/developer-advocates @hashgraph/devops-ci @hashgraph/release-engineering-managers @hashgraph/iobuilders-hedera
+**/*.gradle.kts                                 @hashgraph/developer-advocates @hashgraph/devops-ci @hashgraph/release-engineering-managers @hashgraph/iobuilders-hedera
+/gradle/**                                      @hashgraph/developer-advocates @hashgraph/devops-ci @hashgraph/release-engineering-managers @hashgraph/iobuilders-hedera
 
 # Codacy Tool Configurations
-/config/                                        @hashgraph/release-engineering-managers @hashgraph/devops-ci
-.remarkrc                                       @hashgraph/release-engineering-managers @hashgraph/devops-ci
+/config/                                        @hashgraph/developer-advocates @hashgraph/devops-ci @hashgraph/release-engineering-managers @hashgraph/iobuilders-hedera
+.remarkrc                                       @hashgraph/developer-advocates @hashgraph/devops-ci @hashgraph/release-engineering-managers @hashgraph/iobuilders-hedera
 
 # Semantic Release Configuration
-.releaserc                                      @hashgraph/release-engineering-managers @hashgraph/devops-ci
+.releaserc                                      @hashgraph/developer-advocates @hashgraph/devops-ci @hashgraph/release-engineering-managers @hashgraph/iobuilders-hedera
 
 # Self-protection for root CODEOWNERS files (this file should not exist and should definitely require approval)
 /CODEOWNERS                                     @hashgraph/release-engineering-managers
 
 # Protect the repository root files
-/README.md                                      @hashgraph/release-engineering-managers @hashgraph/devops-ci
+/README.md                                      @hashgraph/developer-advocates @hashgraph/devops-ci @hashgraph/release-engineering-managers @hashgraph/iobuilders-hedera
 **/LICENSE                                      @hashgraph/release-engineering-managers
 
 # CodeCov configuration
-**/codecov.yml                                  @hashgraph/release-engineering-managers @hashgraph/devops-ci
+**/codecov.yml                                  @hashgraph/developer-advocates @hashgraph/devops-ci @hashgraph/release-engineering-managers @hashgraph/iobuilders-hedera
 
 # Git Ignore definitions
-**/.gitignore                                   @hashgraph/release-engineering-managers @hashgraph/devops-ci
-**/.gitignore.*                                 @hashgraph/release-engineering-managers @hashgraph/devops-ci
+**/.gitignore                                   @hashgraph/developer-advocates @hashgraph/devops-ci @hashgraph/release-engineering-managers @hashgraph/iobuilders-hedera
+**/.gitignore.*                                 @hashgraph/developer-advocates @hashgraph/devops-ci @hashgraph/release-engineering-managers @hashgraph/iobuilders-hedera
