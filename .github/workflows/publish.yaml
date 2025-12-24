@@ -7,6 +7,12 @@ on:
   release:
     types: [created]
   workflow_dispatch:
+    inputs:
+      dry-run-enabled:
+        description: 'Enable dry run for publishing (does not publish to npmjs)'
+        required: false
+        default: 'false'
+        type: boolean
 
 env:
   # Disable Husky during the workflow
@@ -14,6 +20,7 @@ env:
 
 permissions:
   contents: read
+  id-token: write
 
 jobs:
   #! Test bypassed for now
@@ -27,28 +34,80 @@ jobs:
   #       - run: npm ci
   #       - run: npm test
 
-  publish-npm:
+  build-npm-package:
     # needs: test
     runs-on: custodians-linux-medium
+    outputs:
+      npm-artifact-name: ${{ steps.set-publish-data.outputs.artifact-name }}
     steps:
-      - name: Harden Runner
-        uses: step-security/harden-runner@20cf305ff2072d973412fa9b1e3a4f227bda3c76 # v2.14.0
+      - name: Prepare Runner
+        uses: pandaswhocode/initialize-github-job@ed4a98646fe0235e6ecf3af5414b355d2abe3bf3 # v1.0.3
         with:
-          egress-policy: audit
-
-      - name: Checkout Code
-        uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
-
-      - name: Setup Node
-        uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
-        with:
+          checkout: 'true'
+          checkout-ref: '${{ github.ref }}'
+          checkout-fetch-depth: '1'
+          checkout-token: '${{ secrets.GITHUB_TOKEN }}'
+          setup-node: 'true'
           node-version: '20.x'
-          registry-url: https://registry.npmjs.org/
+
+      - name: Setup JQ
+        uses: dcarbone/install-jq-action@b7ef57d46ece78760b4019dbc4080a1ba2a40b45 # v3.2.0
+        with:
+          version: 1.7
 
       - name: Run npm
         run: npm ci
 
-      - name: publish npm project
-        run: npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Set Publish Data
+        id: set-publish-data
+        run: |
+          VERSION=$(jq -r '.version' './package.json')
+          NPM_PACKAGE_NAME="hashgraph-hedera-custodians-integration-${VERSION}.tgz"
+          echo "artifact-name=${NPM_PACKAGE_NAME}" >> $GITHUB_OUTPUT
+
+      - name: Build npm project
+        id: npm-pack
+        run: npm pack
+
+      - name: Upload Hedera Custodians Library Package Artifact
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+        with:
+          name: npm-package
+          path: ./${{ steps.set-publish-data.outputs.artifact-name }}
+          if-no-files-found: error
+
+  publish-npm-package:
+    runs-on: ubuntu-latest
+    needs:
+      - build-npm-package
+    steps:
+      - name: Prepare Runner
+        uses: pandaswhocode/initialize-github-job@ed4a98646fe0235e6ecf3af5414b355d2abe3bf3 # v1.0.3
+        with:
+          checkout: 'true'
+          checkout-ref: '${{ github.ref }}'
+          checkout-fetch-depth: '1'
+          checkout-token: '${{ secrets.GITHUB_TOKEN }}'
+          setup-node: 'true'
+          node-version: '20.x'
+          node-registry: 'https://registry.npmjs.org'
+
+      - name: Install NPM latest
+        run: npm install -g npm@11.7.0
+
+      - name: Download Hedera Custodians Library NPM Package
+        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
+        with:
+          name: npm-package
+
+      - name: Publish NPM Package
+        run: |
+          args="--access=public"
+          if [[ "${{ inputs.dry-run-enabled || 'false' }}" == "true" ]]; then
+            args="${args} --dry-run"
+          fi
+
+          package="${{ needs.build-npm-package.outputs.npm-artifact-name }}"
+          echo "::group::Publishing package: ${package} with args: ${args}"
+          npm publish ${package} ${args}
+          echo "::endgroup::"
