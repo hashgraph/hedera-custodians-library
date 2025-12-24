@@ -65,7 +65,7 @@ jobs:
           NPM_PACKAGE_NAME="hashgraph-hedera-custodians-integration-${VERSION}.tgz"
           echo "artifact-name=${NPM_PACKAGE_NAME}" >> $GITHUB_OUTPUT
 
-      - name: publish npm project
+      - name: Build npm project
         id: npm-pack
         run: npm pack
 
