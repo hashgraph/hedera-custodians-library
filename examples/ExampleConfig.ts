@@ -18,7 +18,7 @@
  *
  */
 
-import { AccountId, PublicKey } from '@hashgraph/sdk';
+import { AccountId, PublicKey } from '@hiero-ledger/sdk';
 import { AWSKMSConfig, FireblocksConfig, DFNSConfig } from '../src';
 
 /**

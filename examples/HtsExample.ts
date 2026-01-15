@@ -29,7 +29,7 @@ import {
   TransactionReceipt,
   TransactionResponse,
   TransferTransaction,
-} from '@hashgraph/sdk';
+} from '@hiero-ledger/sdk';
 import Example from './Example';
 
 /**

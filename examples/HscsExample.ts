@@ -25,7 +25,7 @@ import {
   ContractInfoQuery,
   TransactionReceipt,
   TransactionResponse,
-} from '@hashgraph/sdk';
+} from '@hiero-ledger/sdk';
 import Example from './Example';
 
 const STORAGE_BYTECODE =
