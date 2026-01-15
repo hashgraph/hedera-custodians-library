@@ -18,8 +18,7 @@
  *
  */
 
-import { afterAll, beforeAll, describe, expect, it } from '@jest/globals';
-import axios from 'axios';
+import { describe, expect, it } from '@jest/globals';
 import {
   CustodialWalletService,
   DFNSConfig,
@@ -32,48 +31,6 @@ import {
   fireblocksConfig,
   TEST_TIMEOUT,
 } from '../../config';
-
-/**
- * Axios interceptor to remove non-serializable properties from responses.
- * This prevents Jest worker communication errors (DataCloneError) caused by
- * axios storing functions and circular references in response objects.
- */
-let axiosInterceptorId: number;
-
-beforeAll(() => {
-  axiosInterceptorId = axios.interceptors.response.use(
-    (response) => {
-      if (response.config) {
-        delete response.config.adapter;
-        delete response.config.httpAgent;
-        delete response.config.httpsAgent;
-        delete response.config.transformRequest;
-        delete response.config.transformResponse;
-      }
-      if (response.request) {
-        delete response.request;
-      }
-      return response;
-    },
-    (error) => {
-      if (error.config) {
-        delete error.config.adapter;
-        delete error.config.httpAgent;
-        delete error.config.httpsAgent;
-        delete error.config.transformRequest;
-        delete error.config.transformResponse;
-      }
-      if (error.request) {
-        delete error.request;
-      }
-      return Promise.reject(error);
-    }
-  );
-});
-
-afterAll(() => {
-  axios.interceptors.response.eject(axiosInterceptorId);
-});
 
 const signatureRequest = new SignatureRequest(new Uint8Array([1, 2, 3]));
 

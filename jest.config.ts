@@ -24,6 +24,7 @@ const jestConfig: JestConfigWithTsJest = {
   // [...]
   roots: ['<rootDir>/__tests__/'],
   extensionsToTreatAsEsm: ['.ts'],
+  setupFilesAfterEnv: ['<rootDir>/__tests__/setupTests.ts'],
   moduleNameMapper: {
     '^(\\.{1,2}/.*)\\.js$': '$1',
   },
