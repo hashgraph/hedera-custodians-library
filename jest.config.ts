@@ -34,20 +34,9 @@ const jestConfig: JestConfigWithTsJest = {
       'ts-jest',
       {
         useESM: true,
-        isolatedModules: true,
       },
     ],
   },
-  // Force single-threaded execution to avoid circular reference serialization issues
-  maxWorkers: 1,
-  // Workaround for SDK responses containing circular references (req <-> res)
-  workerIdleMemoryLimit: '512MB',
-  // Force Jest to exit after all tests complete
-  forceExit: true,
-  // Use node test environment
-  testEnvironment: 'node',
-  // Use worker threads instead of child processes (avoids JSON serialization issues)
-  workerThreads: true,
 };
 
 export default jestConfig;

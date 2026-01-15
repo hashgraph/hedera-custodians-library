@@ -48,7 +48,7 @@
     "test": "jest",
     "test:coverage": "jest --coverage",
     "test:watch": "jest --watch",
-    "test:ci": "jest --ci --runInBand",
+    "test:ci": "jest --ci --coverage",
     "lint": "eslint .",
     "prettier": "prettier --write .",
     "pre-commit": "npm run prettier && npm run test && npm run lint",
