@@ -34,6 +34,7 @@ const jestConfig: JestConfigWithTsJest = {
       'ts-jest',
       {
         useESM: true,
+        isolatedModules: true,
       },
     ],
   },
@@ -45,6 +46,8 @@ const jestConfig: JestConfigWithTsJest = {
   forceExit: true,
   // Use node test environment
   testEnvironment: 'node',
+  // Use worker threads instead of child processes (avoids JSON serialization issues)
+  workerThreads: true,
 };
 
 export default jestConfig;
