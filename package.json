@@ -93,7 +93,7 @@
     "asn1-ts": "^8.0.2",
     "dotenv": "16.0.3",
     "ethereum-cryptography": "^2.2.0",
-    "fireblocks-sdk": "5.11.0",
+    "fireblocks-sdk": "5.38.0",
     "reflect-metadata": "0.1.13",
     "tsyringe": "4.7.0"
   }

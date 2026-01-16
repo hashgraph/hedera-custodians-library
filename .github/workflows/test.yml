@@ -128,6 +128,10 @@ jobs:
           echo "DFNS_WALLET_ID_ECDSA=${{secrets.DFNS_WALLET_ID_ECDSA}}" >> .env
           echo "DFNS_WALLET_HEDERA_ACCOUNT_ID_ECDSA=${{secrets.DFNS_WALLET_HEDERA_ACCOUNT_ID_ECDSA}}" >> .env
           echo "DFNS_WALLET_PUBLIC_KEY_ECDSA=${{secrets.DFNS_WALLET_PUBLIC_KEY_ECDSA}}" >> .env
+          echo "AWS_ACCESS_KEY_ID=${{secrets.AWS_ACCESS_KEY_ID}}" >> .env
+          echo "AWS_SECRET_ACCESS_KEY=${{secrets.AWS_SECRET_ACCESS_KEY}}" >> .env
+          echo "AWS_REGION=${{secrets.AWS_REGION}}" >> .env
+          echo "AWS_KMS_KEY_ID=${{secrets.AWS_KMS_KEY_ID}}" >> .env
 
       - name: Run integration tests
         run: npm run test:integration:ci

@@ -27,6 +27,7 @@ import {
   SignatureRequest,
 } from '../../src';
 import {
+  awsKMSConfig,
   dfnsConfig,
   dfnsConfig_ECDSA,
   fireblocksConfig,
@@ -178,18 +179,14 @@ describe('🧪 [INTEGRATION] Service TESTS', () => {
   });
 
   describe('[Fireblocks] Signatures', () => {
-    it(
+    // TODO: Re-enable when Fireblocks tenant is active again
+    it.skip(
       'Sign bunch of bytes',
       async () => {
-        try {
-          const signatureService = new CustodialWalletService(fireblocksConfig);
-          const signature =
-            await signatureService.signTransaction(signatureRequest);
-          expect(signature.length).toBeGreaterThan(0);
-        } catch (error) {
-          console.error('Fireblocks signing error:', error);
-          throw error;
-        }
+        const signatureService = new CustodialWalletService(fireblocksConfig);
+        const signature =
+          await signatureService.signTransaction(signatureRequest);
+        expect(signature.length).toBeGreaterThan(0);
       },
       TEST_TIMEOUT
     );
@@ -214,6 +211,19 @@ describe('🧪 [INTEGRATION] Service TESTS', () => {
         const signature = await signatureService.signTransaction(
           signatureRequest_Hash
         );
+        expect(signature.length).toBeGreaterThan(0);
+      },
+      TEST_TIMEOUT
+    );
+  });
+
+  describe('[AWS KMS] Signatures', () => {
+    it(
+      'Sign bunch of bytes',
+      async () => {
+        const signatureService = new CustodialWalletService(awsKMSConfig);
+        const signature =
+          await signatureService.signTransaction(signatureRequest);
         expect(signature.length).toBeGreaterThan(0);
       },
       TEST_TIMEOUT
