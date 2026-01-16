@@ -21,34 +21,48 @@
 import { describe, expect, it } from '@jest/globals';
 import {
   DFNSStrategy,
+  DFNSConfig,
   FireblocksStrategy,
+  FireblocksConfig,
   StrategyFactory,
 } from '../../../src';
-import { TEST_TIMEOUT, dfnsConfig, fireblocksConfig } from '../../../config';
+
+const MOCK_FIREBLOCKS_CONFIG = new FireblocksConfig(
+  'mockedApiSecretKey',
+  'mockedApiKey',
+  'mockedBaseUrl',
+  'mockedVaultAccountId',
+  'mockedAssetId'
+);
+
+const MOCK_DFNS_CONFIG = new DFNSConfig(
+  'mockedServiceAccountPrivateKey',
+  'mockedServiceAccountCredentialId',
+  'mockedServiceAccountAuthToken',
+  'mockedAppOrigin',
+  'mockedAppId',
+  'mockedBaseUrl',
+  'mockedWalletId',
+  'mockedPublicKey'
+);
 
 describe('🧪 Factory TESTS', () => {
   describe('[Fireblocks]', () => {
-    it(
-      'Factory should correctly instantiate a FireblocksStrategy when given Fireblocks configuration',
-      () => {
-        const strategy =
-          StrategyFactory.createSignatureStrategy(fireblocksConfig);
+    it('should instantiate FireblocksStrategy when given Fireblocks configuration', () => {
+      const strategy = StrategyFactory.createSignatureStrategy(
+        MOCK_FIREBLOCKS_CONFIG
+      );
 
-        expect(strategy instanceof FireblocksStrategy).toEqual(true);
-      },
-      TEST_TIMEOUT
-    );
+      expect(strategy).toBeInstanceOf(FireblocksStrategy);
+    });
   });
 
   describe('[DFNS]', () => {
-    it(
-      'Factory should correctly instantiate a DFNSStrategy when given DFNS configuration',
-      () => {
-        const strategy = StrategyFactory.createSignatureStrategy(dfnsConfig);
+    it('should instantiate DFNSStrategy when given DFNS configuration', () => {
+      const strategy =
+        StrategyFactory.createSignatureStrategy(MOCK_DFNS_CONFIG);
 
-        expect(strategy instanceof DFNSStrategy).toEqual(true);
-      },
-      TEST_TIMEOUT
-    );
+      expect(strategy).toBeInstanceOf(DFNSStrategy);
+    });
   });
 });

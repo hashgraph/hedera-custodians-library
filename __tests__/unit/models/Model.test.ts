@@ -20,38 +20,26 @@
 
 import { describe, expect, it } from '@jest/globals';
 import { SignatureRequest } from '../../../src';
-import { TEST_TIMEOUT } from '../../../config';
 
 describe('🧪 Models TESTS', () => {
-  describe('Signatures Request', () => {
-    it(
-      'Get Transaction',
-      () => {
-        const message = new Uint8Array([1, 2, 3]);
-        const signatureRequest = new SignatureRequest(message);
-        const retrievedMessage = signatureRequest.getTransactionBytes();
-        expect(retrievedMessage.length).toEqual(message.length);
-        for (let i = 0; i < message.length; i++) {
-          expect(retrievedMessage[i]).toEqual(message[i]);
-        }
-      },
-      TEST_TIMEOUT
-    );
+  describe('SignatureRequest', () => {
+    it('should get transaction bytes', () => {
+      const message = new Uint8Array([1, 2, 3]);
+      const signatureRequest = new SignatureRequest(message);
 
-    it(
-      'Set Transaction',
-      () => {
-        const message = new Uint8Array([1, 2, 3]);
-        const signatureRequest = new SignatureRequest(message);
-        const message_two = new Uint8Array([4, 5, 6, 7]);
-        signatureRequest.setTransactionBytes(message_two);
-        const retrievedMessage = signatureRequest.getTransactionBytes();
-        expect(retrievedMessage.length).toEqual(message_two.length);
-        for (let i = 0; i < message_two.length; i++) {
-          expect(retrievedMessage[i]).toEqual(message_two[i]);
-        }
-      },
-      TEST_TIMEOUT
-    );
+      const retrievedMessage = signatureRequest.getTransactionBytes();
+
+      expect(retrievedMessage).toEqual(message);
+    });
+
+    it('should set transaction bytes', () => {
+      const message = new Uint8Array([1, 2, 3]);
+      const signatureRequest = new SignatureRequest(message);
+      const newMessage = new Uint8Array([4, 5, 6, 7]);
+
+      signatureRequest.setTransactionBytes(newMessage);
+
+      expect(signatureRequest.getTransactionBytes()).toEqual(newMessage);
+    });
   });
 });

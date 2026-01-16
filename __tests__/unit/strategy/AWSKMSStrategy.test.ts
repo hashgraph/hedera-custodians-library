@@ -24,7 +24,7 @@ import { EXAMPLE_RAW_SIGNATURE } from '../../../__mocks__/aws-kms';
 
 jest.mock('@aws-sdk/client-kms', () => require('../../../__mocks__/aws-kms'));
 
-const MOCKED_AWS_KMS_CONFIG = new AWSKMSConfig(
+const MOCK_AWS_KMS_CONFIG = new AWSKMSConfig(
   'mockedAwsAccessKeyId',
   'mockedAwsSecretAccessKey',
   'mockedAwsRegion',
@@ -38,7 +38,7 @@ describe('🧪 AWSKMSStrategy TESTS', () => {
     const result = setupAwsKmsStrategy();
 
     expect(result).toBeInstanceOf(AWSKMSStrategy);
-    expect(result['strategyConfig']).toEqual(MOCKED_AWS_KMS_CONFIG);
+    expect(result['strategyConfig']).toEqual(MOCK_AWS_KMS_CONFIG);
   });
 
   it('should correctly sign a signature request', async () => {
@@ -54,5 +54,5 @@ describe('🧪 AWSKMSStrategy TESTS', () => {
 });
 
 function setupAwsKmsStrategy(): AWSKMSStrategy {
-  return new AWSKMSStrategy(MOCKED_AWS_KMS_CONFIG);
+  return new AWSKMSStrategy(MOCK_AWS_KMS_CONFIG);
 }
