@@ -218,8 +218,7 @@ describe('🧪 [INTEGRATION] Service TESTS', () => {
   });
 
   describe('[AWS KMS] Signatures', () => {
-    // TODO: Re-enable when AWS KMS secrets are configured
-    it.skip(
+    it(
       'Sign bunch of bytes',
       async () => {
         const signatureService = new CustodialWalletService(awsKMSConfig);
