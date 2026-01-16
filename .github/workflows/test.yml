@@ -3,9 +3,6 @@ name: Test
 on:
   pull_request:
     types: [opened, synchronize, reopened]
-  push:
-    branches:
-      - main
 
 env:
   # Disable Husky during the workflow
@@ -15,8 +12,8 @@ permissions:
   contents: read
 
 jobs:
-  unit-test:
-    name: Unit Tests
+  test:
+    name: test
     runs-on: custodians-linux-medium
     env:
       NODE_OPTIONS: '--max-old-space-size=32768'
@@ -54,8 +51,8 @@ jobs:
   integration-test:
     name: Integration Tests
     runs-on: custodians-linux-medium
-    # Run integration tests on push to main OR on PRs targeting main
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main' || github.event_name == 'pull_request' && github.base_ref == 'main'
+    # Run integration tests only on PRs targeting main
+    if: github.base_ref == 'main'
     env:
       NODE_OPTIONS: '--max-old-space-size=32768'
     permissions:
@@ -135,17 +132,3 @@ jobs:
 
       - name: Run integration tests
         run: npm run test:integration:ci
-
-  testExpected:
-    name: testExpected
-    runs-on: custodians-linux-medium
-    needs: [unit-test]
-    if: always()
-    steps:
-      - name: Check test results
-        run: |
-          if [ "${{ needs.unit-test.result }}" != "success" ]; then
-            echo "Unit tests failed"
-            exit 1
-          fi
-          echo "All required tests passed"
