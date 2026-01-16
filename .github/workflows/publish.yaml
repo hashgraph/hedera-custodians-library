@@ -41,7 +41,7 @@ jobs:
       npm-artifact-name: ${{ steps.set-publish-data.outputs.artifact-name }}
     steps:
       - name: Prepare Runner
-        uses: pandaswhocode/initialize-github-job@ed4a98646fe0235e6ecf3af5414b355d2abe3bf3 # v1.0.3
+        uses: pandaswhocode/initialize-github-job@ffb7446339e8e6007b942312ac95457d1a20b6cf # v1.0.4
         with:
           checkout: 'true'
           checkout-ref: '${{ github.ref }}'
@@ -82,7 +82,7 @@ jobs:
       - build-npm-package
     steps:
       - name: Prepare Runner
-        uses: pandaswhocode/initialize-github-job@ed4a98646fe0235e6ecf3af5414b355d2abe3bf3 # v1.0.3
+        uses: pandaswhocode/initialize-github-job@ffb7446339e8e6007b942312ac95457d1a20b6cf # v1.0.4
         with:
           checkout: 'true'
           checkout-ref: '${{ github.ref }}'
