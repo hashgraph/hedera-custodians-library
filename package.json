@@ -49,6 +49,8 @@
     "test:coverage": "jest --coverage",
     "test:watch": "jest --watch",
     "test:ci": "jest --ci --coverage",
+    "test:integration": "jest --config jest.integration.config.ts",
+    "test:integration:ci": "jest --config jest.integration.config.ts --ci",
     "lint": "eslint .",
     "prettier": "prettier --write .",
     "pre-commit": "npm run prettier && npm run test && npm run lint",

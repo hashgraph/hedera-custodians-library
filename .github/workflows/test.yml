@@ -3,6 +3,9 @@ name: Test
 on:
   pull_request:
     types: [opened, synchronize, reopened]
+  push:
+    branches:
+      - main
 
 env:
   # Disable Husky during the workflow
@@ -12,8 +15,8 @@ permissions:
   contents: read
 
 jobs:
-  test:
-    name: test
+  unit-test:
+    name: Unit Tests
     runs-on: custodians-linux-medium
     env:
       NODE_OPTIONS: '--max-old-space-size=32768'
@@ -45,7 +48,45 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Create file
+      - name: Run unit tests
+        run: npm run test:ci
+
+  integration-test:
+    name: Integration Tests
+    runs-on: custodians-linux-medium
+    # Only run integration tests on push to main (after merge)
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    env:
+      NODE_OPTIONS: '--max-old-space-size=32768'
+    permissions:
+      contents: read
+
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@20cf305ff2072d973412fa9b1e3a4f227bda3c76 # v2.14.0
+        with:
+          egress-policy: audit
+
+      - name: Checkout repository
+        uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
+
+      - name: Setup Node Environment
+        uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
+        with:
+          node-version: '20'
+
+      - name: Cache npm dependencies
+        uses: actions/cache@0400d5f644dc74513175e3cd8d07132dd4860809 # v4.2.4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Create environment file
         run: |
           touch .env
           echo "FIREBLOCKS_API_SECRET_KEY=${{secrets.FIREBLOCKS_API_SECRET_KEY}}" >> .env
@@ -88,6 +129,5 @@ jobs:
           echo "DFNS_WALLET_HEDERA_ACCOUNT_ID_ECDSA=${{secrets.DFNS_WALLET_HEDERA_ACCOUNT_ID_ECDSA}}" >> .env
           echo "DFNS_WALLET_PUBLIC_KEY_ECDSA=${{secrets.DFNS_WALLET_PUBLIC_KEY_ECDSA}}" >> .env
 
-      - name: Test custodialwalletutils
-        run: |
-          npm run test:ci
+      - name: Run integration tests
+        run: npm run test:integration:ci

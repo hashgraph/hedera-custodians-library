@@ -21,8 +21,10 @@
     "src/**/*",
     "config.ts",
     "jest.config.ts",
+    "jest.integration.config.ts",
     "commitlint.config.ts",
     "examples/**/*",
-    "__tests__/**/*"
+    "__tests__/**/*",
+    "__mocks__/**/*"
   ]
 }

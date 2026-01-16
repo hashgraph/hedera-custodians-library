@@ -19,8 +19,12 @@
  */
 
 import { describe, expect, it } from '@jest/globals';
-import { DFNSStrategy, FireblocksStrategy, StrategyFactory } from '../../src';
-import { TEST_TIMEOUT, dfnsConfig, fireblocksConfig } from '../../config';
+import {
+  DFNSStrategy,
+  FireblocksStrategy,
+  StrategyFactory,
+} from '../../../src';
+import { TEST_TIMEOUT, dfnsConfig, fireblocksConfig } from '../../../config';
 
 describe('🧪 Factory TESTS', () => {
   describe('[Fireblocks]', () => {
