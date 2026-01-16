@@ -135,3 +135,17 @@ jobs:
 
       - name: Run integration tests
         run: npm run test:integration:ci
+
+  testExpected:
+    name: testExpected
+    runs-on: custodians-linux-medium
+    needs: [unit-test]
+    if: always()
+    steps:
+      - name: Check test results
+        run: |
+          if [ "${{ needs.unit-test.result }}" != "success" ]; then
+            echo "Unit tests failed"
+            exit 1
+          fi
+          echo "All required tests passed"
