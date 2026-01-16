@@ -54,8 +54,8 @@ jobs:
   integration-test:
     name: Integration Tests
     runs-on: custodians-linux-medium
-    # Only run integration tests on push to main (after merge)
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    # Run integration tests on push to main OR on PRs targeting main
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' || github.event_name == 'pull_request' && github.base_ref == 'main'
     env:
       NODE_OPTIONS: '--max-old-space-size=32768'
     permissions:
