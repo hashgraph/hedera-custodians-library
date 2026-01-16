@@ -181,10 +181,15 @@ describe('🧪 [INTEGRATION] Service TESTS', () => {
     it(
       'Sign bunch of bytes',
       async () => {
-        const signatureService = new CustodialWalletService(fireblocksConfig);
-        const signature =
-          await signatureService.signTransaction(signatureRequest);
-        expect(signature.length).toBeGreaterThan(0);
+        try {
+          const signatureService = new CustodialWalletService(fireblocksConfig);
+          const signature =
+            await signatureService.signTransaction(signatureRequest);
+          expect(signature.length).toBeGreaterThan(0);
+        } catch (error) {
+          console.error('Fireblocks signing error:', error);
+          throw error;
+        }
       },
       TEST_TIMEOUT
     );
