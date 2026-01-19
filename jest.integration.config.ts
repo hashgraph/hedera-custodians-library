@@ -21,18 +21,16 @@
 import type { JestConfigWithTsJest } from 'ts-jest';
 
 /**
- * Jest configuration for unit tests.
- * Integration tests run separately with jest.integration.config.ts
+ * Jest configuration for integration tests.
+ * These tests make real API calls and should only run on merge to main.
  */
 const jestConfig: JestConfigWithTsJest = {
-  roots: ['<rootDir>/__tests__/unit/'],
+  roots: ['<rootDir>/__tests__/integration/'],
   extensionsToTreatAsEsm: ['.ts'],
   moduleNameMapper: {
     '^(\\.{1,2}/.*)\\.js$': '$1',
   },
   transform: {
-    // '^.+\\.[tj]sx?$' to process js/ts with `ts-jest`
-    // '^.+\\.m?[tj]sx?$' to process js/ts/mjs/mts with `ts-jest`
     '^.+\\.tsx?$': [
       'ts-jest',
       {
@@ -40,6 +38,10 @@ const jestConfig: JestConfigWithTsJest = {
       },
     ],
   },
+  // Run integration tests sequentially to avoid rate limiting
+  maxWorkers: 1,
+  // Longer timeout for real API calls
+  testTimeout: 60000,
 };
 
 export default jestConfig;

@@ -18,19 +18,67 @@
  *
  */
 
-import { describe, expect, it } from '@jest/globals';
+import { afterAll, beforeAll, describe, expect, it } from '@jest/globals';
+import axios from 'axios';
 import {
   CustodialWalletService,
   DFNSConfig,
   FireblocksConfig,
   SignatureRequest,
-} from '../../src'; // Replace '@src' with the actual file path of the module being imported
+} from '../../src';
 import {
+  awsKMSConfig,
   dfnsConfig,
   dfnsConfig_ECDSA,
   fireblocksConfig,
   TEST_TIMEOUT,
 } from '../../config';
+
+/**
+ * Integration tests for CustodialWalletService.
+ * These tests make real API calls to Fireblocks and DFNS services.
+ * Run only on merge to main branch.
+ */
+
+// Axios interceptor to handle circular references in HTTP responses
+// This prevents Jest worker serialization errors
+let axiosInterceptorId: number;
+
+beforeAll(() => {
+  axiosInterceptorId = axios.interceptors.response.use(
+    (response) => {
+      // Remove circular references and non-serializable properties
+      if (response.config) {
+        delete response.config.adapter;
+        delete response.config.httpAgent;
+        delete response.config.httpsAgent;
+        delete response.config.transformRequest;
+        delete response.config.transformResponse;
+      }
+      if (response.request) {
+        delete response.request;
+      }
+      return response;
+    },
+    (error) => {
+      if (error.config) {
+        delete error.config.adapter;
+        delete error.config.httpAgent;
+        delete error.config.httpsAgent;
+        delete error.config.transformRequest;
+        delete error.config.transformResponse;
+      }
+      if (error.request) {
+        delete error.request;
+      }
+      return Promise.reject(error);
+    }
+  );
+});
+
+afterAll(() => {
+  axios.interceptors.response.eject(axiosInterceptorId);
+});
 
 const signatureRequest = new SignatureRequest(new Uint8Array([1, 2, 3]));
 
@@ -41,7 +89,7 @@ const signatureRequest_Hash = new SignatureRequest(
   ])
 );
 
-describe('🧪 Service TESTS', () => {
+describe('🧪 [INTEGRATION] Service TESTS', () => {
   describe('Configuration', () => {
     it(
       '[Fireblocks] Get configuration from service instance',
@@ -129,8 +177,10 @@ describe('🧪 Service TESTS', () => {
       TEST_TIMEOUT
     );
   });
+
   describe('[Fireblocks] Signatures', () => {
-    it(
+    // TODO: Re-enable when Fireblocks tenant is active again
+    it.skip(
       'Sign bunch of bytes',
       async () => {
         const signatureService = new CustodialWalletService(fireblocksConfig);
@@ -144,7 +194,7 @@ describe('🧪 Service TESTS', () => {
 
   describe('[DFNS] Signatures', () => {
     it(
-      'Sign bunch of bytes with EDD25519 key',
+      'Sign bunch of bytes with ED25519 key',
       async () => {
         const signatureService = new CustodialWalletService(dfnsConfig);
         const signature =
@@ -153,6 +203,7 @@ describe('🧪 Service TESTS', () => {
       },
       TEST_TIMEOUT
     );
+
     it(
       'Sign hash with ECDSA key',
       async () => {
@@ -160,6 +211,19 @@ describe('🧪 Service TESTS', () => {
         const signature = await signatureService.signTransaction(
           signatureRequest_Hash
         );
+        expect(signature.length).toBeGreaterThan(0);
+      },
+      TEST_TIMEOUT
+    );
+  });
+
+  describe('[AWS KMS] Signatures', () => {
+    it(
+      'Sign bunch of bytes',
+      async () => {
+        const signatureService = new CustodialWalletService(awsKMSConfig);
+        const signature =
+          await signatureService.signTransaction(signatureRequest);
         expect(signature.length).toBeGreaterThan(0);
       },
       TEST_TIMEOUT

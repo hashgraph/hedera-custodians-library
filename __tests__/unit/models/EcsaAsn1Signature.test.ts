@@ -19,7 +19,7 @@
  */
 
 import { describe, expect, it } from '@jest/globals';
-import { EcdsaAsn1Signature } from '../../src';
+import { EcdsaAsn1Signature } from '../../../src';
 
 describe('🧪 EcdsaAsn1Signature TESTS', () => {
   it('should create an instance with r and s values', () => {

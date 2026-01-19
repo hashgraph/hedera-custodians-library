@@ -35,7 +35,7 @@ import {
   Key,
   PublicKey,
   PrivateKey,
-} from '@hashgraph/sdk';
+} from '@hiero-ledger/sdk';
 import nacl from 'tweetnacl';
 import ExampleConfig from './ExampleConfig';
 

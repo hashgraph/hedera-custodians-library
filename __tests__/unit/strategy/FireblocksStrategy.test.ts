@@ -19,31 +19,15 @@
  */
 
 import { describe, expect, it } from '@jest/globals';
-import { TransactionStatus } from 'fireblocks-sdk';
 import {
   FireblocksConfig,
   SignatureRequest,
   FireblocksStrategy,
   hexStringToUint8Array,
-} from '../../src';
+} from '../../../src';
+import { mockFireblocksSignatureResponse } from '../../../__mocks__/fireblocks-sdk';
 
-const signatureResponse = {
-  status: TransactionStatus.COMPLETED,
-  id: 'transaction-id',
-  signedMessages: [{ signature: { fullSig: 'signature-string' } }],
-};
-
-jest.mock('fireblocks-sdk', () => {
-  // Require the original module to not be mocked...
-  const actualSdk = jest.requireActual('fireblocks-sdk');
-  return {
-    ...actualSdk,
-    FireblocksSDK: jest.fn().mockImplementation(() => ({
-      createTransaction: jest.fn().mockResolvedValue(signatureResponse),
-      getTransactionById: jest.fn().mockResolvedValue(signatureResponse),
-    })),
-  };
-});
+jest.mock('fireblocks-sdk', () => require('../../../__mocks__/fireblocks-sdk'));
 
 describe('🧪 FireblocksStrategy TESTS', () => {
   let fireblocksStrategy: FireblocksStrategy;
@@ -68,7 +52,8 @@ describe('🧪 FireblocksStrategy TESTS', () => {
     ).toHaveBeenCalledTimes(1);
     expect(result).toEqual(
       hexStringToUint8Array({
-        hexString: signatureResponse.signedMessages[0].signature.fullSig,
+        hexString:
+          mockFireblocksSignatureResponse.signedMessages[0].signature.fullSig,
       })
     );
   });

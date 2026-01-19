@@ -1,6 +1,6 @@
 {
   "name": "@hashgraph/hedera-custodians-integration",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "description": "A library to provide integration with custodial wallets",
   "homepage": "https://github.com/hashgraph/hedera-custodians-library",
   "repository": {
@@ -49,6 +49,8 @@
     "test:coverage": "jest --coverage",
     "test:watch": "jest --watch",
     "test:ci": "jest --ci --coverage",
+    "test:integration": "jest --config jest.integration.config.ts",
+    "test:integration:ci": "jest --config jest.integration.config.ts --ci",
     "lint": "eslint .",
     "prettier": "prettier --write .",
     "pre-commit": "npm run prettier && npm run test && npm run lint",
@@ -59,7 +61,7 @@
   "devDependencies": {
     "@commitlint/cli": "^19.4.0",
     "@commitlint/config-conventional": "^19.2.2",
-    "@hashgraph/sdk": "^2.41.0",
+    "@hiero-ledger/sdk": "2.79.0",
     "@jest/globals": "^29.7.0",
     "@types/eslint": "^8.56.2",
     "@types/inquirer": "^9.0.7",
@@ -91,7 +93,7 @@
     "asn1-ts": "^8.0.2",
     "dotenv": "16.0.3",
     "ethereum-cryptography": "^2.2.0",
-    "fireblocks-sdk": "5.11.0",
+    "fireblocks-sdk": "5.38.0",
     "reflect-metadata": "0.1.13",
     "tsyringe": "4.7.0"
   }

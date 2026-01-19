@@ -29,7 +29,7 @@ import {
   Hbar,
   TransactionReceipt,
   TransactionResponse,
-} from '@hashgraph/sdk';
+} from '@hiero-ledger/sdk';
 
 /**
  * Represents an example class for working with HFSS files.

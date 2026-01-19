@@ -39,7 +39,7 @@ import HfssExample from './HfssExample';
 import HcsExample from './HcsExample';
 import fs from 'fs';
 import path from 'path';
-import { PublicKey } from '@hashgraph/sdk';
+import { PublicKey } from '@hiero-ledger/sdk';
 
 async function main(): Promise<void> {
   console.log('👋 Welcome to the Hedera Custodians Integration example');
