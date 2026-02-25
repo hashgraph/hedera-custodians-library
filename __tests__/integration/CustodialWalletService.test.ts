@@ -179,8 +179,7 @@ describe('🧪 [INTEGRATION] Service TESTS', () => {
   });
 
   describe('[Fireblocks] Signatures', () => {
-    // TODO: Re-enable when Fireblocks tenant is active again
-    it.skip(
+    it(
       'Sign bunch of bytes',
       async () => {
         const signatureService = new CustodialWalletService(fireblocksConfig);
