@@ -19,13 +19,12 @@
  */
 
 import {
-  FireblocksSDK,
-  PeerType,
+  Fireblocks,
   TransactionOperation,
+  TransferPeerPathType,
+  CreateTransactionResponse,
   TransactionResponse,
-  TransactionStatus,
-} from 'fireblocks-sdk';
-import { CreateTransactionResponse } from 'fireblocks-sdk/dist/src/types';
+} from '@fireblocks/ts-sdk';
 import {
   ISignatureStrategy,
   FireblocksConfig,
@@ -35,12 +34,14 @@ import {
 
 const MAX_RETRIES = 10;
 const POLL_INTERVAL = 1000;
+const COMPLETED_STATUS = 'COMPLETED';
+const FAILED_STATUS = 'FAILED';
 
 /**
  * Represents a signature strategy using the Fireblocks SDK.
  */
 export class FireblocksStrategy implements ISignatureStrategy {
-  private fireblocks: FireblocksSDK;
+  private fireblocks: Fireblocks;
   private config: FireblocksConfig;
 
   /**
@@ -48,11 +49,11 @@ export class FireblocksStrategy implements ISignatureStrategy {
    * @param strategyConfig The configuration for the Fireblocks strategy.
    */
   constructor(strategyConfig: FireblocksConfig) {
-    this.fireblocks = new FireblocksSDK(
-      strategyConfig.apiSecretKey,
-      strategyConfig.apiKey,
-      strategyConfig.baseUrl
-    );
+    this.fireblocks = new Fireblocks({
+      apiKey: strategyConfig.apiKey,
+      secretKey: strategyConfig.apiSecretKey,
+      basePath: strategyConfig.baseUrl,
+    });
     this.config = strategyConfig;
   }
 
@@ -75,13 +76,19 @@ export class FireblocksStrategy implements ISignatureStrategy {
    * @returns A promise that resolves to the signature as a string.
    */
   private async signMessage(message: string): Promise<string> {
-    const { id } = await this.createFireblocksTransaction(message);
-    const txInfo = await this.pollTransaction(id);
+    const response = await this.createFireblocksTransaction(message);
+    if (!response.id) {
+      throw new Error('Transaction ID not returned from Fireblocks.');
+    }
+    const txInfo = await this.pollTransaction(response.id);
     if (!txInfo.signedMessages || txInfo.signedMessages.length === 0) {
       throw new Error('No signature found in transaction response.');
     }
 
     const signature = txInfo.signedMessages[0].signature;
+    if (!signature?.fullSig) {
+      throw new Error('Full signature not found in transaction response.');
+    }
     return signature.fullSig;
   }
 
@@ -96,12 +103,13 @@ export class FireblocksStrategy implements ISignatureStrategy {
   ): Promise<TransactionResponse> {
     for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
       try {
-        const txInfo: TransactionResponse =
-          await this.fireblocks.getTransactionById(transactionId);
+        const response = await this.fireblocks.transactions.getTransaction({
+          txId: transactionId,
+        });
+        const txInfo = response.data;
         if (
-          [TransactionStatus.COMPLETED, TransactionStatus.FAILED].includes(
-            txInfo.status
-          )
+          txInfo.status === COMPLETED_STATUS ||
+          txInfo.status === FAILED_STATUS
         ) {
           return txInfo;
         }
@@ -123,16 +131,19 @@ export class FireblocksStrategy implements ISignatureStrategy {
   private async createFireblocksTransaction(
     message: string
   ): Promise<CreateTransactionResponse> {
-    return await this.fireblocks.createTransaction({
-      operation: TransactionOperation.RAW,
-      assetId: this.config.assetId,
-      source: {
-        type: PeerType.VAULT_ACCOUNT,
-        id: this.config.vaultAccountId,
-      },
-      extraParameters: {
-        rawMessageData: { messages: [{ content: message }] },
+    const response = await this.fireblocks.transactions.createTransaction({
+      transactionRequest: {
+        operation: TransactionOperation.Raw,
+        assetId: this.config.assetId,
+        source: {
+          type: TransferPeerPathType.VaultAccount,
+          id: this.config.vaultAccountId,
+        },
+        extraParameters: {
+          rawMessageData: { messages: [{ content: message }] },
+        },
       },
     });
+    return response.data;
   }
 }

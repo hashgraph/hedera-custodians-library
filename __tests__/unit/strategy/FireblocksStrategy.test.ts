@@ -25,17 +25,25 @@ import {
   FireblocksStrategy,
   hexStringToUint8Array,
 } from '../../../src';
-import { mockFireblocksSignatureResponse } from '../../../__mocks__/fireblocks-sdk';
+import { mockFireblocksSignatureResponse } from '../../../__mocks__/fireblocks-ts-sdk';
 
-jest.mock('fireblocks-sdk', () => require('../../../__mocks__/fireblocks-sdk'));
+jest.mock('@fireblocks/ts-sdk', () =>
+  require('../../../__mocks__/fireblocks-ts-sdk')
+);
 
 describe('🧪 FireblocksStrategy TESTS', () => {
   let fireblocksStrategy: FireblocksStrategy;
 
   beforeEach(() => {
     fireblocksStrategy = setupFireblocksStrategy();
-    jest.spyOn(fireblocksStrategy['fireblocks'], 'createTransaction');
-    jest.spyOn(fireblocksStrategy['fireblocks'], 'getTransactionById');
+    jest.spyOn(
+      fireblocksStrategy['fireblocks']['transactions'],
+      'createTransaction'
+    );
+    jest.spyOn(
+      fireblocksStrategy['fireblocks']['transactions'],
+      'getTransaction'
+    );
   });
 
   it('should correctly sign a signature request', async () => {
@@ -45,10 +53,10 @@ describe('🧪 FireblocksStrategy TESTS', () => {
     const result = await fireblocksStrategy.sign(mockSignatureRequest);
 
     expect(
-      fireblocksStrategy['fireblocks']['createTransaction']
+      fireblocksStrategy['fireblocks']['transactions']['createTransaction']
     ).toHaveBeenCalledTimes(1);
     expect(
-      fireblocksStrategy['fireblocks']['getTransactionById']
+      fireblocksStrategy['fireblocks']['transactions']['getTransaction']
     ).toHaveBeenCalledTimes(1);
     expect(result).toEqual(
       hexStringToUint8Array({
