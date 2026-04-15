@@ -34,6 +34,13 @@ export const DEFAULT_DFNS_SERVICE_ACCOUNT_PRIVATE_KEY =
   'resources/keys/dfns-priv.pem';
 export const TEST_TIMEOUT = 10000; // 10 seconds
 
+const resolvePrivateKey = (privateKeyOrPath: string): string =>
+  pathRegex.test(privateKeyOrPath)
+    ? fs.readFileSync(path.resolve(privateKeyOrPath), 'utf8')
+    : privateKeyOrPath.replace(/\\n/g, '\n').trim().startsWith('-----BEGIN')
+      ? privateKeyOrPath.replace(/\\n/g, '\n')
+      : Buffer.from(privateKeyOrPath, 'base64').toString('utf8');
+
 //* Fireblocks configuration
 const fireblocksApiSecretKey =
   process.env.FIREBLOCKS_API_SECRET_KEY || DEFAULT_FIREBLOCKS_API_SECRET_KEY;
@@ -52,9 +59,7 @@ const dfnsServiceAccountPrivateKey =
   process.env.DFNS_SERVICE_ACCOUNT_PRIVATE_KEY ||
   DEFAULT_DFNS_SERVICE_ACCOUNT_PRIVATE_KEY;
 export const dfnsConfig = new DFNSConfig(
-  pathRegex.test(dfnsServiceAccountPrivateKey)
-    ? fs.readFileSync(path.resolve(dfnsServiceAccountPrivateKey), 'utf8')
-    : Buffer.from(dfnsServiceAccountPrivateKey, 'base64').toString('utf8'),
+  resolvePrivateKey(dfnsServiceAccountPrivateKey),
   process.env.DFNS_SERVICE_ACCOUNT_CREDENTIAL_ID ?? '',
   process.env.DFNS_SERVICE_ACCOUNT_AUTHORIZATION_TOKEN ?? '',
   process.env.DFNS_APP_ORIGIN ?? '',
@@ -64,9 +69,7 @@ export const dfnsConfig = new DFNSConfig(
   process.env.DFNS_WALLET_PUBLIC_KEY ?? ''
 );
 export const dfnsConfig_ECDSA = new DFNSConfig(
-  pathRegex.test(dfnsServiceAccountPrivateKey)
-    ? fs.readFileSync(path.resolve(dfnsServiceAccountPrivateKey), 'utf8')
-    : Buffer.from(dfnsServiceAccountPrivateKey, 'base64').toString('utf8'),
+  resolvePrivateKey(dfnsServiceAccountPrivateKey),
   process.env.DFNS_SERVICE_ACCOUNT_CREDENTIAL_ID ?? '',
   process.env.DFNS_SERVICE_ACCOUNT_AUTHORIZATION_TOKEN ?? '',
   process.env.DFNS_APP_ORIGIN ?? '',
