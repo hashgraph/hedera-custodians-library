@@ -7,6 +7,9 @@ import licenseHeader from 'eslint-plugin-license-header';
 
 export default [
   {
+    ignores: ['lib/**', 'dist/**', 'build/**', 'node_modules/**'],
+  },
+  {
     files: ['**/*.ts', '**/*.tsx'], // Adjust the file patterns as needed
     languageOptions: {
       globals: {

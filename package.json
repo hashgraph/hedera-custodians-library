@@ -1,6 +1,6 @@
 {
   "name": "@hashgraph/hedera-custodians-integration",
-  "version": "1.4.2",
+  "version": "1.4.3",
   "description": "A library to provide integration with custodial wallets",
   "homepage": "https://github.com/hashgraph/hedera-custodians-library",
   "repository": {
@@ -43,7 +43,7 @@
     "lib"
   ],
   "scripts": {
-    "compile": "tsc -p tsconfig.json && tsc -p tsconfig-cjs.json",
+    "compile": "tsc -p tsconfig.json && node scripts/fix-esm-imports.mjs && tsc -p tsconfig-cjs.json",
     "clean": "rimraf build coverage",
     "test": "jest",
     "test:coverage": "jest --coverage",

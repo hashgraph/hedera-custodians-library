@@ -18,12 +18,19 @@
  *
  */
 
-import {
-  ASN1Element,
-  ASN1TagClass,
-  ASN1UniversalType,
-  DERElement,
-} from 'asn1-ts';
+// asn1-ts is a CJS module with __esModule:true but no `export default`.
+// - Node.js ESM strict: named imports fail; `import * as ns` gives ns.default = module.exports
+// - Webpack: `import * as ns` exposes named exports directly; ns.default = undefined
+// The `ns.default ?? ns` pattern handles both environments correctly.
+import type * as asn1tsTypes from 'asn1-ts';
+import * as asn1tsNamespace from 'asn1-ts';
+
+type ASN1Element = asn1tsTypes.ASN1Element;
+type DERElement = asn1tsTypes.DERElement;
+
+const asn1ts = (asn1tsNamespace as any).default ?? asn1tsNamespace;
+const { ASN1TagClass, ASN1UniversalType, DERElement } =
+  asn1ts as unknown as typeof asn1tsTypes;
 
 /**
  * Represents an ECDSA ASN.1 signature.
